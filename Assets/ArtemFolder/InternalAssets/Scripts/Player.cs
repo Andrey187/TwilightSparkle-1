@@ -1,18 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using StateMahine;
+using PlayerStates;
 
-public class Player : MonoBehaviour
+namespace Player
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Player: MonoBehaviour
     {
+        private StateMachine _SM;
         
-    }
+        private PlayerIdle _playerIdleState;
+        private PlayerMove _playerMoveState;
 
-    // Update is called once per frame
-    void Update()
-    {
+        private void Start()
+        {
+            InitStates();
+        }
+
+        private void Update()
+        {
+            _SM.CurrentState.Update();
+        }
+
         
+        // Showing how to Init states
+        private void InitStates()
+        {
+            _SM = new StateMachine();
+            
+            _playerIdleState = new PlayerIdle();
+            _playerMoveState = new PlayerMove();
+
+            _SM.Initialize(_playerIdleState);
+        }
+
+        
+        // Showing how to change State
+        private void StartMove()
+        {
+            _SM.ChangeState(_playerMoveState);
+        }
+
+        // Showing how to use Method from state
+        private void GetMethodFromState()
+        {
+            _playerMoveState.RemoveHP();
+        }
     }
 }
