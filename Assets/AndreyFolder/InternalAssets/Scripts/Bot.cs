@@ -1,18 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using StateMahine;
 
-public class Bot : MonoBehaviour
+namespace Player
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Player : MonoBehaviour
     {
-        
-    }
+        private StateMachine _SM;
+       
 
-    // Update is called once per frame
-    void Update()
-    {
+        //private PlayerIdle _playerIdleState;
+        //private PlayerMove _playerMoveState;
+
+        private void Start()
+        {
+            InitStates();
+
+        }
+
+        private void Update()
+        {
+            _SM.CurrentState.Update();
+        }
+
+
+        // Showing how to Init states
+        private void InitStates()
+        {
+            _SM = new StateMachine();
+
+            //_playerIdleState = new PlayerIdle();
+            //_playerMoveState = new PlayerMove();
+
+            //_SM.Initialize(_playerIdleState);
+        }
+
+
+        // Showing how to change State
+        private void StartMove()
+        {
+            //_SM.ChangeState(_playerMoveState);
+        }
+
         
     }
 }
