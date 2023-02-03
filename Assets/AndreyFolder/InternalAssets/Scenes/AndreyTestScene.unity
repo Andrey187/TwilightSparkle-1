@@ -382,9 +382,9 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 20
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemiesPrefabs:
   - {fileID: 8636562582305103448, guid: ed0a7ec88ccd5ac448639346f55e139c, type: 3}
-  _spawnRadius: 10
+  _spawnRadius: 1.5
   _spawnTime: 1.5
   _player: {fileID: 1513935100}
   _circleRadius: 10
