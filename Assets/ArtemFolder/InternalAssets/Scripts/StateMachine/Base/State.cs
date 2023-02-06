@@ -1,4 +1,4 @@
-namespace StateMahine
+namespace StateMachineSpace
 {
     public abstract class State
     {

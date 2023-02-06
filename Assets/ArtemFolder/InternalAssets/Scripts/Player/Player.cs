@@ -1,18 +1,24 @@
 using UnityEngine;
-using StateMahine;
+using StateMachineSpace;
 using PlayerStates;
 
-namespace Player
+namespace PlayerSpace
 {
+    [RequireComponent(typeof(PlayerComponents))]
     public class Player: MonoBehaviour
     {
-        private StateMachine _SM;
+        [SerializeField] private PlayerSettings playerSettings;
+        private PlayerComponents _playerComponents;
         
+        
+        private StateMachine _SM;
         private PlayerIdle _playerIdleState;
         private PlayerMove _playerMoveState;
 
+        
         private void Start()
         {
+            GetComponents();
             InitStates();
         }
 
@@ -20,30 +26,26 @@ namespace Player
         {
             _SM.CurrentState.Update();
         }
-
         
-        // Showing how to Init states
         private void InitStates()
         {
             _SM = new StateMachine();
             
             _playerIdleState = new PlayerIdle();
-            _playerMoveState = new PlayerMove();
+            _playerMoveState = new PlayerMove(playerSettings);
 
             _SM.Initialize(_playerIdleState);
         }
 
+        private void GetComponents()
+        {
+            _playerComponents = GetComponent<PlayerComponents>();
+        }
         
-        // Showing how to change State
         private void StartMove()
         {
             _SM.ChangeState(_playerMoveState);
         }
-
-        // Showing how to use Method from state
-        private void GetMethodFromState()
-        {
-            _playerMoveState.RemoveHP();
-        }
+        
     }
 }

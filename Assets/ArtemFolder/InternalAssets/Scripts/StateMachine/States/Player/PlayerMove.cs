@@ -1,12 +1,24 @@
-using StateMahine;
+using StateMachineSpace;
+using UnityEngine;
+
+using PlayerSpace;
 
 namespace PlayerStates
 {
     public class PlayerMove : State
     {
-        public PlayerMove()
+        private PlayerSettings _playerSettings;
+        
+        private float _moveSpeed;
+        private float _rotationSpeed;
+
+        
+        public PlayerMove(PlayerSettings playerSettings)
         {
+            _playerSettings = playerSettings;
             
+            _moveSpeed = _playerSettings.moveSpeed;
+            _rotationSpeed = _playerSettings.rotationSpeed;
         }
         
         public override void Enter()
@@ -15,11 +27,6 @@ namespace PlayerStates
         }
         
         public override void Exit()
-        {
-            
-        }
-
-        public void RemoveHP()
         {
             
         }
