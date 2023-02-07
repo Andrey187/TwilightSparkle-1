@@ -12,7 +12,7 @@ namespace PlayerStates
         
         public override void Enter()
         {
-            Debug.Log("Player Idle Enter");
+          
         }
         
         public override void Exit()
