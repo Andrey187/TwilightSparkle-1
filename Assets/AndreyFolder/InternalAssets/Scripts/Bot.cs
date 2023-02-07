@@ -6,7 +6,6 @@ namespace Player
     public class Player : MonoBehaviour
     {
         private StateMachine _SM;
-       
 
         //private PlayerIdle _playerIdleState;
         //private PlayerMove _playerMoveState;
@@ -20,6 +19,8 @@ namespace Player
         private void Update()
         {
             _SM.CurrentState.Update();
+
+
         }
 
 

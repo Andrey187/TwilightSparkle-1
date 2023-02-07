@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Cinemachine;
 
 public class BotsSpawn : MonoBehaviour
 {
@@ -7,14 +8,18 @@ public class BotsSpawn : MonoBehaviour
     [SerializeField] private float _spawnRadius;
     [SerializeField] private float _spawnTime = 1.5f;
     [SerializeField] private GameObject _player;
-    private Vector2 spawnPos;
+
+    private Vector3 spawnPos;
 
     private Camera _cam;
     private float _cameraWidth;
     private float _cameraHeight;
     
     private float _circleRadius;
-    private Vector2 randomPointOnCircle;
+    private Vector3 randomPointOnCircle;
+
+    [SerializeField] private ObjectPooler.ObjectInfo.ObjectType _botsType;
+    private GameObject bots;
 
     private void Awake()
     {
@@ -30,23 +35,34 @@ public class BotsSpawn : MonoBehaviour
     {
         FindBoundries();
         RandomOnUnitCircle(_circleRadius);
+        
     }
+
+    private void BotsInit()
+    {
+        bots = ObjectPooler.Instance.GetObject(_botsType);
+    }
+
 
     IEnumerator SpawnEnemies()
     {
         yield return new WaitForSeconds(_spawnTime);
-
+        BotsInit();
         spawnPos = _player.transform.position;
         spawnPos += randomPointOnCircle * _spawnRadius;
-        Instantiate(_enemiesPrefabs[Random.Range(0, _enemiesPrefabs.Length)], new Vector3(spawnPos.x, 0f, spawnPos.y), Quaternion.identity);
+
+        //Instantiate(_enemiesPrefabs[Random.Range(0,_enemiesPrefabs.Length)], new Vector3(spawnPos.x, 0f, spawnPos.y), Quaternion.identity);
+        bots.GetComponent<BotsLifeTime>().OnCreate(new Vector3(spawnPos.x, 0f, _player.transform.position.z + spawnPos.y), Quaternion.identity);
 
         StartCoroutine(SpawnEnemies());
+
     }
 
     private void FindBoundries()
     {
         _cameraWidth = 1 / (_cam.WorldToViewportPoint(new Vector3(1, 0, 1)).x - .5f);
         _cameraHeight = 1 / (_cam.WorldToViewportPoint(new Vector3(1, 0, 1)).y - .5f);
+
 
         //Теорема Пифагора епта
         float sqrX = _cameraWidth * _cameraWidth;
