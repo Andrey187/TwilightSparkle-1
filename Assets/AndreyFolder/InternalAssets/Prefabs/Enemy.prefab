@@ -48,6 +48,7 @@ MonoBehaviour:
   type: 0
   _lifeTime: 10
   _currentLifeTime: 0
+  _speed: 1
 --- !u!1 &9040900042955428404
 GameObject:
   m_ObjectHideFlags: 0

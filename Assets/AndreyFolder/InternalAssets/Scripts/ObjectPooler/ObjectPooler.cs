@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -6,7 +5,7 @@ using System;
 public class ObjectPooler : MonoBehaviour
 {
     public static ObjectPooler Instance;
-    [Serializable] public struct ObjectInfo
+    [Serializable] public struct ObjectInfo //структура или класс не имеет значения, но структура хранится в стеке, по идее должно быстрее работать
     {
         public enum ObjectType
         {
@@ -23,7 +22,10 @@ public class ObjectPooler : MonoBehaviour
 
     [SerializeField] private List<ObjectInfo> _objectsInfo;
 
-    private Dictionary<ObjectInfo.ObjectType, Pool> _pools;
+    private Dictionary<ObjectInfo.ObjectType, Pool> _pools; //Доступ к словарю по ключу всегда будет быстрее, 
+                                                            // чем перебирать список и запрашивать у каждого элемента его идентификатор.
+
+    public GameObject _player;
 
     private void Awake()
     {
@@ -31,6 +33,9 @@ public class ObjectPooler : MonoBehaviour
             Instance = this;
 
         InitPool();
+
+        //ToDo кэш в другом месте
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
 
 
@@ -50,7 +55,7 @@ public class ObjectPooler : MonoBehaviour
             for(int i =0; i< obj.StartCount; i++)
             {
                 var go = InstantiateObject(obj.Type, container.transform);
-                _pools[obj.Type].Objects.Enqueue(go);
+                _pools[obj.Type].Objects.Enqueue(go); //Enqueue поставить в очередь
             }
         }
 
@@ -70,7 +75,7 @@ public class ObjectPooler : MonoBehaviour
     public GameObject GetObject(ObjectInfo.ObjectType type)
     {
         var obj = _pools[type].Objects.Count > 0 ?
-            _pools[type].Objects.Dequeue() : InstantiateObject(type, _pools[type].Container);
+            _pools[type].Objects.Dequeue() : InstantiateObject(type, _pools[type].Container); //Dequeue Удалить из очереди
 
         obj.SetActive(true);
         return obj;
