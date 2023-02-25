@@ -1,4 +1,4 @@
 public interface IPooledObjects
 {
-    ObjectPooler.ObjectInfo.ObjectType Type { get; }
+    StageEvent.ObjectType Type { get; }
 }
