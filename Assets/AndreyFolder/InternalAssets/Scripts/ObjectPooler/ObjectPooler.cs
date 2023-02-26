@@ -2,29 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ObjectPooler : MonoBehaviour
+public class ObjectPooler : MonoCache
 {
     public static ObjectPooler Instance;
-    //[Serializable] public struct ObjectInfo //структура или класс не имеет значения, но структура хранится в стеке, по идее должно быстрее работать
-    //{
-    //    public enum ObjectType
-    //    {
-    //        ENEMY_1,
-    //        ENEMY_2,
-    //        ENEMY_3,
-    //        ENEMY_4,
-    //    }
-
-    //    public ObjectType Type;
-    //    public GameObject Prefab;
-    //    public int StartCount; //начальное кол-во объектов в пуле
-    //}
-
-    //[SerializeField] private List<ObjectInfo> _objectsInfo;
-
-
-
     [SerializeField] private StageData _stageData;
+    private StageEvent _stageEvent;
     private Dictionary<StageEvent.ObjectType, Pool> _pools; //Доступ к словарю по ключу всегда будет быстрее, 
                                                             // чем перебирать список и запрашивать у каждого элемента его идентификатор.
 
@@ -85,7 +67,7 @@ public class ObjectPooler : MonoBehaviour
     /// </summary>
     public void DestroyObject(GameObject obj)
     {
-        _pools[obj.GetComponent<IPooledObjects>().Type].Objects.Enqueue(obj);
+        _pools[_stageEvent.Type].Objects.Enqueue(obj);
         obj.SetActive(false);
     }
 }
