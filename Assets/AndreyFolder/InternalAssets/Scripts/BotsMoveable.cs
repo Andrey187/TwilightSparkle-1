@@ -11,7 +11,7 @@ public class BotsMoveable : MonoCache
 
     protected override void Run()
     {
-        if (gameObject.activeSelf)
+        if (gameObject.activeSelf && _navMeshAgent.isOnNavMesh)
             _navMeshAgent.destination = _targetPosition.Value;
     }
 }

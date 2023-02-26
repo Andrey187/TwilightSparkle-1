@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage1 EventData
   m_EditorClassIdentifier: 
   StageEvent:
-  - Time: 10
+  - Time: 5
     Message: Sphere
     Prefab: {fileID: 8636562582305103448, guid: ed0a7ec88ccd5ac448639346f55e139c, type: 3}
     Count: 80

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class SpawnAreaCalculation : MonoCache
 {
+    [SerializeField] private float _spawnRadius = 1.5f;
+    [SerializeField] private float _colliderHitRadius = 0.3f;
+    [SerializeField] private float _groupSpawnСircleRadius = 20f;
+
     private Camera _cam;
     private Transform _player;
     private float _cameraWidth;
@@ -13,15 +17,10 @@ public class SpawnAreaCalculation : MonoCache
     private Vector3 _randomInsideUnitCircle;
     private Vector3 _botsSpawnInRandomPointOnCircle;
     private Vector3 _botsSpawnField;
-    public Vector3 BotsSpawnField { get { return _botsSpawnField; } set { _botsSpawnField = value; } }
 
-
-    private float distanceToCheckGround = 1f;
+    private float distanceToCheckGround = 2f;
     private bool isGround = false;
-    public bool IsGround { get { return isGround; } set { isGround = value; } }
     private RaycastHit hit;
-
-    
 
     private void Awake()
     {
@@ -33,7 +32,7 @@ public class SpawnAreaCalculation : MonoCache
     /// <summary>
     /// Метод спавнящий объекты в случайной точке на окружности вне видимости камеры
     /// </summary>
-    public void SpawnOnCircleOutsideTheCameraField(float _spawnRadius)
+    public void SpawnOnCircleOutsideTheCameraField()
     {
         _spawnCircleRadius = _player.transform.position + _randomInsideUnitCircle * _spawnRadius;
         _botsSpawnInRandomPointOnCircle = new Vector3(_spawnCircleRadius.x,
@@ -49,19 +48,32 @@ public class SpawnAreaCalculation : MonoCache
         return _randomInsideUnitCircle;
     }
 
-    public void SpawnGroupInFieldOnCircle(float _groupSpawnRadius)
+    public void SpawnGroupInFieldOnCircle()
     {
         _botsSpawnField = _botsSpawnInRandomPointOnCircle +
             new Vector3(Random.insideUnitCircle.x, 0f, Random.insideUnitCircle.y)
-            * _groupSpawnRadius;
+            * _groupSpawnСircleRadius;
     }
 
     //ToDo возможно в дальнейшем можно будет изменить условие проверки,
     //типо по сфере чекать попадание стен в радиус
+    //решить проблему с навмешем. 
     public void GroundCheck()
     {
         Ray ray = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);
         isGround = Physics.Raycast(ray, out hit, distanceToCheckGround);
+    }
+
+    public delegate void Del();
+    public void ColliderCheck(GameObject bots, Del del)
+    {
+        if (!Physics.CheckSphere(_botsSpawnField, _colliderHitRadius) && isGround)
+        {
+            del.Invoke();
+            bots.GetComponent<BotsLifeTime>().OnCreate(_botsSpawnField, Quaternion.identity);
+            bots.GetComponentInChildren<Rigidbody>().transform.position =
+                bots.GetComponent<BotsLifeTime>().transform.position;
+        }
     }
 
     /// <summary>
@@ -76,5 +88,30 @@ public class SpawnAreaCalculation : MonoCache
         float sqrZ = _cameraHeight * _cameraHeight;
         float distance = Mathf.Sqrt(sqrX + sqrZ);
         _circleOutsideTheCameraField = distance / 2;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_player !=null)
+        {
+            Gizmos.color = Color.black;
+            Gizmos.DrawCube(_player.transform.position, new Vector3(_cameraWidth, 0f, _cameraHeight));
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(_player.transform.position, _circleOutsideTheCameraField);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_botsSpawnInRandomPointOnCircle, _groupSpawnСircleRadius);
+
+            Gizmos.color = Color.black;
+            Gizmos.DrawRay(_botsSpawnInRandomPointOnCircle, Vector3.down);
+        }
+        
+
+        
+
+        //if (bots != null)
+        //{
+        //    Gizmos.color = Color.black;
+        //    Gizmos.DrawRay(bots.transform.position, Vector3.down);
+        //}
     }
 }

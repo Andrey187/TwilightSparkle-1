@@ -478,7 +478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023af9a1c2184a847b841ac9341e8aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
   _lifeTime: 3
   _currentLifeTime: 3
 --- !u!114 &5329606681769119428
@@ -494,7 +493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetPosition: {fileID: 11400000, guid: d85be94bd3d861e47afcac3b4b6a61d6, type: 2}
-  _navMeshAgent: {fileID: 0}
+  _navMeshAgent: {fileID: 6773398554617827533}
 --- !u!1 &9040900042955428404
 GameObject:
   m_ObjectHideFlags: 0
