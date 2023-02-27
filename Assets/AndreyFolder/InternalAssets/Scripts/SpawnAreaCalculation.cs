@@ -65,14 +65,22 @@ public class SpawnAreaCalculation : MonoCache
     }
 
     public delegate void Del();
+    
     public void ColliderCheck(GameObject bots, Del del)
     {
+        
         if (!Physics.CheckSphere(_botsSpawnField, _colliderHitRadius) && isGround)
         {
-            del.Invoke();
+            del?.Invoke();
+            if (bots == null)
+            {
+                Debug.LogWarning("GameObject is null!");
+                return;
+            }
             bots.GetComponent<BotsLifeTime>().OnCreate(_botsSpawnField, Quaternion.identity);
             bots.GetComponentInChildren<Rigidbody>().transform.position =
                 bots.GetComponent<BotsLifeTime>().transform.position;
+            
         }
     }
 
@@ -104,14 +112,5 @@ public class SpawnAreaCalculation : MonoCache
             Gizmos.color = Color.black;
             Gizmos.DrawRay(_botsSpawnInRandomPointOnCircle, Vector3.down);
         }
-        
-
-        
-
-        //if (bots != null)
-        //{
-        //    Gizmos.color = Color.black;
-        //    Gizmos.DrawRay(bots.transform.position, Vector3.down);
-        //}
     }
 }

@@ -555,7 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnAreaCalculation: {fileID: 1237682898}
   _player: {fileID: 1513935101}
-  _spawnTime: 5
+  _spawnTime: 3
 --- !u!114 &1237682898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce8513352f741640a6c57010d79e351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnRadius: 1.5
+  _spawnRadius: 1
   _colliderHitRadius: 0.1
   "_groupSpawn\u0421ircleRadius": 20
 --- !u!1 &1506520886

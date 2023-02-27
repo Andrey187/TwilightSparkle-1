@@ -21,7 +21,7 @@ public class BotsSpawn : MonoBehaviour
         _spawnAreaCalculation.SpawnOnCircleOutsideTheCameraField();
         _spawnAreaCalculation.NewUnitCircle();
         _spawnAreaCalculation.GroundCheck();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
         Spawn();
         StartCoroutine(SpawnEnemies());
     }
