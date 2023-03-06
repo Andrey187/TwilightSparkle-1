@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[Serializable] public struct StageEvent
+[Serializable] public class StageEvent
 {
-    public float Time;
+    public float SpawnInterval;
     public string Message;
     public GameObject Prefab;
-    public int Count;
+    public int SpawnCount;
+    public int EnemyCount;
 
     public enum ObjectType
     {
@@ -25,5 +26,5 @@ using UnityEngine;
 [CreateAssetMenu]
 public class StageData : ScriptableObject
 {
-    public List<StageEvent> StageEvent;
+    public List<StageEvent> ListStageEvent;
 }

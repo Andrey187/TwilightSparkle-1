@@ -9,11 +9,6 @@ public class StageTime : MonoCache
     /// </summary>
     [SerializeField] public float Timer; //time after which the wave will start
 
-    private void Awake()
-    {
-        
-    }
-
     protected override void Run()
     {
         Timer += Time.deltaTime;

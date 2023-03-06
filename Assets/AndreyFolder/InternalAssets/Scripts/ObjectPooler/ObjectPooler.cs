@@ -6,7 +6,6 @@ public class ObjectPooler : MonoCache
 {
     public static ObjectPooler Instance;
     [SerializeField] private StageData _stageData;
-    private StageEvent _stageEvent;
     private Dictionary<StageEvent.ObjectType, Pool> _pools; //Доступ к словарю по ключу всегда будет быстрее, 
                                                             // чем перебирать список и запрашивать у каждого элемента его идентификатор.
 
@@ -15,10 +14,8 @@ public class ObjectPooler : MonoCache
     {
         if (Instance == null)
             Instance = this;
-
         InitPool();
     }
-
 
     private void InitPool()
     {
@@ -26,14 +23,14 @@ public class ObjectPooler : MonoCache
 
         var emtyGO = new GameObject();
 
-        foreach(var obj in _stageData.StageEvent)
+        foreach (var obj in _stageData.ListStageEvent)
         {
             var container = Instantiate(emtyGO, transform, false);
             container.name = obj.Type.ToString();
 
             _pools[obj.Type] = new Pool(container.transform);
 
-            for(int i =0; i< obj.Count; i++)
+            for(int i =0; i< obj.SpawnCount; i++)
             {
                 var go = InstantiateObject(obj.Type, container.transform);
                 _pools[obj.Type].Objects.Enqueue(go); //Enqueue поставить в очередь
@@ -43,9 +40,11 @@ public class ObjectPooler : MonoCache
         Destroy(emtyGO);
     }
 
+    int a;
     private GameObject InstantiateObject(StageEvent.ObjectType type, Transform parent)
     {
-        var go = Instantiate(_stageData.StageEvent.Find(x => x.Type == type).Prefab, parent);
+        var go = Instantiate(_stageData.ListStageEvent.Find(x => x.Type == type).Prefab, parent);
+        go.name = go.name + a; a++;
         go.SetActive(false);
         return go;
     }
@@ -57,7 +56,6 @@ public class ObjectPooler : MonoCache
     {
         var obj = _pools[type].Objects.Count > 0 ?
             _pools[type].Objects.Dequeue() : InstantiateObject(type, _pools[type].Container); //Dequeue Удалить из очереди
-
         obj.SetActive(true);
         return obj;
     }
@@ -67,7 +65,10 @@ public class ObjectPooler : MonoCache
     /// </summary>
     public void DestroyObject(GameObject obj)
     {
-        _pools[_stageEvent.Type].Objects.Enqueue(obj);
-        obj.SetActive(false);
+        foreach (var go in _stageData.ListStageEvent)
+        {
+            _pools[go.Type].Objects.Enqueue(obj);
+            obj.SetActive(false);
+        }
     }
 }

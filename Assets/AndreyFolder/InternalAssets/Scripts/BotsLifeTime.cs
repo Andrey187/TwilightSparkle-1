@@ -1,12 +1,17 @@
 using UnityEngine;
+using System;
 
-public class BotsLifeTime : MonoCache
+public class BotsLifeTime : MonoCache, IPooledObjects
 {
+    public StageEvent.ObjectType Type => type;
+    [SerializeField] private StageEvent.ObjectType type;
     //временные парамы для теста
     [SerializeField] private float _lifeTime = 3;
     [SerializeField] private float _currentLifeTime;
 
-    public void OnCreate(Vector3 position, Quaternion rotation)
+    public static Action<StageEvent.ObjectType> onBotDestroy;
+
+    public void OnCreate(Vector3 position,  Quaternion rotation)
     {
         transform.position = position;
         transform.rotation = rotation;
@@ -17,6 +22,7 @@ public class BotsLifeTime : MonoCache
     {
         if ((_currentLifeTime -= Time.deltaTime) < 0)
         {
+            onBotDestroy?.Invoke(type);
             ObjectPooler.Instance.DestroyObject(gameObject);
         }
     }

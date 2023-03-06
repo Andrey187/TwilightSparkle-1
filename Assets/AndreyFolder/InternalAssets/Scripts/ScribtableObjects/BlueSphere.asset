@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af83ccbdb2b656442819fd4d697fca66, type: 3}
-  m_Name: RedSphere
+  m_Name: BlueSphere
   m_EditorClassIdentifier: 
-  Name: RedSphere
-  Prefab: {fileID: 8636562582305103448, guid: ed0a7ec88ccd5ac448639346f55e139c, type: 3}
+  Name: BlueSphere
+  Prefab: {fileID: 8636562582305103448, guid: bb5df5e86cd8b9848a1ca1667d9c270a, type: 3}

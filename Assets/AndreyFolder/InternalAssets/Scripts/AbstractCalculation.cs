@@ -1,11 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnAreaCalculation : MonoCache
+public abstract class AbstractCalculation
 {
-    [SerializeField] private float _spawnRadius = 1.5f;
-    [SerializeField] private float _colliderHitRadius = 0.3f;
-    [SerializeField] private float _groupSpawn—ircleRadius = 20f;
-
     private Camera _cam;
     private Transform _player;
     private float _cameraWidth;
@@ -22,10 +20,21 @@ public class SpawnAreaCalculation : MonoCache
     private bool isGround = false;
     private RaycastHit hit;
 
+    private float _spawnRadius;
+    private float _colliderHitRadius;
+    private float _groupSpawn—ircleRadius;
+
+    public AbstractCalculation(float spawnRadius, float colliderHitRadius, float groupSpawn—ircleRadius, Transform player)
+    {
+        _spawnRadius = spawnRadius;
+        _colliderHitRadius = colliderHitRadius;
+        _groupSpawn—ircleRadius = groupSpawn—ircleRadius;
+        _player = player;
+    }
+
     private void Awake()
     {
         _cam = Camera.main;
-        _player = Find<PositionWritter>().transform;
         FindCameraBoundries();
     }
 
@@ -64,18 +73,23 @@ public class SpawnAreaCalculation : MonoCache
         isGround = Physics.Raycast(ray, out hit, distanceToCheckGround);
     }
 
-    public void ColliderCheck(GameObject bots)
+    public delegate void Del();
+
+    public void ColliderCheck(GameObject bots, Del del)
     {
+
         if (!Physics.CheckSphere(_botsSpawnField, _colliderHitRadius) && isGround)
         {
+            del?.Invoke();
             if (bots == null)
             {
                 Debug.LogWarning("GameObject is null!");
                 return;
             }
-            bots.GetComponent<BotsLifeTime>().OnCreate(_botsSpawnField, Quaternion.identity);
+            //bots.GetComponent<BotsLifeTime>().OnCreate(_botsSpawnField, Quaternion.identity);
             bots.GetComponentInChildren<Rigidbody>().transform.position =
-               bots.GetComponent<BotsLifeTime>().transform.position;
+                bots.GetComponent<BotsLifeTime>().transform.position;
+
         }
     }
 
@@ -95,7 +109,7 @@ public class SpawnAreaCalculation : MonoCache
 
     private void OnDrawGizmosSelected()
     {
-        if (_player !=null)
+        if (_player != null)
         {
             Gizmos.color = Color.black;
             Gizmos.DrawCube(_player.transform.position, new Vector3(_cameraWidth, 0f, _cameraHeight));

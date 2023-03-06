@@ -9,12 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd37d3bc43d50af468895ef526f549c4, type: 3}
-  m_Name: Stage1 EventData
+  m_Script: {fileID: 11500000, guid: d1a431233fee12646ad029e09ea92a36, type: 3}
+  m_Name: StageData
   m_EditorClassIdentifier: 
-  StageEvent:
-  - Time: 3
-    Message: Sphere
+  ListStageEvent:
+  - SpawnInterval: 3
+    Message: Wave1
     Prefab: {fileID: 8636562582305103448, guid: ed0a7ec88ccd5ac448639346f55e139c, type: 3}
-    Count: 80
+    SpawnCount: 3
+    EnemyCount: 0
     Type: 0
+  - SpawnInterval: 6
+    Message: Wave2
+    Prefab: {fileID: 8636562582305103448, guid: bb5df5e86cd8b9848a1ca1667d9c270a, type: 3}
+    SpawnCount: 5
+    EnemyCount: 0
+    Type: 1

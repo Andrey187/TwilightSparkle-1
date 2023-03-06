@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c7414e0f335bc44a1457ae0ef631d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stageData: {fileID: 11400000, guid: b23c335db9e887b4683e19230f2f8130, type: 2}
+  _stageData: {fileID: 11400000, guid: fe87182ecd285f347b697da9fef8feb3, type: 2}
   _botsSpawn: {fileID: 1237682897}
+  _eventIndexer: 4
 --- !u!114 &161228497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +556,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnAreaCalculation: {fileID: 1237682898}
   _player: {fileID: 1513935101}
-  _spawnTime: 3
 --- !u!114 &1237682898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce8513352f741640a6c57010d79e351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnRadius: 1
+  _spawnRadius: 1.5
   _colliderHitRadius: 0.1
   "_groupSpawn\u0421ircleRadius": 20
 --- !u!1 &1506520886
@@ -664,7 +664,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513935100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 220.4, y: 0, z: -190.5}
+  m_LocalPosition: {x: 104.3, y: 0, z: -21.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -860,4 +860,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8b503e8807c5f42b3f267c0cff3b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stageData: {fileID: 11400000, guid: b23c335db9e887b4683e19230f2f8130, type: 2}
+  _stageData: {fileID: 11400000, guid: fe87182ecd285f347b697da9fef8feb3, type: 2}
