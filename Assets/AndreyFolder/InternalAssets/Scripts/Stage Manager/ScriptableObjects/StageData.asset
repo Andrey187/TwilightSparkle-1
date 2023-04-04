@@ -16,12 +16,12 @@ MonoBehaviour:
   - SpawnInterval: 3
     Message: Wave1
     Prefab: {fileID: 8636562582305103448, guid: ed0a7ec88ccd5ac448639346f55e139c, type: 3}
-    SpawnCount: 3
+    SpawnCount: 20
     EnemyCount: 0
     Type: 0
   - SpawnInterval: 6
     Message: Wave2
     Prefab: {fileID: 8636562582305103448, guid: bb5df5e86cd8b9848a1ca1667d9c270a, type: 3}
-    SpawnCount: 5
+    SpawnCount: 20
     EnemyCount: 0
     Type: 1

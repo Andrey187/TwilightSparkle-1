@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Plane
   - Test
+  - OuterWall
+  - InnerWall
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - UI
   - Enemy
   - Ground
-  - 
+  - Wall
   - 
   - 
   - 

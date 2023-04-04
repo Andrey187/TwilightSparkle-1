@@ -9,7 +9,6 @@ public class ObjectPooler : MonoCache
     private Dictionary<StageEvent.ObjectType, Pool> _pools; //Доступ к словарю по ключу всегда будет быстрее, 
                                                             // чем перебирать список и запрашивать у каждого элемента его идентификатор.
 
-
     private void Awake()
     {
         if (Instance == null)

@@ -18,7 +18,7 @@ public class SpawnAreaCalculation : MonoCache
     private Vector3 _botsSpawnInRandomPointOnCircle;
     private Vector3 _botsSpawnField;
 
-    private float distanceToCheckGround = 2f;
+    private float distanceToCheckGround = 4f;
     private bool isGround = false;
     private RaycastHit hit;
 
@@ -66,8 +66,9 @@ public class SpawnAreaCalculation : MonoCache
 
     public void ColliderCheck(GameObject bots)
     {
-        if (!Physics.CheckSphere(_botsSpawnField, _colliderHitRadius) && isGround)
-        {
+        //if (!Physics.CheckSphere(_botsSpawnField, _colliderHitRadius) && isGround)
+        //{
+            Debug.Log("bla bla bla");
             if (bots == null)
             {
                 Debug.LogWarning("GameObject is null!");
@@ -76,7 +77,8 @@ public class SpawnAreaCalculation : MonoCache
             bots.GetComponent<BotsLifeTime>().OnCreate(_botsSpawnField, Quaternion.identity);
             bots.GetComponentInChildren<Rigidbody>().transform.position =
                bots.GetComponent<BotsLifeTime>().transform.position;
-        }
+        //}
+        //хз но перестало работать
     }
 
     /// <summary>
