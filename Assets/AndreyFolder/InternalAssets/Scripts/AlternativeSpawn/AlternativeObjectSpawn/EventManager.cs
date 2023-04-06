@@ -7,6 +7,7 @@ public class EventManager : MonoBehaviour
     private static EventManager _instance;
     private Action<GameObject> _onObjectSetActive;
     private Action<GameObject> _wallsSpawnedEvent;
+    private Action<int> _takeDamage;
 
     public List<GameObject> _subscribedObjects = new List<GameObject>();
 
@@ -52,6 +53,12 @@ public class EventManager : MonoBehaviour
         remove { _wallsSpawnedEvent -= value; }
     }
 
+    public event Action<int> TakeDamage
+    {
+        add { _takeDamage += value; }
+        remove { _takeDamage -= value; }
+    }
+
     public void SetObjectActive(GameObject obj, bool isActive)
     {
         obj.SetActive(isActive);
@@ -68,5 +75,10 @@ public class EventManager : MonoBehaviour
             WallManager.WallsSpawnedCount = 0;
             _wallsSpawnedEvent?.Invoke(null);
         }
+    }
+
+    public void EnemyTakeDamage(int amount)
+    {
+        _takeDamage?.Invoke(amount);
     }
 }

@@ -58,6 +58,7 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
     {
         SpawnGroupInFieldOnCircle();
         NavMeshAgent agent = bots.GetComponent<NavMeshAgent>();
+        BaseEnemy objLifeTime = bots.GetComponent<BaseEnemy>();
 
         if (Physics.CheckSphere(_botsSpawnField, _colliderHitRadius))
         {
@@ -65,7 +66,6 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
             {
                 if (isGround)
                 {
-                    ObjectsLifeTime objLifeTime = bots.GetComponent<ObjectsLifeTime>();
                     objLifeTime?.OnCreate(_botsSpawnField, Quaternion.identity);
                     agent.Warp(_botsSpawnField);
                 }

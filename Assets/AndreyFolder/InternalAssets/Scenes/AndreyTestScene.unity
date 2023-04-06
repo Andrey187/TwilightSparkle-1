@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76bd4c49f380a284bb7239e4d83e56c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBarPrefab: {fileID: 2295689642127632307, guid: dd31210c3ec789b43a78223761e44090, type: 3}
+  _healthBarPrefab: {fileID: 2194659576414185011, guid: 14c7148d1b1326642924a7d1cad5c872, type: 3}
   _canvasTransform: {fileID: 1530239833}
 --- !u!1 &594833440
 GameObject:
@@ -469,14 +469,11 @@ MonoBehaviour:
   _botSpawner: {fileID: 852128250}
   Waves:
   - Name: RedCube
-    Bot: {fileID: 8647672654716461924, guid: 11877e28e864f2949b64b09120444172, type: 3}
+    Bot: {fileID: 2310039377504664988, guid: 13192c25926c7b4479022e2d6997a708, type: 3}
     SpawnLimit: 20
   - Name: BlueCube
-    Bot: {fileID: 8647672654716461924, guid: d85c74b266ac2e04ea5f992cf35a7f84, type: 3}
+    Bot: {fileID: 8234744067425265355, guid: 7f15a5884fa1a3d45b3d963162b43507, type: 3}
     SpawnLimit: 10
-  - Name: YellowCube
-    Bot: {fileID: 8647672654716461924, guid: 4eb347dcb31b2f84cba6f3619692bcf7, type: 3}
-    SpawnLimit: 30
   TimeBtwWaves: 2
   WaveCountdown: 0
 --- !u!114 &852128250
@@ -504,6 +501,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -577,6 +575,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9750f3f16d9f8b4f8087607bbe52025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 50
 --- !u!1 &1340013147
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,7 +605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1340013148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,7 +653,7 @@ MonoBehaviour:
   - {fileID: 4317518324952583708, guid: 665bb46d4eebc164f88b3df0df80ea7f, type: 3}
   - {fileID: 4317518324952583708, guid: 90067eb3e2e0d10408e11b76e987d7b1, type: 3}
   - {fileID: 4317518324952583708, guid: 291e014e06f58134c91668e4dbcfaca3, type: 3}
-  _countOfObjects: 100
+  _countOfObjects: 50
   _calculatePos: {fileID: 1813200074}
   _objectLayerMaskCheckColliders:
     serializedVersion: 2
@@ -838,6 +849,52 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1768460335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1768460336}
+  - component: {fileID: 1768460337}
+  m_Layer: 0
+  m_Name: DamageTextManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1768460336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768460335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1813200071}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1768460337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768460335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf7477bcb293fc44fa272dcb62d4c3c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasTransform: {fileID: 1530239833}
+  _textMeshPrefab: {fileID: 5900774010683723399, guid: 57f17726b55c6954a89570c7d56bdb8a, type: 3}
 --- !u!1 &1813200070
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +930,7 @@ Transform:
   - {fileID: 1340013149}
   - {fileID: 852128245}
   - {fileID: 103042380}
+  - {fileID: 1768460336}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

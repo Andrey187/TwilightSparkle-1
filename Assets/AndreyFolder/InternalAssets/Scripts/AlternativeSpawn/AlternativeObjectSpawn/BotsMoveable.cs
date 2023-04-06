@@ -7,7 +7,11 @@ public class BotsMoveable : MonoCache
 
     [SerializeField] private NavMeshAgent _navMeshAgent;
 
-    private void Awake() => _navMeshAgent = ChildrenGet<NavMeshAgent>();
+    private void Awake()
+    {
+        _navMeshAgent = ChildrenGet<NavMeshAgent>();
+        _targetPosition = Find<PositionWritter>()._position;
+    }
 
     protected override void FixedRun()
     {

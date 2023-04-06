@@ -5,52 +5,86 @@ public class HealthBarManager : MonoCache
 {
     [SerializeField] private GameObject _healthBarPrefab;
     [SerializeField] private Transform _canvasTransform;
+    //[SerializeField] private Transform _cam;
 
-    private Dictionary<GameObject, CanvasGroup> _objectToHealthBarMap = new Dictionary<GameObject, CanvasGroup>();
-    private PoolObject<CanvasGroup> _healthBarPool;
-    private CanvasGroup _prefab;
-    
+    private Dictionary<BaseEnemy, HealthBar> _objectToHealthBarMap = new Dictionary<BaseEnemy, HealthBar>();
+    private PoolObject<HealthBar> _healthBarPool;
+    private HealthBar _prefab;
+
     private void Start()
     {
-        _prefab = _healthBarPrefab.GetComponent<CanvasGroup>();
-        PoolObject<CanvasGroup>.CreateInstance(_healthBarPrefab.GetComponent<CanvasGroup>(), 15,
+        _prefab = _healthBarPrefab.GetComponent<HealthBar>();
+        PoolObject<HealthBar>.CreateInstance(_prefab, 15,
             _canvasTransform, "HealthBarsContainer");
-        _healthBarPool = PoolObject<CanvasGroup>.Instance;
+        _healthBarPool = PoolObject<HealthBar>.Instance;
         EventManager.Instance.OnObjectSetActive += HandleObjectSetActive;
+        EventManager.Instance.TakeDamage += TakeDamage;
     }
 
     protected override void Run()
     {
         // Update the positions of the health bars to match the positions of the objects
 
-        foreach (KeyValuePair<GameObject, CanvasGroup> entry in _objectToHealthBarMap)
+        foreach (KeyValuePair<BaseEnemy, HealthBar> entry in _objectToHealthBarMap)
         {
-            GameObject obj = entry.Key;
-            CanvasGroup healthBar = entry.Value;
+            BaseEnemy obj = entry.Key;
+            HealthBar healthBar = entry.Value;
             healthBar.transform.position = obj.transform.position;
+            //healthBar.transform.LookAt(healthBar.transform.position + _cam.forward);
         }
     }
 
     private void HandleObjectSetActive(GameObject obj)
     {
+        BaseEnemy enemy = obj.GetComponent<BaseEnemy>();
         if (obj.activeSelf)
         {
             // If the object is being activated, create a new health bar and add it to the map
-            CanvasGroup healthBar = _healthBarPool.GetObjects(transform.position, _prefab);
+            HealthBar healthBar = _healthBarPool.GetObjects(transform.position, _prefab);
             if (healthBar != null)
             {
-                _objectToHealthBarMap.Add(obj, healthBar);
+                EnemyType enemyType = enemy._enemyType;
+                int maxHealth = enemyType.MaxHealth;
+                healthBar.SetMaxHealth(maxHealth);
+                _objectToHealthBarMap.Add(enemy, healthBar);
                 healthBar.transform.position = Camera.main.WorldToScreenPoint(obj.transform.position);
             }
         }
         else
         {
             // If the object is being deactivated, destroy its health bar and remove it from the map
-            if (_objectToHealthBarMap.TryGetValue(obj, out CanvasGroup healthBar))
+            if (_objectToHealthBarMap.TryGetValue(enemy, out HealthBar healthBar))
             {
-                _objectToHealthBarMap.Remove(obj);
+                _objectToHealthBarMap.Remove(enemy);
                 _healthBarPool.ReturnObject(healthBar);
             }
+        }
+    }
+
+    private void TakeDamage(int amount)
+    {
+        List<BaseEnemy> toRemove = new List<BaseEnemy>();
+        foreach (KeyValuePair<BaseEnemy, HealthBar> entry in _objectToHealthBarMap)
+        {
+            BaseEnemy obj = entry.Key;
+            HealthBar healthBar = entry.Value;
+            obj._currentHealth -= amount;
+            healthBar.SetHealth(obj._currentHealth);
+
+            if(amount > 0)
+            {
+                DamageNumberPool.Instance.Initialize(amount, healthBar.transform, Color.black);
+            }
+
+            if (obj._currentHealth <= 0)
+            {
+                toRemove.Add(obj);
+            }
+        }
+
+        foreach (BaseEnemy enemy in toRemove)
+        {
+            enemy.Die();
         }
     }
 }
