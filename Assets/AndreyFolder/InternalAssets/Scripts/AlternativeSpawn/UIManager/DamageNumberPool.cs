@@ -33,7 +33,6 @@ public class DamageNumberPool : MonoCache
         _textPool = PoolObject<TextMeshPro>.Instance;
     }
 
-
     public void Initialize(int damageAmount, Transform target, Color color)
     {
         TextMeshPro text = _textPool.GetObjects(target.position, _textMeshPrefab);

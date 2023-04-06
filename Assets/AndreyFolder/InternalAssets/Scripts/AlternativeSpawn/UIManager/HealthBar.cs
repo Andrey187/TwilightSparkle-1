@@ -5,19 +5,20 @@ public class HealthBar : MonoBehaviour
 {
 	[SerializeField] private Slider slider;
 	[SerializeField] private Gradient gradient;
-	[SerializeField] private Image fill;
+	[SerializeField] public Image Fill;
+	[SerializeField] public Image Border;
 
     public void SetMaxHealth(int health)
 	{
 		slider.maxValue = health;
 		slider.value = health;
 
-		fill.color = gradient.Evaluate(1f);
+		Fill.color = gradient.Evaluate(1f);
 	}
 
 	public void SetHealth(int health)
 	{
 		slider.value = health;
-		fill.color = gradient.Evaluate(slider.normalizedValue);
+		Fill.color = gradient.Evaluate(slider.normalizedValue);
 	}
 }

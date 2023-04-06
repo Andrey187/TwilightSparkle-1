@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarPrefab: {fileID: 2194659576414185011, guid: 14c7148d1b1326642924a7d1cad5c872, type: 3}
   _canvasTransform: {fileID: 1530239833}
+  _cam: {fileID: 963194228}
 --- !u!1 &594833440
 GameObject:
   m_ObjectHideFlags: 0

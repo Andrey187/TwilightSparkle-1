@@ -5,7 +5,7 @@ public class HealthBarManager : MonoCache
 {
     [SerializeField] private GameObject _healthBarPrefab;
     [SerializeField] private Transform _canvasTransform;
-    //[SerializeField] private Transform _cam;
+    [SerializeField] private Transform _cam;
 
     private Dictionary<BaseEnemy, HealthBar> _objectToHealthBarMap = new Dictionary<BaseEnemy, HealthBar>();
     private PoolObject<HealthBar> _healthBarPool;
@@ -30,7 +30,10 @@ public class HealthBarManager : MonoCache
             BaseEnemy obj = entry.Key;
             HealthBar healthBar = entry.Value;
             healthBar.transform.position = obj.transform.position;
-            //healthBar.transform.LookAt(healthBar.transform.position + _cam.forward);
+
+            Vector3 directionToCamera = _cam.forward + healthBar.transform.position;
+            healthBar.Fill.transform.LookAt(directionToCamera);
+            healthBar.Border.transform.LookAt(directionToCamera);
         }
     }
 
