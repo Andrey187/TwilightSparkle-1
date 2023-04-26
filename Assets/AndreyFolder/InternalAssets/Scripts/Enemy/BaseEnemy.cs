@@ -99,6 +99,7 @@ public abstract class BaseEnemy : MonoCache
     {
         Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);
+        LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
     }
 
     private void NavMeshParams()

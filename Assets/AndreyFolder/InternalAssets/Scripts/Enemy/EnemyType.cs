@@ -10,6 +10,14 @@ public class EnemyType : ScriptableObject
     [SerializeField] private float _speed;
     [SerializeField] private Mesh _mesh;
     [SerializeField] private Material _material;
+    [SerializeField] private int _gainExp;
+    public ObjectType _type;
+
+    public enum ObjectType
+    {
+        Type1,
+        Type2
+    }
 
     private void OnValidate()
     {
@@ -30,4 +38,6 @@ public class EnemyType : ScriptableObject
     public Mesh Mesh { get { return _mesh; } }
 
     public Material Material { get { return _material; } }
+
+    public int GainExp { get { return _gainExp; } set { _gainExp = value; } }
 }
