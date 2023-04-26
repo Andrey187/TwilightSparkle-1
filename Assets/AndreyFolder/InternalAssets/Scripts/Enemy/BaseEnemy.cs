@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using DamageNumber;
 
 [RequireComponent(typeof(MeshFilter), typeof(Mesh), typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody), typeof(NavMeshAgent))]
@@ -8,18 +10,20 @@ public abstract class BaseEnemy : MonoCache
 {
     [SerializeField] protected internal EnemyType _enemyType;
     [SerializeField] protected internal int _currentHealth;
+    protected HealthBarModel _healthBarModel;
     protected MeshFilter _meshFilter;
     protected MeshRenderer _meshRenderer;
     protected NavMeshAgent _navMeshAgent;
 
     private protected void Awake()
     {
+        _healthBarModel = Get<HealthBarModel>();
         _meshFilter = Get<MeshFilter>();
         _meshRenderer = Get<MeshRenderer>();
         _navMeshAgent = Get<NavMeshAgent>();
         _meshFilter.mesh = _enemyType.Mesh;
         _meshRenderer.material = _enemyType.Material;
-
+        EventManager.Instance.TakeAbilityDamage += TakeDamage;
         NavMeshParams();
         ColliderSelection();
     }
@@ -37,6 +41,58 @@ public abstract class BaseEnemy : MonoCache
     {
         transform.position = position;
         transform.rotation = rotation;
+    }
+
+    public void TakeDamage(int damageAmount, IAbility ability, IDoTEffect doTEffect)
+    {
+        if (!gameObject.activeSelf)
+        {
+            return; // don't apply damage or show damage numbers if the game object is not active
+        }
+
+        _currentHealth = ability.ApplyDamage(_currentHealth, damageAmount);
+        _healthBarModel.CurrentHealth = _currentHealth;
+        DamageNumberPool.Instance.Initialize(damageAmount, gameObject.transform, ability);
+
+        if (gameObject != null && damageAmount > 0 && _currentHealth > 0)
+        {
+            if (ability.HasDoT)
+            {
+                StartCoroutine(PeriodicDamageCoroutine(
+                    doTEffect,
+                    gameObject.transform,
+                    doTEffect.Duration,
+                    doTEffect.TickInterval,
+                    damageAmount));
+            }
+        }
+
+        if (_currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private IEnumerator PeriodicDamageCoroutine(IDoTEffect doTEffect,
+        Transform target, float duration, float interval, int amount)
+    {
+        float timeLeft = duration;
+        int periodicDamageAmount = doTEffect.ApplyDoT(_currentHealth, amount);
+
+        while (timeLeft > 0)
+        {
+            yield return new WaitForSeconds(interval);
+            _currentHealth -= periodicDamageAmount;
+            if (_currentHealth <= 0)
+            {
+                Die();
+                yield break; // exit the coroutine if the enemy is dead
+            }
+
+            DamageDoTNumberPool.Instance.Initialize(periodicDamageAmount, target.transform, doTEffect);
+            _healthBarModel.CurrentHealth = _currentHealth;
+            timeLeft -= interval;
+        }
     }
 
     public virtual void Die()

@@ -44,7 +44,6 @@ public class BotsSpawner : MonoCache
                 Debug.LogWarning("No bots found for wave " + wave.Name);
                 continue;
             }
-            Debug.Log("Processing wave: " + wave.Name);
 
             // Add the bots to the List
             for (int j = 0; j < wave.SpawnLimit; j++)

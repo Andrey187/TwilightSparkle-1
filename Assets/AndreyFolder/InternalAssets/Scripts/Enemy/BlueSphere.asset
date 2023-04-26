@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BlueSphere
   m_EditorClassIdentifier: 
   _enemyName: BlueSphere
-  _maxHealth: 54
+  _currentHealth: 100
+  _maxHealth: 100
   _damage: 1
   _speed: 1
   _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
