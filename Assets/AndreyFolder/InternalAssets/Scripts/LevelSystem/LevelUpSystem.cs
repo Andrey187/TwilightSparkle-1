@@ -1,17 +1,25 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
-public class LevelUpSystem : MonoBehaviour
+public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 {
     private static LevelUpSystem _instance;
-    public event Action<int> OnLevelUp;
+    private Dictionary<EnemyType.ObjectType, EnemyType> _expTable = new Dictionary<EnemyType.ObjectType, EnemyType>();
+    public event Action<int> OnCurrentLevel;
+    public event Action<int> OnCurrentExp;
+    public event Action<int> OnNextLevelExp;
+    public event Action<int> OnTalantPoint;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    private int _currentLevel = 1;
-    private int _currentExp = 0;
-    private int _nextLevelExp = 1000;
-    private int _talentPoints = 0;
+    public int CurrentLevel { get; set; } = 1;
+
+    public int CurrentExp { get; set; } = 0;
+
+    public int NextLevelExp { get; set; } = 1000;
+
+    public int TalantPoint { get; set; } = 0;
 
     public static LevelUpSystem Instance
     {
@@ -21,14 +29,6 @@ public class LevelUpSystem : MonoBehaviour
                 _instance = FindObjectOfType<LevelUpSystem>();
             return _instance;
         }
-    }
-
-    private Dictionary<EnemyType.ObjectType, EnemyType> _expTable = new Dictionary<EnemyType.ObjectType, EnemyType>();
-
-
-    private void Start()
-    {
-        Debug.Log(_expTable.Keys.Count);
     }
 
     public void AddExperience(EnemyType.ObjectType type, EnemyType enemyType)
@@ -41,28 +41,35 @@ public class LevelUpSystem : MonoBehaviour
         if (_expTable.TryGetValue(type, out EnemyType enemy))
         {
             int gainExp = enemy.GainExp;
-            _currentExp += gainExp;
-            Debug.Log($"Gained {gainExp} experience. Total experience: {_currentExp}");
-
+            CurrentExp += gainExp;
+            OnCurrentExp?.Invoke(CurrentExp);
+            OnPropertyChanged(nameof(CurrentExp));
             CheckLevelUp();
         }
     }
 
     private void CheckLevelUp()
     {
-        if (_currentExp >= _nextLevelExp)
+        if (CurrentExp >= NextLevelExp)
         {
-            _currentLevel++;
-            _talentPoints++;
-            _currentExp = 0;
-            _nextLevelExp = GetNextLevelExp(_currentLevel);
-            OnLevelUp?.Invoke(_currentLevel);
-            Debug.Log($"Leveled up to level {_currentLevel}. Talent points: {_talentPoints}");
+            CurrentLevel++;
+            TalantPoint++;
+            CurrentExp -= NextLevelExp;
+            
+            NextLevelExp = GetNextLevelExp(CurrentLevel);
 
-            if (_currentLevel <= _nextLevelExp)
-            {
-                Debug.Log($"Next level requires {_nextLevelExp} exp.");
-            }
+            OnCurrentExp?.Invoke(CurrentExp);
+            OnPropertyChanged(nameof(CurrentExp));
+
+            OnCurrentLevel?.Invoke(CurrentLevel);
+            OnPropertyChanged(nameof(CurrentLevel));
+
+            OnTalantPoint?.Invoke(TalantPoint);
+            OnPropertyChanged(nameof(TalantPoint));
+
+            OnNextLevelExp?.Invoke(NextLevelExp);
+            OnPropertyChanged(nameof(NextLevelExp));
+
         }
     }
 
@@ -78,23 +85,9 @@ public class LevelUpSystem : MonoBehaviour
         return Mathf.FloorToInt(exp + levelBonus);
     }
 
-    public int GetCurrentLevel()
+    protected void OnPropertyChanged(string propertyName)
     {
-        return _currentLevel;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public int GetCurrentExp()
-    {
-        return _currentExp;
-    }
-
-    public int GetNextLevelExp()
-    {
-        return _nextLevelExp;
-    }
-
-    public int GetTalentPoints()
-    {
-        return _talentPoints;
-    }
 }

@@ -45,30 +45,3 @@ public class HealthBarViewModel : INotifyPropertyChanged
         }
     }
 }
-
-
-//private int _currentHealth;
-//private int _maxHealth;
-
-//public int CurrentHealth
-//{
-//    get { return _currentHealth; }
-//    set
-//    {
-//        _currentHealth = value;
-//        OnPropertyChanged(nameof(CurrentHealth));
-//    }
-//}
-
-//public int MaxHealth
-//{
-//    get { return _maxHealth; }
-//    set
-//    {
-//        _maxHealth = value;
-//        OnPropertyChanged(nameof(MaxHealth));
-//    }
-//}
-
-//_healthBarModel.OnTakeDamage += (enemy, amount) => OnPropertyChanged(nameof(CurrentHealth));
-//_healthBarModel.OnHeal += (amount) => OnPropertyChanged(nameof(CurrentHealth));
