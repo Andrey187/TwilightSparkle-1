@@ -11,8 +11,9 @@ public class AbilityChanger : AbilityInitialization
         _abilityRunner.CurrentAbility = FireBallAbility;
         _abilityRunner.DoTEffect = FireDoTEffect;
 
-        Debug.Log("FireBall button  " + _fireBallButton);
-        Debug.Log("FrostBall button  " + _frostBallButton);
+        Debug.Log("Switch on FireBall button  " + _fireBallButton);
+        Debug.Log("Switch on FrostBall button  " + _frostBallButton);
+        Debug.Log("Damage on SpaceButton");
     }
 
     protected override void Run()
