@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 
 public class TalentViewModel : INotifyPropertyChanged
@@ -20,6 +19,15 @@ public class TalentViewModel : INotifyPropertyChanged
             }
         }
     }
+    public int CurrentTalentPointsValue
+    {
+        get { return _talentSystem.CurrentTalentPointsValue; }
+        set
+        {
+            _talentSystem.CurrentTalentPointsValue = value;
+            OnPropertyChanged(nameof(CurrentTalentPointsValue));
+        }
+    }
 
     public TalentViewModel(TalentSystem talent)
     {
@@ -27,6 +35,11 @@ public class TalentViewModel : INotifyPropertyChanged
         _talentPointsBinding = TalentPointsBinding.Instance;
         _talentPointsBinding.RegisterTalentViewModel(this);
         _talentSystem.PropertyChanged += HandlePropertyChanged;
+    }
+
+    public void SetMaxTalentPoints(int value)
+    {
+        _talentSystem.MaxTalentPoints = value;
     }
 
     public void OnButtonClick(int buttonValue)
@@ -41,10 +54,15 @@ public class TalentViewModel : INotifyPropertyChanged
 
     private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(_talentSystem.TalentPoints))
+        switch (e.PropertyName)
         {
-            OnPropertyChanged(nameof(TalentPoints));
-            _talentPointsBinding.OnTalentPointsChanged(TalentPoints);
+            case nameof(_talentSystem.TalentPoints):
+                OnPropertyChanged(nameof(TalentPoints));
+                _talentPointsBinding.OnTalentPointsChanged(TalentPoints);
+                break;
+            case nameof(_talentSystem.CurrentTalentPointsValue):
+                OnPropertyChanged(nameof(CurrentTalentPointsValue));
+                break;
         }
     }
 }

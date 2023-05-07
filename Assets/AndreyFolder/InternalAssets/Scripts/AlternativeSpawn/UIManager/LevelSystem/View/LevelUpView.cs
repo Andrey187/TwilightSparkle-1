@@ -25,7 +25,6 @@ public class LevelUpView : MonoBehaviour
         UpdateExpSlider(_viewModel.NextLevelExp);
 
         _viewModel.PropertyChanged += HandlePropertyChanged;
-        Debug.Log("LevelUpView subscribed to TalentPointsChanged event");
     }
 
     private void UpdateExpSlider(int expToNextLevel)
@@ -50,7 +49,6 @@ public class LevelUpView : MonoBehaviour
                 break;
             case nameof(_viewModel.TalentPoints):
                 _talentPointsText.SetText("Talent Points: " + _viewModel.TalentPoints.ToString());
-                Debug.Log("TalentPoints changed to: " + _viewModel.TalentPoints.ToString());
                 break;
         }
     }

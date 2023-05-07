@@ -16,8 +16,6 @@ public abstract class BaseTalentView : MonoBehaviour
     [SerializeField] protected int _buttonTextValue;
     protected TalentViewModel _talentViewModel;
 
-    public bool CanBeUpgraded => _currentTalentPointsValue != _maxTalentsPointCount;
-
     protected virtual void Start()
     {
         var talentSystem = _talentSystem;
@@ -25,20 +23,18 @@ public abstract class BaseTalentView : MonoBehaviour
 
         _button.onClick.AddListener(() => _talentViewModel.OnButtonClick(_buttonTextValue));
         _talentViewModel.PropertyChanged += HandlePropertyChanged;
+        _talentViewModel.SetMaxTalentPoints(_maxTalentsPointCount);
     }
 
     private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(_talentViewModel.TalentPoints))
+        if (e.PropertyName == nameof(_talentViewModel.CurrentTalentPointsValue))
         {
-            if (CanBeUpgraded)
+            _currentTalentPointsValue = _talentViewModel.CurrentTalentPointsValue;
+            _currentTalentPointText.SetText(_talentViewModel.CurrentTalentPointsValue.ToString());
+            if(_currentTalentPointsValue >= _maxTalentsPointCount)
             {
-                if (_currentTalentPointsValue < _maxTalentsPointCount) // check if max talent points has been reached
-                {
-                    _currentTalentPointsValue++;
-                    _currentTalentPointText.SetText(_currentTalentPointsValue.ToString());
-                    Debug.Log(CanBeUpgraded);
-                }
+                _button.enabled = false;
             }
         }
     }

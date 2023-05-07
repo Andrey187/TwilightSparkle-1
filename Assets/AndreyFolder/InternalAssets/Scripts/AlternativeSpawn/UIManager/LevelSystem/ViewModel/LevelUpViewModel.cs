@@ -53,21 +53,4 @@ public class LevelUpViewModel : INotifyPropertyChanged
                 break;
         }
     }
-
 }
-
-//private readonly TalentViewModel _talentViewModel;
-
-//if (e.PropertyName == nameof(_talentViewModel.TalentPoints))
-//{
-//    OnPropertyChanged(nameof(TalentPoints));
-//}
-
-//public LevelUpViewModel(LevelUpSystem levelUpSystem, TalentViewModel talentViewModel)
-//{
-//    _levelUpSystem = levelUpSystem;
-//    _talentViewModel = talentViewModel;
-
-//    _levelUpSystem.PropertyChanged += HandlePropertyChanged;
-//    _talentViewModel.PropertyChanged += HandlePropertyChanged;
-//}

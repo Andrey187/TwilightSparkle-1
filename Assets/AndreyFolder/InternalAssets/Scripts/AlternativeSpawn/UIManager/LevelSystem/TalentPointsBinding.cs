@@ -5,7 +5,6 @@ public class TalentPointsBinding
 
     public static TalentPointsBinding Instance { get; } = new TalentPointsBinding();
 
-
     public void RegisterTalentViewModel(TalentViewModel viewModel)
     {
         _talentViewModel = viewModel;

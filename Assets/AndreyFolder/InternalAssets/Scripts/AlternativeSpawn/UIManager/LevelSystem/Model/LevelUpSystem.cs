@@ -1,18 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
 public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler PropertyChanged;
     [SerializeField] private PlayerStats _playerStats;
     private static LevelUpSystem _instance;
     private Dictionary<EnemyType.ObjectType, EnemyType> _expTable = new Dictionary<EnemyType.ObjectType, EnemyType>();
-    public event Action<int> OnCurrentLevel;
-    public event Action<int> OnCurrentExp;
-    public event Action<int> OnNextLevelExp;
-    public event Action<int> TalentPointsChanged;
-    public event PropertyChangedEventHandler PropertyChanged;
     private int _talentPoints;
 
     public static LevelUpSystem Instance
@@ -38,9 +33,9 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
-    public int CurrentLevel { get { return _playerStats.CurrentLevel; } set { _playerStats.CurrentLevel = value; } }
+    public int CurrentLevel { get => _playerStats.CurrentLevel; set =>_playerStats.CurrentLevel = value; }
 
-    public int CurrentExp { get { return _playerStats.CurrentExp; } set { _playerStats.CurrentExp = value; } }
+    public int CurrentExp { get => _playerStats.CurrentExp; set => _playerStats.CurrentExp = value; }
 
     public int NextLevelExp { get; set; } = 1000;
 
@@ -55,7 +50,6 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
         {
             int gainExp = enemy.GainExp;
             _playerStats.CurrentExp += gainExp;
-            OnCurrentExp?.Invoke(CurrentExp);
             OnPropertyChanged(nameof(CurrentExp));
             CheckLevelUp();
         }
@@ -71,18 +65,10 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
             
             NextLevelExp = GetNextLevelExp(CurrentLevel);
 
-            OnCurrentExp?.Invoke(CurrentExp);
             OnPropertyChanged(nameof(CurrentExp));
-
-            OnCurrentLevel?.Invoke(CurrentLevel);
             OnPropertyChanged(nameof(CurrentLevel));
-
-            OnNextLevelExp?.Invoke(NextLevelExp);
             OnPropertyChanged(nameof(NextLevelExp));
-
-            TalentPointsChanged?.Invoke(TalentPoint);
             OnPropertyChanged(nameof(TalentPoint));
-
         }
     }
 
