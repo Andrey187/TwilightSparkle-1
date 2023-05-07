@@ -14,6 +14,7 @@ public abstract class BaseTalentView : MonoBehaviour
     [SerializeField] protected int _currentTalentPointsValue;
     [SerializeField] protected int _maxTalentsPointCount;
     [SerializeField] protected int _buttonTextValue;
+    [SerializeField] protected TalentStatType _statType;
     protected TalentViewModel _talentViewModel;
 
     protected virtual void Start()
@@ -21,7 +22,7 @@ public abstract class BaseTalentView : MonoBehaviour
         var talentSystem = _talentSystem;
         _talentViewModel = new TalentViewModel(talentSystem);
 
-        _button.onClick.AddListener(() => _talentViewModel.OnButtonClick(_buttonTextValue));
+        _button.onClick.AddListener(() => _talentViewModel.OnButtonClick(_statType,_buttonTextValue));
         _talentViewModel.PropertyChanged += HandlePropertyChanged;
         _talentViewModel.SetMaxTalentPoints(_maxTalentsPointCount);
     }

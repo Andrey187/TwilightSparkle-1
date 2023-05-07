@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int _talentPoints = 0;
     [SerializeField] private int _currentLevel = 1;
     [SerializeField] private int _currentExp = 0;
+    [SerializeField] private int _speed = 0;
 
     private void Start()
     {
@@ -18,14 +19,16 @@ public class PlayerStats : MonoBehaviour
         _currentHealth = _maxHealth;
     }
 
-    public int CurrentHealth { get { return _currentHealth; } set { _currentHealth = value; } }
+    public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; } 
 
-    public int MaxHealth { get { return _maxHealth; }  set { _maxHealth = value; }}
+    public int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
-    public int TalentPoints { get { return _talentPoints; }set { _talentPoints = value; } }
+    public int TalentPoints { get => _talentPoints; set => _talentPoints = value; }
 
-    public int CurrentLevel { get { return _currentLevel; } set { _currentLevel = value; } }
+    public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
 
-    public int CurrentExp { get { return _currentExp; } set { _currentExp = value; } }
+    public int CurrentExp { get => _currentExp; set => _currentExp = value; }
+
+    public int Speed { get => _speed; set => _speed = value; }
 
 }

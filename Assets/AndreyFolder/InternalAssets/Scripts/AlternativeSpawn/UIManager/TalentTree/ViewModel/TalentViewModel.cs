@@ -42,9 +42,9 @@ public class TalentViewModel : INotifyPropertyChanged
         _talentSystem.MaxTalentPoints = value;
     }
 
-    public void OnButtonClick(int buttonValue)
+    public void OnButtonClick(TalentStatType statType,int buttonValue)
     {
-        _talentSystem.Upgrade(buttonValue,_pointsInvested);
+        _talentSystem.Upgrade(statType,buttonValue, _pointsInvested);
     }
 
     protected void OnPropertyChanged(string propertyName)

@@ -8,5 +8,4 @@ public class HpTalentView : BaseTalentView
         _buttonText.text = "+ " + _buttonTextValue.ToString(); 
         _maxTalentPointsText.text = _maxTalentsPointCount.ToString();
     }
-
 }

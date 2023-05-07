@@ -1,15 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 
 public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
 {
-    [SerializeField] private PlayerStats _playerStats;
     public event PropertyChangedEventHandler PropertyChanged;
-    public int MaxHealth  { get { return _playerStats.MaxHealth; } set { _playerStats.MaxHealth = value; } }
-    public int TalentPoints { get { return _playerStats.TalentPoints; } set { _playerStats.TalentPoints = value; } }
-
+    [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private List<TalentSO> _talents;
     private int _maxTalentPoints;
+    private int _currentTalentPointsValue;
+    public int TalentPoints { get => _playerStats.TalentPoints; set => _playerStats.TalentPoints = value; }
     public int MaxTalentPoints
     {
         get => _maxTalentPoints;
@@ -19,7 +21,6 @@ public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
-    private int _currentTalentPointsValue;
     public int CurrentTalentPointsValue
     {
         get => _currentTalentPointsValue;
@@ -29,11 +30,16 @@ public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
-    public void Upgrade(int buttonValue, int pointsInvested)
+    public void Upgrade(TalentStatType talentStatType,int buttonValue, int pointsInvested)
     {
         if (TalentPoints != 0 && CurrentTalentPointsValue != MaxTalentPoints)
         {
-            MaxHealth += buttonValue;
+            var matchingTalents = _talents.Where(t => t.StatType == talentStatType);
+
+            foreach (var talent in matchingTalents)
+            {
+                talent.UpdateTalent(_playerStats, buttonValue);
+            }
             TalentPoints -= pointsInvested;
             _currentTalentPointsValue++;
             OnPropertyChanged(nameof(TalentPoints));

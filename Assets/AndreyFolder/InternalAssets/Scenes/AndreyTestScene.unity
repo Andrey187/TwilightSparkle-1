@@ -714,6 +714,7 @@ MonoBehaviour:
   _currentTalentPointsValue: 0
   _maxTalentsPointCount: 10
   _buttonTextValue: 25
+  _statType: 0
 --- !u!1 &594833440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2527,6 +2528,7 @@ MonoBehaviour:
   _talentPoints: 15
   _currentLevel: 1
   _currentExp: 0
+  _speed: 0
 --- !u!114 &1513935105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2540,6 +2542,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStats: {fileID: 1513935104}
+  _talents:
+  - {fileID: 11400000, guid: 030e923729669664ab4099318a4eb827, type: 2}
+  - {fileID: 11400000, guid: 9d97f0e1e1be508409100f169fece93b, type: 2}
 --- !u!1 &1530239829
 GameObject:
   m_ObjectHideFlags: 0
