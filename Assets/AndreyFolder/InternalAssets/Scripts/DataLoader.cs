@@ -50,7 +50,6 @@ public class DataLoader : MonoCache
     {
         if (abilityDataDictionary.TryGetValue(abilityName, out AbilityData abilityData))
         {
-            Debug.Log(abilityData);
             return abilityData;
         }
         else
@@ -64,7 +63,6 @@ public class DataLoader : MonoCache
     {
         if (_dotDataBaseDictionary.TryGetValue(dotName, out DoTData dotData))
         {
-            Debug.Log(dotData);
             return dotData;
         }
         else

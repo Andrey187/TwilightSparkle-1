@@ -7,43 +7,39 @@ using UnityEngine;
 public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
+    public event Action<TalentStatType, int> OnCurrentTalentPoint;
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private List<TalentSO> _talents;
-    private int _maxTalentPoints;
-    private int _currentTalentPointsValue;
+    private Dictionary<TalentStatType, int> _maxTalentPoints = new Dictionary<TalentStatType, int>();
+    private Dictionary<TalentStatType, int> _currentTalentPointsValue = new Dictionary<TalentStatType, int>();
     public int TalentPoints { get => _playerStats.TalentPoints; set => _playerStats.TalentPoints = value; }
-    public int MaxTalentPoints
+    public Dictionary<TalentStatType, int> MaxTalentPoints
     {
-        get => _maxTalentPoints;
-        set
-        {
-            _maxTalentPoints = value;
-        }
+        get { return _maxTalentPoints; }
+        set { _maxTalentPoints = value; }
     }
 
-    public int CurrentTalentPointsValue
+    public Dictionary<TalentStatType, int> CurrentTalentPointsValue
     {
-        get => _currentTalentPointsValue;
-        set
-        {
-            _currentTalentPointsValue = value;
-        }
+        get { return _currentTalentPointsValue; }
+        set { _currentTalentPointsValue = value; }
     }
 
     public void Upgrade(TalentStatType talentStatType,int buttonValue, int pointsInvested)
     {
-        if (TalentPoints != 0 && CurrentTalentPointsValue != MaxTalentPoints)
+        if (TalentPoints != 0 && _currentTalentPointsValue[talentStatType] != _maxTalentPoints[talentStatType])
         {
             var matchingTalents = _talents.Where(t => t.StatType == talentStatType);
 
             foreach (var talent in matchingTalents)
             {
                 talent.UpdateTalent(_playerStats, buttonValue);
+                TalentPoints -= pointsInvested;
+                talent.CurrentTalentPoint++;
+                OnCurrentTalentPoint?.Invoke(talentStatType,talent.CurrentTalentPoint);
+                _currentTalentPointsValue[talentStatType]++;
             }
-            TalentPoints -= pointsInvested;
-            _currentTalentPointsValue++;
             OnPropertyChanged(nameof(TalentPoints));
-            OnPropertyChanged(nameof(CurrentTalentPointsValue));
         }
     }
 
