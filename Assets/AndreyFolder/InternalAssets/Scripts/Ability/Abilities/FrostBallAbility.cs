@@ -1,20 +1,34 @@
+using System;
 using UnityEngine;
 
-public class FrostBallAbility : IAbility
+public class FrostBallAbility : BaseAbilities
 {
-    private readonly AbilityData _abilityData;
+    private FrostBall _frostBall;
+    private event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
+    protected internal override event Action<BaseAbilities> SetDie;
 
-    public FrostBallAbility()
+    private void Awake()
     {
-        _abilityData = DataLoader.Instance.GetAbilityData("FrostBall");
+        _thisRb = Get<Rigidbody>();
+        SetLifeTime();
     }
-    public int Damage { get => _abilityData.Damage;}
-    public bool HasDoT { get => _abilityData.HasDoT;}
-    public Color Color { get => _abilityData.Color;}
 
-    public int ApplyDamage(int currentHealth, int amount)
+    private void Start()
     {
-        currentHealth -= amount;
-        return currentHealth;
+        _frostBall = new FrostBall();
+        _setDamage = EventManager.Instance.AbillityDamage;
+        _frostBall.CurrentAbility = _frostBall;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the object that collided with the fireball is an enemy
+        BaseEnemy enemy = other.GetComponent<BaseEnemy>();
+        if (enemy != null)
+        {
+            // If so, damage the enemy and destroy the fireball
+            _setDamage?.Invoke(enemy, _frostBall.Damage, _frostBall.CurrentAbility, _frostBall.DoTEffect);
+            SetDie?.Invoke(this);
+        }
     }
 }

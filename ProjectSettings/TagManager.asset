@@ -9,6 +9,8 @@ TagManager:
   - Test
   - OuterWall
   - InnerWall
+  - FireBall
+  - FrostBall
   layers:
   - Default
   - TransparentFX

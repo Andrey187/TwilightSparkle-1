@@ -6,25 +6,38 @@ namespace DamageNumber
     {
         [SerializeField] private float _lifeTime = 2f;
 
-        [SerializeField] private Vector3 _direction;
+        [SerializeField] private float _speed = 1.0f;
+        [SerializeField] private float _offsetXRange = 1.0f;
+        [SerializeField] private float _offsetZRange = 1.0f;
+        private float _offsetX;
+        private float _offsetZ;
+        private Animator _animator;
 
         public float LifeTime { get => _lifeTime; set => _lifeTime = value; }
-        public Vector3 Direction { get => _direction; set => _direction = value; }
 
-        public void SetNumberDirection() 
+        private void Start()
         {
-            _direction += new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+            _animator = GetComponent<Animator>();
         }
 
-        public void NumberReset() 
+        protected override void OnEnabled()
         {
             _lifeTime = 2f;
-            _direction = Vector3.up;
+            _offsetX = Random.Range(-_offsetXRange, _offsetXRange);
+            _offsetZ = Random.Range(-_offsetZRange, _offsetZRange);
         }
 
-        protected override void FixedRun()
+        protected override void Run()
         {
-            transform.position += _direction * Time.fixedDeltaTime + Vector3.up * Time.fixedDeltaTime;
+            // Calculate the current position based on the speed and time
+            float moveSpeed = _speed * _animator.speed;
+            Vector3 currentPosition = transform.position;
+            currentPosition.y += moveSpeed * Time.deltaTime;
+            currentPosition.x += moveSpeed * Time.deltaTime + _offsetX * Time.deltaTime;
+            currentPosition.z += moveSpeed * Time.deltaTime + _offsetZ * Time.deltaTime;
+
+            // Assign the updated position to the transform of the text object
+            transform.position = currentPosition;
         }
     }
 }

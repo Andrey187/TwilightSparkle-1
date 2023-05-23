@@ -12,7 +12,7 @@ public class PoolObject<T> where T : Component
     private Queue<T> _objectPool;
     private Dictionary<T, int> _objectWaves = new Dictionary<T, int>();
 
-    public static GameObject _poolContainerPrefab { get; set; }
+    private static GameObject _poolContainerPrefab;
     private static GameObject _poolContainerInstance;
 
     public PoolObject(T[] objectPrefab, int poolLimit, Transform parentObject, string containerName)
@@ -89,7 +89,8 @@ public class PoolObject<T> where T : Component
                 // try to get an inactive object from the pool
                 foreach (T item in _objectPool)
                 {
-                    if (!item.gameObject.activeSelf && item.gameObject.CompareTag(prefab.gameObject.tag) && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
+                    //if (!item.gameObject.activeSelf && item.gameObject.CompareTag(prefab.gameObject.tag) && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
+                    if (!item.gameObject.activeSelf && item.GetType() == prefab.GetType() && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
                     {
                         result = item;
                         break;

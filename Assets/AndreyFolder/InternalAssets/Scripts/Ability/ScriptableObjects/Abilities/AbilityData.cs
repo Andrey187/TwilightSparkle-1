@@ -7,4 +7,5 @@ public class AbilityData : ScriptableObject
     public int Damage;
     public Color Color;
     public bool HasDoT;
+
 }

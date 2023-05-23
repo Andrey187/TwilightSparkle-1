@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 using System.Collections.Generic;
 
 namespace DamageNumber
@@ -28,5 +27,9 @@ namespace DamageNumber
             return ((IAbility)ability).Color;
         }
 
+        protected internal override void Initialize(int damageAmount, Transform target, object ability)
+        {
+            base.Initialize(damageAmount, target, ability);
+        }
     }
 }

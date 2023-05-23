@@ -5,12 +5,12 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     private static EventManager _instance;
-    private Action<GameObject> _onObjectSetActive;
-    private Action<GameObject> _wallsSpawnedEvent;
+    private Action<GameObject> _onObjectSetActive;//For check object active or enable
+    private Action<GameObject> _wallsSpawnedEvent;//For Wall Spawn
 
-    private Action<int, IAbility, IDoTEffect> _takeAbilityDamage;//For test AbilityRunner
+    private Action<BaseEnemy,int, IAbility, IDoTEffect> _takeAbilityDamage;//For TakeDamage
 
-    public List<GameObject> _subscribedObjects = new List<GameObject>();
+    public List<GameObject> _subscribedObjects = new List<GameObject>();//For Wall Spawn
 
     [RuntimeInitializeOnLoadMethod]
     static void Initialize()
@@ -54,7 +54,7 @@ public class EventManager : MonoBehaviour
         remove { _wallsSpawnedEvent -= value; }
     }
 
-    public event Action<int, IAbility, IDoTEffect> TakeAbilityDamage //For test AbilityRunner
+    public event Action<BaseEnemy,int, IAbility, IDoTEffect> TakeAbilityDamage
     {
         add { _takeAbilityDamage += value; }
         remove { _takeAbilityDamage -= value; }
@@ -78,9 +78,8 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    //For test AbilityRunner
-    public void AbillityDamage(int amount , IAbility ability, IDoTEffect doTEffect)
+    public void AbillityDamage(BaseEnemy enemy,int amount , IAbility ability, IDoTEffect doTEffect)
     {
-        _takeAbilityDamage?.Invoke(amount, ability, doTEffect);
+        _takeAbilityDamage?.Invoke(enemy,amount, ability, doTEffect);
     }
 }

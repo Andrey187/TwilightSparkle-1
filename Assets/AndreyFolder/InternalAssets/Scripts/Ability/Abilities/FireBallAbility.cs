@@ -1,21 +1,36 @@
+using System;
 using UnityEngine;
 
-public class FireBallAbility: IAbility
+public class FireBallAbility: BaseAbilities
 {
-    private  AbilityData _abilityData;
+    private FireBall _fireBall;
+    private FireDoTEffect _fireDotEffect;
+    private event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
+    protected internal override event Action<BaseAbilities> SetDie;
 
-    public FireBallAbility()
+    private void Awake()
     {
-        _abilityData = DataLoader.Instance.GetAbilityData("FireBall");
+        _thisRb = Get<Rigidbody>();
     }
 
-    public int Damage { get => _abilityData.Damage; }
-    public bool HasDoT { get => _abilityData.HasDoT; }
-    public Color Color { get => _abilityData.Color;}
-
-    public int ApplyDamage(int currentHealth, int amount)
+    private void Start()
     {
-        currentHealth -= amount;
-        return currentHealth;
+        _fireBall = new FireBall();
+        _fireDotEffect = new FireDoTEffect();
+        _setDamage = EventManager.Instance.AbillityDamage;
+        _fireBall.CurrentAbility = _fireBall;
+        _fireBall.DoTEffect = _fireDotEffect;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the object that collided with the fireball is an enemy
+        BaseEnemy enemy = other.GetComponent<BaseEnemy>();
+        if (enemy != null)
+        {
+            // If so, damage the enemy and destroy the fireball
+            _setDamage?.Invoke(enemy,_fireBall.Damage, _fireBall.CurrentAbility, _fireBall.DoTEffect);
+            SetDie?.Invoke(this);
+        }
     }
 }

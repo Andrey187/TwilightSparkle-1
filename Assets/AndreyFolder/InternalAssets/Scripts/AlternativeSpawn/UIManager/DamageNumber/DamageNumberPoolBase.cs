@@ -8,24 +8,23 @@ namespace DamageNumber
 {
     public abstract class DamageNumberPoolBase<T, U> : MonoCache where T : Component, IDamageNumber where U : IList<T>, new()
     {
-        [SerializeField] public Transform CanvasTransform;
-        [SerializeField] public TextMeshPro TextMeshPrefab;
-        [SerializeField] private string _containerName;
-        protected Dictionary<object, U> _damageNumbers;
+        [SerializeField] protected Transform CanvasTransform;
+        [SerializeField] protected TextMeshPro TextMeshPrefab;
+        [SerializeField] protected string _containerName;
+
+        protected Dictionary<object, U> _damageNumbersDictionary;
         protected int _poolObjectCount = 1;
-        protected List<T> _damageNumberList;
         protected PoolObject<T> _textPool;
         protected TextMeshPro _textPrefab;
-        protected T _damageNumber;
         protected IObjectFactory objectFactory;
+        
 
         protected virtual void Start()
         {
             _textPrefab = TextMeshPrefab.GetComponent<TextMeshPro>();
-            _damageNumber = TextMeshPrefab.GetComponent<T>();
             objectFactory = new ObjectsFactory(_textPrefab.transform);
 
-            _damageNumbers = new Dictionary<object, U>();
+            _damageNumbersDictionary = new Dictionary<object, U>();
 
             InitPool();
         }
@@ -40,29 +39,32 @@ namespace DamageNumber
 
         protected abstract Color Color(object ability);
 
-        public void Initialize(int damageAmount, Transform target, object ability)
+        protected internal virtual void Initialize(int damageAmount, Transform target, object ability)
         {
             TextMeshPro text = GetTextForAbility(target, ability);
             text.SetText(damageAmount.ToString());
 
-            if (damageAmount != 0)
+            T damageNumberType = text.GetComponent<T>();
+
+            if(damageNumberType != null)
             {
-                text.color = Color(ability);
-                _damageNumber.NumberReset();
-                _damageNumber.Direction = (target.position - target.position).normalized;
-                _damageNumber.SetNumberDirection();
+                if (damageAmount != 0)
+                {
+                    text.color = Color(ability);
+                }
+
+                StartCoroutine(Duration(text, damageNumberType));
             }
             else
             {
-                _damageNumber.NumberReset();
+                Debug.LogError($"{damageNumberType} : component not found on the TextMeshPro prefab.");
             }
-            _damageNumber.Direction.Normalize();
-            StartCoroutine(Duration(text));
+            
         }
 
         protected TextMeshPro GetTextForAbility(Transform target, object ability)
         {
-            if (!_damageNumbers.TryGetValue(ability, out U _damageNumberList))
+            if (!_damageNumbersDictionary.TryGetValue(ability, out U _damageNumberList))
             {
                 _damageNumberList = new U();
                 for (int i = 0; i < _poolObjectCount; i++)
@@ -70,19 +72,37 @@ namespace DamageNumber
                     T textPro = objectFactory.CreateObject(Vector3.zero).GetComponent<T>();
                     _damageNumberList.Add(textPro);
                 }
-                _damageNumbers.Add(ability, _damageNumberList);
+                _damageNumbersDictionary.Add(ability, _damageNumberList);
             }
-
-            TextMeshPro text = _textPool.GetObjects(target.position, _damageNumberList.ToArray()).GetComponent<TextMeshPro>();
-
-            return text;
+            return GetCachedComponent<TextMeshPro>(_textPool.GetObjects(target.position, _damageNumberList.ToArray()));
         }
 
-        protected IEnumerator Duration(TextMeshPro text)
+        protected IEnumerator Duration(TextMeshPro text, T prefab)
         {
-            yield return new WaitForSeconds(_damageNumber.LifeTime);
-            _textPool.ReturnObject(text.GetComponent<T>());
-            _damageNumber.NumberReset();
+            yield return new WaitForSeconds(prefab.LifeTime);
+            _textPool.ReturnObject(GetCachedComponent<T>(text));
+        }
+
+        protected TComponent GetCachedComponent<TComponent>(Component component) where TComponent : Component
+        {
+            if (component == null)
+            {
+                Debug.LogError("Component is null.");
+                return null;
+            }
+
+            TComponent cachedComponent = component as TComponent;
+            if (cachedComponent == null)
+            {
+                cachedComponent = component.GetComponent<TComponent>();
+            }
+
+            if (cachedComponent == null)
+            {
+                Debug.LogError($"Component of type {typeof(TComponent)} not found on the object: {component.name}");
+            }
+
+            return cachedComponent;
         }
     }
 }

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e25f339ae29bbe54a961377169f5ce30, type: 3}
-  m_Name: FrostBall
+  m_Script: {fileID: 11500000, guid: c99ca08734ecb0d4b9f71af97ee50f48, type: 3}
+  m_Name: FireDoT_SO
   m_EditorClassIdentifier: 
-  AbilityName: FrostBall
-  Damage: 20
-  Color: {r: 0, g: 0.7490196, b: 1, a: 1}
-  HasDoT: 0
+  DoTName: FireDoT
+  Duration: 4
+  TickInterval: 1
+  DoTColor: {r: 0.43529412, g: 0, b: 0.310978, a: 1}

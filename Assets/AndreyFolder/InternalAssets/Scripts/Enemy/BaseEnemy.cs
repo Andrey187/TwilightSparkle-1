@@ -15,7 +15,7 @@ public abstract class BaseEnemy : MonoCache
     protected MeshRenderer _meshRenderer;
     protected NavMeshAgent _navMeshAgent;
 
-    private protected void Awake()
+    protected void Awake()
     {
         _healthBarModel = Get<HealthBarModel>();
         _meshFilter = Get<MeshFilter>();
@@ -23,7 +23,6 @@ public abstract class BaseEnemy : MonoCache
         _navMeshAgent = Get<NavMeshAgent>();
         _meshFilter.mesh = _enemyType.Mesh;
         _meshRenderer.material = _enemyType.Material;
-        EventManager.Instance.TakeAbilityDamage += TakeDamage;
         NavMeshParams();
         ColliderSelection();
     }
@@ -37,39 +36,47 @@ public abstract class BaseEnemy : MonoCache
         }
     }
 
-    public void OnCreate(Vector3 position, Quaternion rotation)
+    protected override void OnDisabled()
+    {
+       
+    }
+
+    protected internal void OnCreate(Vector3 position, Quaternion rotation)
     {
         transform.position = position;
         transform.rotation = rotation;
     }
 
-    public void TakeDamage(int damageAmount, IAbility ability, IDoTEffect doTEffect)
+    protected virtual void TakeDamage(BaseEnemy enemy,int damageAmount, IAbility ability, IDoTEffect doTEffect)
     {
         if (!gameObject.activeSelf)
         {
             return; // don't apply damage or show damage numbers if the game object is not active
         }
 
-        _currentHealth = ability.ApplyDamage(_currentHealth, damageAmount);
-        _healthBarModel.CurrentHealth = _currentHealth;
-        DamageNumberPool.Instance.Initialize(damageAmount, gameObject.transform, ability);
-
-        if (gameObject != null && damageAmount > 0 && _currentHealth > 0)
+        if (enemy == this)
         {
-            if (ability.HasDoT)
+            _currentHealth = ability.ApplyDamage(_currentHealth, damageAmount);
+            _healthBarModel.CurrentHealth = _currentHealth;
+            if (enemy != null && damageAmount > 0 && _healthBarModel.CurrentHealth > 0)
             {
-                StartCoroutine(PeriodicDamageCoroutine(
-                    doTEffect,
-                    gameObject.transform,
-                    doTEffect.Duration,
-                    doTEffect.TickInterval,
-                    damageAmount));
-            }
-        }
+                DamageNumberPool.Instance.Initialize(damageAmount, enemy.transform, ability);
 
-        if (_currentHealth <= 0)
-        {
-            Die();
+                if (ability.HasDoT)
+                {
+                    StartCoroutine(PeriodicDamageCoroutine(
+                        doTEffect,
+                        enemy.transform,
+                        doTEffect.Duration,
+                        doTEffect.TickInterval,
+                        damageAmount));
+                }
+            }
+
+            if (_currentHealth <= 0)
+            {
+                Die();
+            }
         }
     }
 

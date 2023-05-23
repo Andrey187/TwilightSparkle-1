@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99ca08734ecb0d4b9f71af97ee50f48, type: 3}
-  m_Name: FireDoT
+  m_Script: {fileID: 11500000, guid: e25f339ae29bbe54a961377169f5ce30, type: 3}
+  m_Name: FireBall_SO
   m_EditorClassIdentifier: 
-  DoTName: FireDoT
-  Duration: 4
-  TickInterval: 1
-  DoTColor: {r: 0.43529412, g: 0, b: 0.310978, a: 1}
+  AbilityName: FireBall
+  Damage: 10
+  Color: {r: 0, g: 1, b: 0.097765446, a: 1}
+  HasDoT: 1
