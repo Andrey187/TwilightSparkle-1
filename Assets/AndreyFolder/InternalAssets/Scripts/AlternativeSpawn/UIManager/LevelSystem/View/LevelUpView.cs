@@ -29,8 +29,9 @@ public class LevelUpView : MonoBehaviour
 
     private void UpdateExpSlider(int expToNextLevel)
     {
+        int expFromPreviousLevel = _viewModel.NextLevelExp - expToNextLevel;
         _expSlider.maxValue = expToNextLevel;
-        _expSlider.value = _viewModel.CurrentExp;
+        _expSlider.value = _viewModel.CurrentExp - expFromPreviousLevel;
     }
 
     private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)

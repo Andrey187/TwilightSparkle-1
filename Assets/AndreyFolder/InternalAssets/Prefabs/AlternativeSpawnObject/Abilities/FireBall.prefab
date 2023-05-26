@@ -131,6 +131,5 @@ MonoBehaviour:
   _endPoint: {fileID: 0}
   _speed: 5
   _fireInterval: 1
-  _baseLifeTime: 9
-  _lifeTime: 4
-  _interval: -2
+  _baseLifeTime: 3
+  _lifeTime: 2

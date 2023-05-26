@@ -15,4 +15,4 @@ MonoBehaviour:
   DoTName: FireDoT
   Duration: 4
   TickInterval: 1
-  DoTColor: {r: 0.43529412, g: 0, b: 0.310978, a: 1}
+  DoTColor: {r: 1, g: 0.31209642, b: 0, a: 1}

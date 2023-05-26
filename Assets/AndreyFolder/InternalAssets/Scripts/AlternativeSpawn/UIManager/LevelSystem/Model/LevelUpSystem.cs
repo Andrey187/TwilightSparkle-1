@@ -57,7 +57,7 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 
     private void CheckLevelUp()
     {
-        if (_playerStats.CurrentExp >= NextLevelExp)
+        while (_playerStats.CurrentExp >= NextLevelExp)
         {
             _playerStats.CurrentLevel++;
             _playerStats.TalentPoints++;
