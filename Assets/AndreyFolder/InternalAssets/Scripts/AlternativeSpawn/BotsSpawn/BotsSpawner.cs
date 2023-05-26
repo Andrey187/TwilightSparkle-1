@@ -66,9 +66,7 @@ public class BotsSpawner : MonoCache
     public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
     {
         yield return new WaitForSeconds(0.1f);
-        _spawnAreaCalculation.NewUnitCircle();
-        _spawnAreaCalculation.SpawnOnCircleOutsideTheCameraField();
-        _spawnAreaCalculation.GroundCheck();
+        
 
         yield return new WaitForSeconds(0.2f);
 
@@ -79,10 +77,16 @@ public class BotsSpawner : MonoCache
             BotWaveReference[] botPrefabs = botsForWave.ToArray();
             for (int j = 0; j < botPrefabs.Length; j++)
             {
+
                 BotWaveReference botPrefab = botPrefabs[j];
 
                 // Check if there are any inactive bot objects in the pool that match the current wave and prefab
                 BotWaveReference inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab, botPrefab.WaveIndex);
+
+                _spawnAreaCalculation.NewUnitCircle();
+                _spawnAreaCalculation.SpawnOnCircleOutsideTheCameraField();
+                _spawnAreaCalculation.GroundCheck();
+
                 if (_spawnAreaCalculation.ColliderCheck(inactiveBot.gameObject))
                 {
                     Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;

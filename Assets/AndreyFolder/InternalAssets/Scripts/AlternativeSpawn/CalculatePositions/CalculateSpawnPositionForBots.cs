@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,8 +7,32 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
     [SerializeField] private float _spawnRadius = 1.5f;
     [SerializeField] private float _colliderHitRadius = 0.3f;
     [SerializeField] private float _groupSpawn—ircleRadius = 20f;
+    [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+
     private bool isGround = false;
     private RaycastHit hit;
+
+    private void Start()
+    {
+        FindCameraBoundries();
+    }
+
+    private void FindCameraBoundries()
+    {
+        CameraState state = _virtualCamera.State;
+
+        // Calculate the camera's display size based on the orthographic size and aspect ratio
+        float orthographicSize = state.Lens.OrthographicSize;
+        float aspectRatio = state.Lens.Aspect;
+        _cameraHeight = 2f * orthographicSize;
+        _cameraWidth = _cameraHeight * aspectRatio;
+
+
+        float sqrX = _cameraWidth * _cameraWidth;
+        float sqrZ = _cameraHeight * _cameraHeight;
+        float distance = Mathf.Sqrt(sqrX + sqrZ);
+        _circleOutsideTheCameraField = distance / 2f;
+    }
 
     public Vector2 NewUnitCircle()
     {
@@ -25,13 +50,14 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
             _player.transform.position.z + _spawnCircleRadius.y);
     }
 
-    public void SpawnGroupInFieldOnCircle()
-    {
-        Vector2 randomInsideUnitCircle2D = Random.insideUnitCircle;
-        _botsSpawnField = _botsSpawnInRandomPointOnCircle + _ground.transform.position +
-            new Vector3(randomInsideUnitCircle2D.x, 0f, randomInsideUnitCircle2D.y)
-            * _groupSpawn—ircleRadius;
-    }
+    //Method for spawn in radius on circle
+    //public void SpawnGroupInFieldOnCircle()
+    //{
+    //    Vector2 randomInsideUnitCircle2D = Random.insideUnitCircle;
+    //    _botsSpawnField = _botsSpawnInRandomPointOnCircle + _ground.transform.position +
+    //        new Vector3(randomInsideUnitCircle2D.x, 0f, randomInsideUnitCircle2D.y)
+    //        * _groupSpawn—ircleRadius;
+    //}
 
     public void GroundCheck()
     {
@@ -56,18 +82,17 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
 
     public bool ColliderCheck(GameObject bots)
     {
-        SpawnGroupInFieldOnCircle();
         NavMeshAgent agent = bots.GetComponent<NavMeshAgent>();
         BaseEnemy objLifeTime = bots.GetComponent<BaseEnemy>();
 
-        if (Physics.CheckSphere(_botsSpawnField, _colliderHitRadius))
+        if (Physics.CheckSphere(_botsSpawnInRandomPointOnCircle, _colliderHitRadius))
         {
             if (bots != null)
             {
                 if (isGround)
                 {
-                    objLifeTime?.OnCreate(_botsSpawnField, Quaternion.identity);
-                    agent.Warp(_botsSpawnField);
+                    objLifeTime?.OnCreate(_botsSpawnInRandomPointOnCircle, Quaternion.identity);
+                    agent.Warp(_botsSpawnInRandomPointOnCircle);
                 }
             }
             else

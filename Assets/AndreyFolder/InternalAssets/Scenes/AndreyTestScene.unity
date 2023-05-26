@@ -1930,10 +1930,10 @@ MonoBehaviour:
   Waves:
   - Name: BlueCube
     Bot: {fileID: 8234744067425265355, guid: 7f15a5884fa1a3d45b3d963162b43507, type: 3}
-    SpawnLimit: 5
+    SpawnLimit: 30
   - Name: RedCube
     Bot: {fileID: 2310039377504664988, guid: 13192c25926c7b4479022e2d6997a708, type: 3}
-    SpawnLimit: 5
+    SpawnLimit: 30
   TimeBtwWaves: 2
   WaveCountdown: 0
 --- !u!114 &852128250
@@ -3504,7 +3504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5155209, y: 0.026666665}
   m_AnchorMax: {x: 0.6334792, y: 0.075833336}
-  m_AnchoredPosition: {x: -11.5, y: -1.9925842}
+  m_AnchoredPosition: {x: -11.5, y: -1.9928589}
   m_SizeDelta: {x: -27, y: -9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1507108947
@@ -3814,7 +3814,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.384, y: 0.026666665}
   m_AnchorMax: {x: 0.48800004, y: 0.07333334}
-  m_AnchoredPosition: {x: 0, y: -0.49902344}
+  m_AnchoredPosition: {x: 0, y: -0.4991455}
   m_SizeDelta: {x: -1, y: -6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1547211619
@@ -4779,9 +4779,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 200283894806ff54cb47cfbf709e5ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnRadius: 0.2
+  _spawnRadius: 1
   _colliderHitRadius: 0.5
-  "_groupSpawn\u0421ircleRadius": 30
+  "_groupSpawn\u0421ircleRadius": 0
+  _virtualCamera: {fileID: 2094273396}
 --- !u!1 &1815852066
 GameObject:
   m_ObjectHideFlags: 0
@@ -5298,7 +5299,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.9997253, y: 0}
+  m_AnchoredPosition: {x: -4.999756, y: 0}
   m_SizeDelta: {x: -20, y: -36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2061837927
@@ -5558,7 +5559,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.23700002, y: 0.011666668}
   m_AnchorMax: {x: 0.75943756, y: 0.08800001}
-  m_AnchoredPosition: {x: 3, y: 0.28125}
+  m_AnchoredPosition: {x: 3, y: 0.28112793}
   m_SizeDelta: {x: -6, y: -2.0428}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2093903591

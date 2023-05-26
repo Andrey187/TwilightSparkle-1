@@ -14,7 +14,6 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     protected float _groundWidth, _groundHeight, _groundXSize, _groundYSize, _spawnAreaWidth, _spawnAreaHeight;
 
     //For Bots
-    protected Camera _cam;
     protected Transform _player;
     protected PositionWritter _positionWritter;
     protected float _cameraWidth;
@@ -34,14 +33,12 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     {
         _ground = GameObject.FindGameObjectWithTag("Plane");
         _positionWritter = Find<PositionWritter>();
-        _cam = Camera.main;
         _player = _positionWritter.transform;
     }
 
     void Start()
     {
         ParamsForInnerWalls();
-        ParamsForBots();
     }
 
     public void ParamsForWall(Transform _listWall)
@@ -77,21 +74,5 @@ public class ParamsForCalculateSpawnPositions : MonoCache
         
         _spawnAreaWidth = _groundWidth * 0.7f; // Calculate the width of the area to spawn objects in (30% less than the width of the plane)
         _spawnAreaHeight = _groundHeight * 0.7f; // Calculate the height of the area to spawn objects in (30% less than the height of the plane)
-    }
-
-    private void ParamsForBots()
-    {
-        FindCameraBoundries();
-    }
-
-    public void FindCameraBoundries()
-    {
-        _cameraWidth = 1 / (_cam.WorldToViewportPoint(new Vector3(1, 0, 1)).x - .5f);
-        _cameraHeight = 1 / (_cam.WorldToViewportPoint(new Vector3(1, 0, 1)).y - .5f);
-
-        float sqrX = _cameraWidth * _cameraWidth;
-        float sqrZ = _cameraHeight * _cameraHeight;
-        float distance = Mathf.Sqrt(sqrX + sqrZ);
-        _circleOutsideTheCameraField = distance / 2;
     }
 }
