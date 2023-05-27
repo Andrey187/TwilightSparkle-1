@@ -15,5 +15,6 @@ MonoBehaviour:
   Name: HpTalent
   Description: Increase player max hp
   Cost: 1
-  CurrentTalentPoint: 6
+  CurrentTalentPoint: 0
   StatType: 0
+  StartingTalentPoint: 0

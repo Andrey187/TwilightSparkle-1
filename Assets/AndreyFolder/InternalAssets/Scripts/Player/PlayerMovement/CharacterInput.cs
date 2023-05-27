@@ -19,14 +19,15 @@ public class CharacterInput : MonoCache
         float vertical = Input.GetAxis("Vertical");
         characterMovement.HandleInput(horizontal, vertical);
 
-        float horizontalMovement = _fixedJoystickMovement.Horizontal;
-        float verticalMovement = _fixedJoystickMovement.Vertical;
-        characterMovement.HandleInput(horizontalMovement, verticalMovement);
+        if(_fixedJoystickMovement.isActiveAndEnabled && _fixedJoystickAim.isActiveAndEnabled)
+        {
+            float horizontalMovement = _fixedJoystickMovement.Horizontal;
+            float verticalMovement = _fixedJoystickMovement.Vertical;
+            characterMovement.HandleInput(horizontalMovement, verticalMovement);
 
-        float horizontalAim = _fixedJoystickAim.Horizontal;
-        float verticalAim = _fixedJoystickAim.Vertical;
-        characterMovement.HandleAim(horizontalAim, verticalAim);
-
-        // Pass the input to the CharacterMovement script
+            float horizontalAim = _fixedJoystickAim.Horizontal;
+            float verticalAim = _fixedJoystickAim.Vertical;
+            characterMovement.HandleAim(horizontalAim, verticalAim);
+        }
     }
 }

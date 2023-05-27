@@ -15,5 +15,6 @@ MonoBehaviour:
   Name: SpeedTalent
   Description: Increase player speed
   Cost: 1
-  CurrentTalentPoint: 5
+  CurrentTalentPoint: 0
   StatType: 1
+  StartingTalentPoint: 0
