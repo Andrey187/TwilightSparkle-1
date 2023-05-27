@@ -32,7 +32,12 @@ public class CharacterMovement : MonoBehaviour
 
         int movementSpeed = GetCurrentMovementSpeed();
         characterMotor.Move(movementDirection, movementSpeed);
-        characterMotor.Rotate(movementDirection);
+    }
+
+    public void HandleAim(float horizontal, float vertical)
+    {
+        Vector3 AimDirection = new Vector3(horizontal, 0f, vertical).normalized;
+        characterMotor.Rotate(AimDirection);
     }
 
     private MovementState GetCurrentState(Vector3 movementDirection)

@@ -37,7 +37,9 @@ public class AbilityChoicePool : MonoBehaviour
     {
         button.gameObject.SetActive(true);
         button.transform.SetParent(buttonContainer);
-       
+        button.transform.position = buttonContainer.transform.position;
+
+
         _instantiatedButtons.Add(button);
         _abilityAddWindow.InstantiatedButtons = _instantiatedButtons;
     }
