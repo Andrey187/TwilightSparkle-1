@@ -30,6 +30,13 @@ public class FireBallAbility: BaseAbilities
         {
             // If so, damage the enemy and destroy the fireball
             _setDamage?.Invoke(enemy,_fireBall.Damage, _fireBall.CurrentAbility, _fireBall.DoTEffect);
+            //enemy.KnockBack();
+        }
+       
+        // Check if the collided object has the specified mask layer
+        if (_layerMask == other.gameObject.layer)
+        {
+            // If the collided object has the specified layer, invoke SetDie
             SetDie?.Invoke(this);
         }
     }

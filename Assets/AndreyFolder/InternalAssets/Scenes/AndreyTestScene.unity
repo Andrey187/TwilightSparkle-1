@@ -5486,7 +5486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 200283894806ff54cb47cfbf709e5ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnRadius: 1
+  _spawnRadius: 1.5
   _colliderHitRadius: 0.5
   "_groupSpawn\u0421ircleRadius": 0
   _virtualCamera: {fileID: 2094273396}

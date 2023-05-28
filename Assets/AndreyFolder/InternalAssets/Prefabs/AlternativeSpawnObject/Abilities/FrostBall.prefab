@@ -115,8 +115,11 @@ MonoBehaviour:
   _endPoint: {fileID: 0}
   _speed: 3
   _fireInterval: 5
-  _baseLifeTime: 4
+  _baseLifeTime: 2
   _lifeTime: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!54 &4770008030729008655
 Rigidbody:
   m_ObjectHideFlags: 0

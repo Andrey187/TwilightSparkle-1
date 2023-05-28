@@ -10,6 +10,12 @@ public abstract class BaseEnemy : MonoCache
 {
     [SerializeField] protected internal EnemyType _enemyType;
     [SerializeField] protected internal int _currentHealth;
+    [SerializeField] protected float pushbackDistance = 2f;
+    [SerializeField] protected float pushbackDuration = 0.5f;
+    protected bool isBeingPushed = false;
+    protected Vector3 pushbackDirection;
+    protected Coroutine pushbackCoroutine;
+    protected Rigidbody _rigidbody;
     protected HealthBarModel _healthBarModel;
     protected MeshFilter _meshFilter;
     protected MeshRenderer _meshRenderer;
@@ -17,6 +23,7 @@ public abstract class BaseEnemy : MonoCache
 
     protected void Awake()
     {
+        _rigidbody = Get<Rigidbody>();
         _healthBarModel = Get<HealthBarModel>();
         _meshFilter = Get<MeshFilter>();
         _meshRenderer = Get<MeshRenderer>();
@@ -36,10 +43,7 @@ public abstract class BaseEnemy : MonoCache
         }
     }
 
-    protected override void OnDisabled()
-    {
-       
-    }
+    protected override void OnDisabled() { }
 
     protected internal void OnCreate(Vector3 position, Quaternion rotation)
     {
@@ -58,8 +62,10 @@ public abstract class BaseEnemy : MonoCache
         {
             _currentHealth = ability.ApplyDamage(_currentHealth, damageAmount);
             _healthBarModel.CurrentHealth = _currentHealth;
+
             if (enemy != null && damageAmount > 0 && _healthBarModel.CurrentHealth > 0)
             {
+                KnockBack();
                 DamageNumberPool.Instance.Initialize(damageAmount, enemy.transform, ability);
 
                 if (ability.HasDoT)
@@ -101,8 +107,38 @@ public abstract class BaseEnemy : MonoCache
             timeLeft -= interval;
         }
     }
+    
+    public void KnockBack()
+    {
+        // Start a coroutine to move the character towards the destination
+        if (gameObject.activeSelf)
+        {
+            if (!isBeingPushed)
+            {
+                pushbackDirection = -transform.forward;
+                pushbackCoroutine = StartCoroutine(MoveToDestination());
+            }
+        }
+    }
 
-    public virtual void Die()
+    private IEnumerator MoveToDestination()
+    {
+        isBeingPushed = true;
+        float timer = 0f;
+
+        while (timer < pushbackDuration)
+        {
+            float distance = Mathf.Lerp(0f, pushbackDistance, timer / pushbackDuration);
+            transform.position += pushbackDirection * distance;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        isBeingPushed = false;
+    }
+
+    public void Die()
     {
         Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);

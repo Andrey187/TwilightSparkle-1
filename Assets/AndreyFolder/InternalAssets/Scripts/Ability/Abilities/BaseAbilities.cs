@@ -10,6 +10,7 @@ public abstract class BaseAbilities : MonoCache
     [SerializeField] protected float _fireInterval;
     [SerializeField] protected float _baseLifeTime;
     [SerializeField] protected float _lifeTime;
+    [SerializeField] protected LayerMask _layerMask;
     protected internal abstract event Action<BaseAbilities> SetDie;
     protected Rigidbody _thisRb;
     

@@ -30,5 +30,12 @@ public class FrostBallAbility : BaseAbilities
             _setDamage?.Invoke(enemy, _frostBall.Damage, _frostBall.CurrentAbility, _frostBall.DoTEffect);
             SetDie?.Invoke(this);
         }
+
+        // Check if the collided object has the specified mask layer
+        if (_layerMask == other.gameObject.layer)
+        {
+            // If the collided object has the specified layer, invoke SetDie
+            SetDie?.Invoke(this);
+        }
     }
 }
