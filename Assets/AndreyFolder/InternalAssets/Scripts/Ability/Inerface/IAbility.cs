@@ -6,7 +6,7 @@ public interface IAbility
 
     public bool HasDoT { get; }
 
-    public Color Color { get;}
+    public Color Color { get; }
 
     public int ApplyDamage(int currentHealth, int amount);
 }

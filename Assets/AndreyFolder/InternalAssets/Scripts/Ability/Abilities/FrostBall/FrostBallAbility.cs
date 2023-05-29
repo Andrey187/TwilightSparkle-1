@@ -4,13 +4,12 @@ using UnityEngine;
 public class FrostBallAbility : BaseAbilities
 {
     private FrostBall _frostBall;
-    private event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
+    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected internal override event Action<BaseAbilities> SetDie;
 
     private void Awake()
     {
         _thisRb = Get<Rigidbody>();
-        SetLifeTime();
     }
 
     private void Start()
@@ -28,11 +27,10 @@ public class FrostBallAbility : BaseAbilities
         {
             // If so, damage the enemy and destroy the fireball
             _setDamage?.Invoke(enemy, _frostBall.Damage, _frostBall.CurrentAbility, _frostBall.DoTEffect);
-            SetDie?.Invoke(this);
         }
 
         // Check if the collided object has the specified mask layer
-        if (_layerMask == other.gameObject.layer)
+        if ((_layerMask.value & (1 << other.transform.gameObject.layer)) > 0)
         {
             // If the collided object has the specified layer, invoke SetDie
             SetDie?.Invoke(this);

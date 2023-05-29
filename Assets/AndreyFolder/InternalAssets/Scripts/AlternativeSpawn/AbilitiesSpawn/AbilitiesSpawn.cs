@@ -27,11 +27,18 @@ namespace AbilitySystem
             }
         }
 
-        private void CreatePrefabAbility(BaseAbilities ability)
+        private void CreatePrefabAbility(BaseAbilities ability, Vector3 targetPoint)
         {
             BaseAbilities prefabAbility = _abilityPool.GetObjects(ability.StartPoint.position, ability);
-
-            prefabAbility.MoveWithPhysics();
+            if (ability.HasTargetPoint)
+            {
+                prefabAbility.TargetPoint = targetPoint;
+                prefabAbility.MoveWithPhysics();
+            }
+            else
+            {
+                prefabAbility.MoveWithPhysics();
+            }
 
             prefabAbility.SetDie += ReturnObjectToPool;
 

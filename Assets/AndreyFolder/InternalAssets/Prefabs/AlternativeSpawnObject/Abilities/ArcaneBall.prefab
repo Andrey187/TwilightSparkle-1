@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 4770008030729008648}
   - component: {fileID: 4770008030729008651}
   - component: {fileID: 4770008030729008650}
-  - component: {fileID: 4770008030729008654}
   - component: {fileID: 4770008030729008655}
+  - component: {fileID: 5082977161458799626}
   m_Layer: 0
-  m_Name: FrostBall
+  m_Name: ArcaneBall
   m_TagString: FrostBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c764897acbc5e654d8ec9b1fdfbc90c8, type: 2}
+  - {fileID: 2100000, guid: 7e22409c47cb0fa4189f88fc5673b9cb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,27 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4770008030729008654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4770008030729008693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ddc71afe0766b2458d0b3228de9aee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startPoint: {fileID: 0}
-  _endPoint: {fileID: 0}
-  _speed: 3
-  _fireInterval: 5
-  _baseLifeTime: 2
-  _lifeTime: 2
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 320
 --- !u!54 &4770008030729008655
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,3 +115,26 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &5082977161458799626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4770008030729008693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5133332e6817ea7499d17ad76469f63d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startPoint: {fileID: 0}
+  _endPoint: {fileID: 0}
+  _speed: 4
+  _fireInterval: 2
+  _baseLifeTime: 2
+  _lifeTime: 2
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 320
+  _rotationSpeed: 2
+  _targetPoint: {x: 0, y: 0, z: 0}

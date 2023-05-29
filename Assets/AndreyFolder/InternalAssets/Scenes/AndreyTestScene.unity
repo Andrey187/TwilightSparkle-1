@@ -4394,7 +4394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackAbilities:
-  - {fileID: -4579191367014842424, guid: 1b0869292d8238d4fa14f59d04690d7f, type: 3}
+  - {fileID: 5082977161458799626, guid: da0048948ffc6c2448b313f7df0b4102, type: 3}
   _startAttackPoint: {fileID: 1333539849}
   _endPoint: {fileID: 487101093}
 --- !u!1 &1530239829

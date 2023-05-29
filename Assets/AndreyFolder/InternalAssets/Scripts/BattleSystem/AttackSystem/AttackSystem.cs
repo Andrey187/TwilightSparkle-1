@@ -10,7 +10,7 @@ namespace AbilitySystem
         [SerializeField] private List<BaseAbilities> _attackAbilities = new List<BaseAbilities>();
         [SerializeField] private Transform _startAttackPoint;
         [SerializeField] private Transform _endPoint;
-        private event Action<BaseAbilities> _createPrefabAbility;
+        private event Action<BaseAbilities, Vector3> _createPrefabAbility;
 
         public List<BaseAbilities> AttackScriptsList { get => _attackAbilities; set => _attackAbilities = value; }
         private void Awake()
@@ -29,17 +29,55 @@ namespace AbilitySystem
             // Spawn the first ability
             if (_attackAbilities.Count > 0)
             {
-                SetPositions(_attackAbilities[0]);
-                StartCoroutine(SpawnAbilitiesCoroutine(_attackAbilities[0]));
+                SetUpInvokeRepeatingForAbility(_attackAbilities[0]);
             }
         }
+
+        public Vector3 FindNearestEnemyInArea(float areaRadius)
+        {
+            Collider[] detectedEnemies = Physics.OverlapSphere(transform.position, areaRadius, LayerMask.GetMask("Enemy"));
+
+            if (detectedEnemies.Length > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, detectedEnemies.Length);
+                return detectedEnemies[randomIndex].transform.position;
+            }
+
+            return Vector3.zero;
+        }
+        private Vector3 nearestEnemyPosition;
+        public Vector3 FindNearestEnemyAmongRandom(float areaRadius)
+        {
+            Collider[] detectedEnemies = Physics.OverlapSphere(transform.position, areaRadius, LayerMask.GetMask("Enemy"));
+
+            if (detectedEnemies.Length > 0)
+            {
+                Vector3 closestEnemyPosition = detectedEnemies[0].transform.position;
+                float closestDistance = Vector3.Distance(transform.position, closestEnemyPosition);
+
+                for (int i = 1; i < detectedEnemies.Length; i++)
+                {
+                    float distance = Vector3.Distance(transform.position, detectedEnemies[i].transform.position);
+
+                    if (distance < closestDistance)
+                    {
+                        closestEnemyPosition = detectedEnemies[i].transform.position;
+                        closestDistance = distance;
+                    }
+                }
+
+                return closestEnemyPosition;
+            }
+
+            return Vector3.zero;
+        }
+
 
         private void SetPositions(BaseAbilities ability)
         {
             ability.StartPoint = _startAttackPoint;
             ability.EndPoint = _endPoint;
         }
-
         private void SetUpInvokeRepeatingForAbility(BaseAbilities ability)
         {
             SetPositions(ability);
@@ -48,26 +86,29 @@ namespace AbilitySystem
         private IEnumerator SpawnAbilitiesCoroutine(BaseAbilities ability)
         {
             float lastSpawnTime = Time.time - ability.FireInterval;
+
             while (true)
             {
                 float timeSinceLastSpawn = Time.time - lastSpawnTime;
+
                 if (timeSinceLastSpawn >= ability.FireInterval)
                 {
-                    InvokeCreatePrefabAbility(ability);
                     lastSpawnTime = Time.time;
+                    nearestEnemyPosition = FindNearestEnemyInArea(25f);
+                    InvokeCreatePrefabAbility(ability, nearestEnemyPosition);
                 }
                 yield return null;
             }
         }
 
-        public void SetCreatePrefabAbility(Action<BaseAbilities> createPrefabAbility)
+        public void SetCreatePrefabAbility(Action<BaseAbilities, Vector3> createPrefabAbility)
         {
             _createPrefabAbility = createPrefabAbility;
         }
 
-        private void InvokeCreatePrefabAbility(BaseAbilities ability)
+        private void InvokeCreatePrefabAbility(BaseAbilities ability, Vector3 targetPoint)
         {
-            _createPrefabAbility?.Invoke(ability);
+            _createPrefabAbility?.Invoke(ability, targetPoint);
         }
 
         public void AddAttackScript(BaseAbilities ability)

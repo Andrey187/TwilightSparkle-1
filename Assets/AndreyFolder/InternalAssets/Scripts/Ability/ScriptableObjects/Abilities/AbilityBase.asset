@@ -15,3 +15,4 @@ MonoBehaviour:
   AbilityDataList:
   - {fileID: 11400000, guid: 8b6871a006dfa6841bcb5574c49984eb, type: 2}
   - {fileID: 11400000, guid: 911db692e2b5c934392c649514c9a47b, type: 2}
+  - {fileID: 11400000, guid: b8932a5f8cfef194690cdab995a689c4, type: 2}
