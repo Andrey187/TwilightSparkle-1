@@ -10,6 +10,7 @@ public class HealthBarManagerMvvm : MonoCache
     private Dictionary<BaseEnemy, HealthBarView> _objectToHealthBarMap = new Dictionary<BaseEnemy, HealthBarView>();
     private PoolObject<HealthBarView> _healthBarPool;
     private HealthBarView _prefab;
+    private HealthBarController _enemyHealthBarController;
 
     private void Start()
     {
@@ -45,15 +46,13 @@ public class HealthBarManagerMvvm : MonoCache
             HealthBarView healthBarView = _healthBarPool.GetObjects(transform.position, _prefab);
             if (healthBarView != null)
             {
+                _enemyHealthBarController = enemy.Get<HealthBarController>();
+                _enemyHealthBarController._healthBarView = healthBarView;
                 EnemyType enemyType = enemy._enemyType;
                 int maxHealth = enemyType.MaxHealth;
+                _enemyHealthBarController.Initialize(maxHealth);
 
-                var model = obj.GetComponent<HealthBarModel>();
-                model.MaxHealth = maxHealth;
 
-                var viewModel = new HealthBarViewModel(model);
-
-                healthBarView.SetViewModel(viewModel);
                 healthBarView._healthBar.transform.position = Camera.main.WorldToScreenPoint(obj.transform.position);
                 _objectToHealthBarMap.Add(enemy, healthBarView);
             }

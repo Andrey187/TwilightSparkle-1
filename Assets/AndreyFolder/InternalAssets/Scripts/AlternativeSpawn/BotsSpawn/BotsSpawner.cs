@@ -8,10 +8,10 @@ public class BotsSpawner : MonoCache
 {
     [SerializeField] private CalculateSpawnPositionForBots _spawnAreaCalculation;
     [SerializeField] private WaveSpawner _waveSpawner;
-    private PoolObject<BotWaveReference> _botPool;
+    private PoolObject<BaseEnemy> _botPool;
     private IObjectFactory _objectFactory;
 
-    private Dictionary<WaveSpawner.Wave, List<BotWaveReference>> _spawnedBotsForWave;
+    private Dictionary<WaveSpawner.Wave, List<BaseEnemy>> _spawnedBotsForWave;
 
     // Start is called before the first frame update
     void Start()
@@ -28,17 +28,17 @@ public class BotsSpawner : MonoCache
         }
 
         // Initialize the dictionary with empty lists for each wave
-        _spawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BotWaveReference>>();
+        _spawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
         foreach (WaveSpawner.Wave wave in _waveSpawner.Waves)
         {
-            _spawnedBotsForWave[wave] = new List<BotWaveReference>();
+            _spawnedBotsForWave[wave] = new List<BaseEnemy>();
         }
 
         // Create object pool for the wave
         for (int i = 0; i < _waveSpawner.Waves.Length; i++)
         {
             WaveSpawner.Wave wave = _waveSpawner.Waves[i];
-            _objectFactory = new ObjectsFactory(wave.Bot.GetComponent<BotWaveReference>().transform);
+            _objectFactory = new ObjectsFactory(wave.Bot.GetComponent<BaseEnemy>().transform);
             if (wave.Bot == null)
             {
                 Debug.LogWarning("No bots found for wave " + wave.Name);
@@ -48,46 +48,37 @@ public class BotsSpawner : MonoCache
             // Add the bots to the List
             for (int j = 0; j < wave.SpawnLimit; j++)
             {
-                BotWaveReference bot = _objectFactory.CreateObject(wave.Bot.position).GetComponent<BotWaveReference>();
-                // Set the wave index on the BotWaveReference component
-                if (bot != null)
-                {
-                    bot.WaveIndex = i;
-                }
-                bot.Wave = wave;
+                BaseEnemy bot = _objectFactory.CreateObject(wave.Bot.position).GetComponent<BaseEnemy>();
                 _spawnedBotsForWave[wave].Add(bot);
             }
         }
-        BotWaveReference[] objects = _spawnedBotsForWave.SelectMany(pair => pair.Value).ToArray();
-        PoolObject<BotWaveReference>.CreateInstance(objects, objects.Length, gameObject.transform, "Bots");
-        _botPool = PoolObject<BotWaveReference>.Instance;
+        BaseEnemy[] objects = _spawnedBotsForWave.SelectMany(pair => pair.Value).ToArray();
+        PoolObject<BaseEnemy>.CreateInstance(objects, objects.Length, gameObject.transform, "Bots");
+        _botPool = PoolObject<BaseEnemy>.Instance;
     }
 
     public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
     {
-        yield return new WaitForSeconds(0.1f);
-        
-
         yield return new WaitForSeconds(0.2f);
 
-        List<BotWaveReference> botsForWave = _spawnedBotsForWave[wave];
+        List<BaseEnemy> botsForWave = _spawnedBotsForWave[wave];
 
         if (botsForWave != null && _spawnedBotsForWave.ContainsKey(wave))
         {
-            BotWaveReference[] botPrefabs = botsForWave.ToArray();
+            BaseEnemy[] botPrefabs = botsForWave.ToArray();
             for (int j = 0; j < botPrefabs.Length; j++)
             {
 
-                BotWaveReference botPrefab = botPrefabs[j];
+                BaseEnemy botPrefab = botPrefabs[j].GetComponent<BaseEnemy>();
 
                 // Check if there are any inactive bot objects in the pool that match the current wave and prefab
-                BotWaveReference inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab, botPrefab.WaveIndex);
+                BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
 
-                _spawnAreaCalculation.NewUnitCircle();
-                _spawnAreaCalculation.SpawnOnCircleOutsideTheCameraField();
-                _spawnAreaCalculation.GroundCheck();
+                wave.SpawnMethod.NewUnitCircle();
+                wave.SpawnMethod.SpawnEnemies(wave);
+                wave.SpawnMethod.GroundCheck();
 
-                if (_spawnAreaCalculation.ColliderCheck(inactiveBot.gameObject))
+                if (wave.SpawnMethod.ColliderCheck(inactiveBot.gameObject))
                 {
                     Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
                     setObjectActive?.Invoke(inactiveBot.gameObject, true);
@@ -95,7 +86,7 @@ public class BotsSpawner : MonoCache
                 else
                 {
                     inactiveBot.gameObject.SetActive(false);
-                    PoolObject<BotWaveReference>.Instance.ReturnObject(inactiveBot);
+                    PoolObject<BaseEnemy>.Instance.ReturnObject(inactiveBot);
                 }
             }
         }

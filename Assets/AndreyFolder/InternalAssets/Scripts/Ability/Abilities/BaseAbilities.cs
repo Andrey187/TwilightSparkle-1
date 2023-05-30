@@ -19,6 +19,7 @@ public abstract class BaseAbilities : MonoCache
     protected internal Transform StartPoint { get => _startPoint; set => _startPoint = value; }
     protected internal Transform EndPoint { get => _endPoint; set => _endPoint = value; }
     protected internal virtual Vector3 TargetPoint { get; set; }
+    protected internal virtual int AreaRadius { get; set; }
     protected internal virtual bool HasTargetPoint => false;
 
     protected internal float FireInterval { get => _fireInterval; set => _fireInterval = value; }

@@ -2,22 +2,21 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
+public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
 {
-    [SerializeField] private float _spawnRadius = 1.5f;
-    [SerializeField] private float _colliderHitRadius = 0.3f;
-    [SerializeField] private float _groupSpawn—ircleRadius = 20f;
     [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+    [SerializeField] protected float _spawnRadius = 1.5f;
+    [SerializeField] protected float _colliderHitRadius = 0.3f;
+    [SerializeField] protected float _groupSpawn—ircleRadius = 20f;
+    protected bool isGround = false;
+    protected RaycastHit hit;
 
-    private bool isGround = false;
-    private RaycastHit hit;
-
-    private void Start()
+    protected void Start()
     {
         FindCameraBoundries();
     }
 
-    private void FindCameraBoundries()
+    protected void FindCameraBoundries()
     {
         CameraState state = _virtualCamera.State;
 
@@ -33,8 +32,7 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
         float distance = Mathf.Sqrt(sqrX + sqrZ);
         _circleOutsideTheCameraField = distance / 2f;
     }
-
-    public Vector2 NewUnitCircle()
+    protected internal Vector2 NewUnitCircle()
     {
         _randomInsideUnitCircle = Random.insideUnitCircle;
         _randomInsideUnitCircle.Normalize();
@@ -42,24 +40,7 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
         return _randomInsideUnitCircle;
     }
 
-    public void SpawnOnCircleOutsideTheCameraField()
-    {
-        _spawnCircleRadius = _player.transform.position + _randomInsideUnitCircle * _spawnRadius;
-        _botsSpawnInRandomPointOnCircle = new Vector3(_spawnCircleRadius.x,
-            0,
-            _player.transform.position.z + _spawnCircleRadius.y);
-    }
-
-    //Method for spawn in radius on circle
-    //public void SpawnGroupInFieldOnCircle()
-    //{
-    //    Vector2 randomInsideUnitCircle2D = Random.insideUnitCircle;
-    //    _botsSpawnField = _botsSpawnInRandomPointOnCircle + _ground.transform.position +
-    //        new Vector3(randomInsideUnitCircle2D.x, 0f, randomInsideUnitCircle2D.y)
-    //        * _groupSpawn—ircleRadius;
-    //}
-
-    public void GroundCheck()
+    protected internal void GroundCheck()
     {
         // Check the center of the spawn area
         Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);
@@ -80,19 +61,21 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
         isGround = hasHit;
     }
 
-    public bool ColliderCheck(GameObject bots)
+    protected internal abstract bool ColliderCheck(GameObject bots);
+    
+    protected void CheckSphere(GameObject bots, Vector3 vector)
     {
         NavMeshAgent agent = bots.GetComponent<NavMeshAgent>();
         BaseEnemy enemy = bots.GetComponent<BaseEnemy>();
 
-        if (Physics.CheckSphere(_botsSpawnInRandomPointOnCircle, _colliderHitRadius))
+        if (Physics.CheckSphere(vector, _colliderHitRadius))
         {
             if (bots != null)
             {
                 if (isGround)
                 {
-                    enemy?.OnCreate(_botsSpawnInRandomPointOnCircle, Quaternion.identity);
-                    agent.Warp(_botsSpawnInRandomPointOnCircle);
+                    enemy?.OnCreate(vector, Quaternion.identity);
+                    agent.Warp(vector);
                 }
             }
             else
@@ -100,22 +83,7 @@ public class CalculateSpawnPositionForBots : ParamsForCalculateSpawnPositions
                 Debug.LogWarning("GameObject is null or not on ground!");
             }
         }
-        return isGround;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (_player != null)
-        {
-            Gizmos.color = Color.black;
-            Gizmos.DrawCube(_player.transform.position, new Vector3(_cameraWidth, 0f, _cameraHeight));
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(_player.transform.position, _circleOutsideTheCameraField);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_botsSpawnInRandomPointOnCircle, _groupSpawn—ircleRadius);
-
-            Gizmos.color = Color.black;
-            Gizmos.DrawRay(_botsSpawnInRandomPointOnCircle, Vector3.down);
-        }
-    }
+    protected internal abstract void SpawnEnemies(WaveSpawner.Wave wave);
 }

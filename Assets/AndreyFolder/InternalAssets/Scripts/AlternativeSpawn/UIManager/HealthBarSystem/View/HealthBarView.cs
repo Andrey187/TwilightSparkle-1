@@ -10,7 +10,7 @@ public class HealthBarView : MonoBehaviour
     {
         _viewModel = viewModel;
         _viewModel.PropertyChanged += HandlePropertyChanged;
-        _healthBar.SetMaxHealth(_viewModel.MaxHealth);
+        ResetUI();
     }
 
     private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -19,5 +19,11 @@ public class HealthBarView : MonoBehaviour
         {
             _healthBar.SetHealth(_viewModel.CurrentHealth);
         }
+    }
+
+    private void ResetUI()
+    {
+        _healthBar.SetMaxHealth(_viewModel.MaxHealth);
+        _healthBar.SetHealth(_viewModel.CurrentHealth);
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ public class HealthBarModel : MonoBehaviour, INotifyPropertyChanged
     private int _maxHealth;
 
     public event PropertyChangedEventHandler PropertyChanged;
-    public event Action<int> OnCurrentHealthChanged;
-    public event Action<int> OnMaxHealthChanged;
 
     public int CurrentHealth
     {
@@ -17,7 +14,6 @@ public class HealthBarModel : MonoBehaviour, INotifyPropertyChanged
         set
         {
             _currentHealth = Mathf.Clamp(value, 0, MaxHealth);
-            OnCurrentHealthChanged?.Invoke(_currentHealth);
             OnPropertyChanged(nameof(CurrentHealth));
         }
     }
@@ -31,10 +27,8 @@ public class HealthBarModel : MonoBehaviour, INotifyPropertyChanged
             if (_maxHealth < _currentHealth)
             {
                 _currentHealth = _maxHealth;
-                OnCurrentHealthChanged?.Invoke(_currentHealth);
                 OnPropertyChanged(nameof(CurrentHealth));
             }
-            OnMaxHealthChanged?.Invoke(_maxHealth);
             OnPropertyChanged(nameof(MaxHealth));
         }
     }

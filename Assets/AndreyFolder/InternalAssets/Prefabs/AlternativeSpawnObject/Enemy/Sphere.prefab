@@ -12,11 +12,13 @@ GameObject:
   - component: {fileID: 8234744067425265351}
   - component: {fileID: 8234744067425265348}
   - component: {fileID: 8234744067425265349}
+  - component: {fileID: -5974949853664965215}
   - component: {fileID: 8234744067425265350}
   - component: {fileID: 8234744067425265345}
-  - component: {fileID: 8234744067425265344}
   - component: {fileID: -1251710611867159458}
   - component: {fileID: 9198459888977414130}
+  - component: {fileID: 1474493794887075098}
+  - component: {fileID: -4789835434426447966}
   m_Layer: 6
   m_Name: Sphere
   m_TagString: Enemy
@@ -105,6 +107,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 1
+--- !u!135 &-5974949853664965215
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234744067425265352}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &8234744067425265350
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -141,20 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: {fileID: 11400000, guid: 29601e8e2a946f847b8e2d4b231e8496, type: 2}
   _currentHealth: 0
-  pushbackDistance: 0.2
-  pushbackDuration: 0.2
---- !u!114 &8234744067425265344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8234744067425265352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c2a0e052c5c11e4aa28ffaecdda4c68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _pushbackDistance: 0.2
+  _pushbackDuration: 0.2
 --- !u!114 &-1251710611867159458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,3 +184,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c070a82870ebb0488bd39d05fe47da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1474493794887075098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234744067425265352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8af433d4eb7818418157e6a90a5830a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthBarView: {fileID: 0}
+--- !u!114 &-4789835434426447966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234744067425265352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743dfa23ce99f744e8673e63a4b8d5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageAmount: 0

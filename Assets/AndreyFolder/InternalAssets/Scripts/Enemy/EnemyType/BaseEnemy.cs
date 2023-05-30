@@ -10,13 +10,13 @@ public abstract class BaseEnemy : MonoCache
 {
     [SerializeField] protected internal EnemyType _enemyType;
     [SerializeField] protected internal int _currentHealth;
-    [SerializeField] protected float pushbackDistance = 2f;
-    [SerializeField] protected float pushbackDuration = 0.5f;
-    protected bool isBeingPushed = false;
-    protected Vector3 pushbackDirection;
-    protected Coroutine pushbackCoroutine;
+    [SerializeField] protected float _pushbackDistance = 0.2f;
+    [SerializeField] protected float _pushbackDuration = 0.5f;
+    protected HealthBarController _healthBarController;
+    protected bool _isBeingPushed = false;
+    protected Vector3 _pushbackDirection;
+    protected Coroutine _pushbackCoroutine;
     protected Rigidbody _rigidbody;
-    protected HealthBarModel _healthBarModel;
     protected MeshFilter _meshFilter;
     protected MeshRenderer _meshRenderer;
     protected NavMeshAgent _navMeshAgent;
@@ -24,14 +24,13 @@ public abstract class BaseEnemy : MonoCache
     protected void Awake()
     {
         _rigidbody = Get<Rigidbody>();
-        _healthBarModel = Get<HealthBarModel>();
+        _healthBarController = Get<HealthBarController>();
         _meshFilter = Get<MeshFilter>();
         _meshRenderer = Get<MeshRenderer>();
         _navMeshAgent = Get<NavMeshAgent>();
         _meshFilter.mesh = _enemyType.Mesh;
         _meshRenderer.material = _enemyType.Material;
         NavMeshParams();
-        ColliderSelection();
     }
 
     protected override void OnEnabled()
@@ -61,9 +60,8 @@ public abstract class BaseEnemy : MonoCache
         if (enemy == this)
         {
             _currentHealth = ability.ApplyDamage(_currentHealth, damageAmount);
-            _healthBarModel.CurrentHealth = _currentHealth;
-
-            if (enemy != null && damageAmount > 0 && _healthBarModel.CurrentHealth > 0)
+            _healthBarController.SetCurrentHealth(_currentHealth);
+            if (enemy != null && damageAmount > 0 && _currentHealth > 0)
             {
                 KnockBack();
                 DamageNumberPool.Instance.Initialize(damageAmount, enemy.transform, ability);
@@ -86,7 +84,7 @@ public abstract class BaseEnemy : MonoCache
         }
     }
 
-    private IEnumerator PeriodicDamageCoroutine(IDoTEffect doTEffect,
+    protected IEnumerator PeriodicDamageCoroutine(IDoTEffect doTEffect,
         Transform target, float duration, float interval, int amount)
     {
         float timeLeft = duration;
@@ -103,39 +101,39 @@ public abstract class BaseEnemy : MonoCache
             }
 
             DamageDoTNumberPool.Instance.Initialize(periodicDamageAmount, target.transform, doTEffect);
-            _healthBarModel.CurrentHealth = _currentHealth;
+            _healthBarController.SetCurrentHealth(_currentHealth);
             timeLeft -= interval;
         }
     }
-    
-    public void KnockBack()
+
+    protected void KnockBack()
     {
         // Start a coroutine to move the character towards the destination
         if (gameObject.activeSelf)
         {
-            if (!isBeingPushed)
+            if (!_isBeingPushed)
             {
-                pushbackDirection = -transform.forward;
-                pushbackCoroutine = StartCoroutine(MoveToDestination());
+                _pushbackDirection = -transform.forward;
+                _pushbackCoroutine = StartCoroutine(MoveToDestination());
             }
         }
     }
 
-    private IEnumerator MoveToDestination()
+    protected IEnumerator MoveToDestination()
     {
-        isBeingPushed = true;
+        _isBeingPushed = true;
         float timer = 0f;
 
-        while (timer < pushbackDuration)
+        while (timer < _pushbackDuration)
         {
-            float distance = Mathf.Lerp(0f, pushbackDistance, timer / pushbackDuration);
-            transform.position += pushbackDirection * distance;
+            float distance = Mathf.Lerp(0f, _pushbackDistance, timer / _pushbackDuration);
+            transform.position += _pushbackDirection * distance;
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        isBeingPushed = false;
+        _isBeingPushed = false;
     }
 
     public void Die()
@@ -152,36 +150,5 @@ public abstract class BaseEnemy : MonoCache
         _navMeshAgent.radius = 0.5f;
         _navMeshAgent.height = 0.5f;
         _navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
-    }
-
-    private void ColliderSelection()
-    {
-        if (_meshFilter != null)
-        {
-            if (_meshFilter.mesh != null)
-            {
-                if (IsMeshCube(_meshFilter.mesh))
-                {
-                    gameObject.AddComponent<BoxCollider>();
-                    gameObject.AddComponent<SphereCollider>();
-                }
-                else if (IsMeshSphere(_meshFilter.mesh))
-                {
-                    gameObject.AddComponent<SphereCollider>();
-                }
-            }
-        }
-    }
-
-    private bool IsMeshCube(Mesh mesh)
-    {
-        // check if the mesh is named "Cube"
-        return mesh.name.Contains("Cube Instance");
-    }
-
-    private bool IsMeshSphere(Mesh mesh)
-    {
-        // check if the mesh is named "Sphere"
-        return mesh.name.Contains("Sphere Instance");
     }
 }

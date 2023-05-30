@@ -11,6 +11,7 @@ namespace AbilitySystem
         [SerializeField] private Transform _startAttackPoint;
         [SerializeField] private Transform _endPoint;
         private event Action<BaseAbilities, Vector3> _createPrefabAbility;
+        private Vector3 nearestEnemyPosition;
 
         public List<BaseAbilities> AttackScriptsList { get => _attackAbilities; set => _attackAbilities = value; }
         private void Awake()
@@ -45,34 +46,7 @@ namespace AbilitySystem
 
             return Vector3.zero;
         }
-        private Vector3 nearestEnemyPosition;
-        public Vector3 FindNearestEnemyAmongRandom(float areaRadius)
-        {
-            Collider[] detectedEnemies = Physics.OverlapSphere(transform.position, areaRadius, LayerMask.GetMask("Enemy"));
-
-            if (detectedEnemies.Length > 0)
-            {
-                Vector3 closestEnemyPosition = detectedEnemies[0].transform.position;
-                float closestDistance = Vector3.Distance(transform.position, closestEnemyPosition);
-
-                for (int i = 1; i < detectedEnemies.Length; i++)
-                {
-                    float distance = Vector3.Distance(transform.position, detectedEnemies[i].transform.position);
-
-                    if (distance < closestDistance)
-                    {
-                        closestEnemyPosition = detectedEnemies[i].transform.position;
-                        closestDistance = distance;
-                    }
-                }
-
-                return closestEnemyPosition;
-            }
-
-            return Vector3.zero;
-        }
-
-
+        
         private void SetPositions(BaseAbilities ability)
         {
             ability.StartPoint = _startAttackPoint;
@@ -94,7 +68,7 @@ namespace AbilitySystem
                 if (timeSinceLastSpawn >= ability.FireInterval)
                 {
                     lastSpawnTime = Time.time;
-                    nearestEnemyPosition = FindNearestEnemyInArea(25f);
+                    nearestEnemyPosition = FindNearestEnemyInArea(ability.AreaRadius);
                     InvokeCreatePrefabAbility(ability, nearestEnemyPosition);
                 }
                 yield return null;
