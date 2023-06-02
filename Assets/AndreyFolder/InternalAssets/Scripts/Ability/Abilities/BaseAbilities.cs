@@ -7,7 +7,7 @@ public abstract class BaseAbilities : MonoCache
     [SerializeField] protected Transform _startPoint;
     [SerializeField] protected Transform _endPoint;
 
-    [SerializeField] protected float _speed = 0.5f;
+    [SerializeField] protected float _speed = 20f;
     [SerializeField] protected float _fireInterval;
     [SerializeField] protected float _baseLifeTime;
     [SerializeField] protected float _lifeTime;
@@ -24,7 +24,7 @@ public abstract class BaseAbilities : MonoCache
 
     protected internal float FireInterval { get => _fireInterval; set => _fireInterval = value; }
     protected internal float LifeTime { get => _lifeTime; set => _lifeTime = value; }
-
+    
     protected override void OnEnabled()
     {
         StartCoroutine(DecreaseLifeTime());
@@ -50,7 +50,7 @@ public abstract class BaseAbilities : MonoCache
         }
     }
 
-    protected internal virtual void MoveWithPhysics() 
+    protected internal virtual void MoveWithPhysics()
     {
         Vector3 direction = _endPoint.position - _startPoint.position;
         direction.Normalize();

@@ -22,6 +22,8 @@ public class UIPanelController : MonoBehaviour
     private void OnDisable()
     {
         eventManager.PlayerDeath -= HandlePlayerDeath;
+        eventManager.AbilityChoice -= HandleLevelIncreased;
+        abilityChoicePool.ButtonObtainedFromPool -= HandleButtonObtainedFromPool;
     }
 
     private void HandlePlayerDeath()

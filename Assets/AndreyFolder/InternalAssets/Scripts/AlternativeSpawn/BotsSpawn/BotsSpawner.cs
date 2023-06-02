@@ -62,37 +62,29 @@ public class BotsSpawner : MonoCache
         yield return new WaitForSeconds(0.2f);
 
         List<BaseEnemy> botsForWave = _spawnedBotsForWave[wave];
-
-        if (botsForWave != null && _spawnedBotsForWave.ContainsKey(wave))
+        BaseEnemy[] botPrefabs = botsForWave.ToArray();
+        for (int j = 0; j < botPrefabs.Length; j++)
         {
-            BaseEnemy[] botPrefabs = botsForWave.ToArray();
-            for (int j = 0; j < botPrefabs.Length; j++)
+
+            BaseEnemy botPrefab = botPrefabs[j].GetComponent<BaseEnemy>();
+
+            // Check if there are any inactive bot objects in the pool that match the current wave and prefab
+            BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
+
+            wave.SpawnMethod.NewUnitCircle();
+            wave.SpawnMethod.SpawnEnemies(wave);
+            wave.SpawnMethod.GroundCheck();
+
+            if (wave.SpawnMethod.ColliderCheck(inactiveBot.gameObject))
             {
-
-                BaseEnemy botPrefab = botPrefabs[j].GetComponent<BaseEnemy>();
-
-                // Check if there are any inactive bot objects in the pool that match the current wave and prefab
-                BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
-
-                wave.SpawnMethod.NewUnitCircle();
-                wave.SpawnMethod.SpawnEnemies(wave);
-                wave.SpawnMethod.GroundCheck();
-
-                if (wave.SpawnMethod.ColliderCheck(inactiveBot.gameObject))
-                {
-                    Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
-                    setObjectActive?.Invoke(inactiveBot.gameObject, true);
-                }
-                else
-                {
-                    inactiveBot.gameObject.SetActive(false);
-                    PoolObject<BaseEnemy>.Instance.ReturnObject(inactiveBot);
-                }
+                Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
+                setObjectActive?.Invoke(inactiveBot.gameObject, true);
             }
-        }
-        else
-        {
-            Debug.LogWarning("No bots found for wave " + wave.Name);
+            else
+            {
+                inactiveBot.gameObject.SetActive(false);
+                PoolObject<BaseEnemy>.Instance.ReturnObject(inactiveBot);
+            }
         }
     }
 }

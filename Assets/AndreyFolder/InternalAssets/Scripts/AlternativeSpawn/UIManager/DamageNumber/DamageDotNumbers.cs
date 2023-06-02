@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace DamageNumber
 {
@@ -6,18 +7,16 @@ namespace DamageNumber
     {
         [SerializeField] private float _lifeTime = 2f;
 
-        [SerializeField] private Vector3 _direction;
         public float LifeTime { get => _lifeTime; set => _lifeTime = value; }
 
         protected override void OnEnabled()
         {
             _lifeTime = 2f;
-            _direction = new Vector3(0f, 1f, 0f);
+            transform.DOLocalMoveY(2, _lifeTime);
         }
-
-        protected override void FixedRun()
+        protected override void OnDisabled()
         {
-            transform.position += _direction * Time.fixedDeltaTime + Vector3.up * Time.fixedDeltaTime;
+            transform.DOPause();
         }
     }
 }

@@ -19,26 +19,26 @@ public class WaveSpawner : MonoCache
 
     private void Start()
     {
-        for (int i = 0; i < Waves.Length; i++)
+        foreach(var a in Waves)
         {
-            Wave wave = Waves[i];
-            StartCoroutine(SpawnWaveWithDelay(wave, wave.WaveDuration));
-        }
-    }
-
-    private IEnumerator SpawnWaveWithDelay(Wave wave, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        while (true)
-        {
-            yield return StartCoroutine(SpawnWave(wave));
-            yield return new WaitForSeconds(wave.WaveDuration);
+            StartCoroutine(SpawnWave(a));
         }
     }
 
     private IEnumerator SpawnWave(Wave wave)
     {
-        yield return StartCoroutine(_botSpawner.SpawnObjects(wave));
+        float timeAccumulator = 0f;
+
+        while (true)
+        {
+            if (timeAccumulator >= wave.WaveDuration)
+            {
+                yield return StartCoroutine(_botSpawner.SpawnObjects(wave));
+                timeAccumulator = 0f;
+            }
+
+            timeAccumulator += Time.deltaTime;
+            yield return null;
+        }
     }
 }

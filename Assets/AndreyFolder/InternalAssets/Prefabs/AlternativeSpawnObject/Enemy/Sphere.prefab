@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 9198459888977414130}
   - component: {fileID: 1474493794887075098}
   - component: {fileID: -4789835434426447966}
+  - component: {fileID: 1538346216909791036}
   m_Layer: 6
   m_Name: Sphere
   m_TagString: Enemy
@@ -210,3 +211,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageAmount: 0
+--- !u!114 &1538346216909791036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234744067425265352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9673c648f1765254aa0d564a7943999d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
