@@ -1,32 +1,42 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AbilityAddWindow : MonoBehaviour
 {
-    [SerializeField] private List<Button> abilityButtons;
     public List<Button> AbilityButtons { get => abilityButtons; set => abilityButtons = value; }
     public List<Button> InstantiatedButtons { get; set; }
-    public List<Button> ShiffleButtons { get; set; }
+    public List<Button> ShuffleButtons { get; set; }
 
     public event Action<Button> GetObjectFromPool;
     public event Action<Button> ReturnObjectInPool;
 
+    [SerializeField] private List<Button> abilityButtons;
+    private List<Button> shuffledButtons;
+    private List<Button> selectedButtons;
+
     private void OnEnable()
     {
+        // Shuffle the buttons
+        shuffledButtons = ShuffleList(ShuffleButtons);
+        foreach (Button a in shuffledButtons)
+        {
+            a.gameObject.SetActive(false);
+        }
+        // Select the first 3 buttons from the shuffled list
+        selectedButtons = shuffledButtons.Take(3).ToList();
         //Instantiate and position the selected buttons in the buttonContainer
-        foreach (Button buttonPrefab in ShiffleButtons)
+        foreach (Button buttonPrefab in selectedButtons)
         {
             GetObjectFromPool?.Invoke(buttonPrefab);
         }
 
-        List<Button> shuffledButtons = ShuffleList(InstantiatedButtons);
-
         // Reposition the shuffled buttons within the buttonContainer
-        for (int i = 0; i < shuffledButtons.Count; i++)
+        for (int i = 0; i < selectedButtons.Count; i++)
         {
-            Button buttonInstance = shuffledButtons[i];
+            Button buttonInstance = selectedButtons[i];
             buttonInstance.transform.SetSiblingIndex(i);
         }
     }
@@ -40,8 +50,9 @@ public class AbilityAddWindow : MonoBehaviour
         {
             ReturnObjectInPool?.Invoke(buttonInstance);
         }
-
         InstantiatedButtons.Clear();
+        shuffledButtons.Clear();
+        selectedButtons.Clear();
     }
 
     private List<T> ShuffleList<T>(List<T> list)

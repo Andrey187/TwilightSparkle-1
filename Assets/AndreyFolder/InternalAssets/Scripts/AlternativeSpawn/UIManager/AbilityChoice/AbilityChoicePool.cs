@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AbilityChoicePool : MonoBehaviour
 {
+    public event Action<Button> ButtonObtainedFromPool;
     [SerializeField] private AbilityAddWindow _abilityAddWindow;
     [SerializeField] private Transform buttonContainer;
 
@@ -12,6 +14,7 @@ public class AbilityChoicePool : MonoBehaviour
 
     private PoolObject<Button> _buttonPool;
     private IObjectFactory _objectFactory;
+
 
     private void Start()
     {
@@ -26,7 +29,7 @@ public class AbilityChoicePool : MonoBehaviour
             Button buttonInstance = _buttonPool.GetObjects(buttons.transform.position, buttons);
             buttonInstance.transform.SetParent(buttonContainer);
             _shiffleButtons.Add(buttonInstance);
-            _abilityAddWindow.ShiffleButtons = _shiffleButtons;
+            _abilityAddWindow.ShuffleButtons = _shiffleButtons;
         }
 
         _abilityAddWindow.GetObjectFromPool += GetObjectFromPool;
@@ -38,10 +41,11 @@ public class AbilityChoicePool : MonoBehaviour
         button.gameObject.SetActive(true);
         button.transform.SetParent(buttonContainer);
         button.transform.position = buttonContainer.transform.position;
-
-
         _instantiatedButtons.Add(button);
         _abilityAddWindow.InstantiatedButtons = _instantiatedButtons;
+
+        // Trigger the ButtonObtainedFromPool event
+        ButtonObtainedFromPool?.Invoke(button);
     }
 
     private void ReturnObjectInPool(Button button)

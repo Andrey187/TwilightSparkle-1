@@ -6,7 +6,6 @@ public class CharacterInput : MonoCache
     [SerializeField] private FixedJoystick _fixedJoystickMovement;
     [SerializeField] private FixedJoystick _fixedJoystickAim;
 
-
     private void Awake()
     {
         characterMovement = GetComponent<CharacterMovement>();
@@ -19,7 +18,7 @@ public class CharacterInput : MonoCache
         float vertical = Input.GetAxis("Vertical");
         characterMovement.HandleInput(horizontal, vertical);
 
-        if(_fixedJoystickMovement.isActiveAndEnabled && _fixedJoystickAim.isActiveAndEnabled)
+        if (_fixedJoystickMovement.isActiveAndEnabled && _fixedJoystickAim.isActiveAndEnabled)
         {
             float horizontalMovement = _fixedJoystickMovement.Horizontal;
             float verticalMovement = _fixedJoystickMovement.Vertical;

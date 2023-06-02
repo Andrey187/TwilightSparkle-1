@@ -3,7 +3,19 @@ using UnityEngine;
 
 public class PoolObject<T> where T : Component
 {
-    public static PoolObject<T> Instance { get; private set; }
+    //public static PoolObject<T> Instance { get; private set; }
+    private static PoolObject<T> _instance;
+    public static PoolObject<T> Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("PoolObject instance has not been created!");
+            }
+            return _instance;
+        }
+    }
 
     private T[] _objectPrefab;
     private int _poolLimit;
@@ -31,10 +43,38 @@ public class PoolObject<T> where T : Component
 
     public static void CreateInstance(T[] prefabs, int poolLimit, Transform parentObject, string containerName)
     {
-        if (Instance == null)
+        if (_instance == null)
         {
             CreatePoolContainer(parentObject, containerName);
-            Instance = new PoolObject<T>(prefabs, poolLimit, parentObject, containerName);
+            _instance = new PoolObject<T>(prefabs, poolLimit, parentObject, containerName);
+            ObjectPoolManager.Instance.RegisterPool(_instance);
+        }
+    }
+
+    public void ResetInstance()
+    {
+        if (_instance != null)
+        {
+            _instance.ClearInstances();
+            _instance = null;
+            Debug.Log("reset");
+        }
+    }
+
+    public void ClearInstances()
+    {
+        foreach (var obj in _objectPool)
+        {
+            Object.Destroy(obj.gameObject);
+        }
+
+        _objectPool.Clear();
+        _objectWaves.Clear();
+
+        if (_poolContainerInstance != null)
+        {
+            Object.Destroy(_poolContainerInstance.gameObject);
+            _poolContainerInstance = null;
         }
     }
 
@@ -67,7 +107,7 @@ public class PoolObject<T> where T : Component
                 // try to get an inactive object from the pool
                 foreach (T item in _objectPool)
                 {
-                    if (!item.gameObject.activeSelf && item.gameObject.CompareTag(prefab.gameObject.tag) && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
+                    if (!item.gameObject.activeSelf && item.GetType() == prefab.GetType() && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
                     {
                         result = item;
                         break;

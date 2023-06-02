@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    private static EventManager _instance;
+    public List<GameObject> _subscribedObjects = new List<GameObject>();//For Wall Spawn
     private Action<GameObject> _onObjectSetActive;//For check object active or enable
     private Action<GameObject> _wallsSpawnedEvent;//For Wall Spawn
 
     private Action<BaseEnemy,int, IAbility, IDoTEffect> _takeAbilityDamage;//For TakeDamage
+    private Action _playerDeath;
+    private Action _abilityChoice;
 
-    public List<GameObject> _subscribedObjects = new List<GameObject>();//For Wall Spawn
-
+    private static EventManager _instance;
     [RuntimeInitializeOnLoadMethod]
     static void Initialize()
     {
@@ -60,6 +61,18 @@ public class EventManager : MonoBehaviour
         remove { _takeAbilityDamage -= value; }
     }
 
+    public event Action PlayerDeath
+    {
+        add { _playerDeath += value; }
+        remove { _playerDeath -= value; }
+    }
+
+    public event Action AbilityChoice
+    {
+        add { _abilityChoice += value; }
+        remove { _abilityChoice -= value; }
+    }
+
     public void SetObjectActive(GameObject obj, bool isActive)
     {
         obj.SetActive(isActive);
@@ -81,5 +94,15 @@ public class EventManager : MonoBehaviour
     public void AbillityDamage(BaseEnemy enemy,int amount , IAbility ability, IDoTEffect doTEffect)
     {
         _takeAbilityDamage?.Invoke(enemy,amount, ability, doTEffect);
+    }
+
+    public void PlayerDie()
+    {
+        _playerDeath?.Invoke();
+    }
+
+    public void AbilityChoiceUI()
+    {
+        _abilityChoice?.Invoke();
     }
 }

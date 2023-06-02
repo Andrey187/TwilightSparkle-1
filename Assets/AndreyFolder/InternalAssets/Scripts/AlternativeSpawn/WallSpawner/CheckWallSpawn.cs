@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class CheckWallSpawn : MonoBehaviour
 {
     public delegate void WallsSpawnedEventHandler(GameObject wallsObject);
-    public static event WallsSpawnedEventHandler WallsSpawnedEvent;
+    public event WallsSpawnedEventHandler WallsSpawnedEvent;
 
     [SerializeField] private NavMeshSurface _navMeshSurface;
 

@@ -21,6 +21,14 @@ public class HealthBarManagerMvvm : MonoCache
         EventManager.Instance.OnObjectSetActive += HandleObjectSetActive;
     }
 
+    protected override void OnDisabled()
+    {
+        if (EventManager.Instance != null)
+        {
+            EventManager.Instance.OnObjectSetActive -= HandleObjectSetActive;
+        }
+    }
+
     protected override void Run()
     {
         // Update the positions of the health bars to match the positions of the objects
@@ -38,8 +46,12 @@ public class HealthBarManagerMvvm : MonoCache
 
     private void HandleObjectSetActive(GameObject obj)
     {
+        if (obj == null)
+        {
+            // Handle the case where the object reference is null
+            return;
+        }
         BaseEnemy enemy = obj.GetComponent<BaseEnemy>();
-
         if (obj.activeSelf)
         {
             // If the object is being activated, create a new health bar view model and add it to the map

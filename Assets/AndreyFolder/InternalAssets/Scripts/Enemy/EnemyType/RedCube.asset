@@ -19,5 +19,5 @@ MonoBehaviour:
   _speed: 2
   _mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   _material: {fileID: 2100000, guid: a38df36ea8a9deb4b95423b529fb1f47, type: 2}
-  _gainExp: 25
+  _gainExp: 100
   _type: 0

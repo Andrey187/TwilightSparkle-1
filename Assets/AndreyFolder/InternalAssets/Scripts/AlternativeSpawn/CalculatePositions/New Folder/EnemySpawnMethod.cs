@@ -7,7 +7,7 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
     [SerializeField] private CinemachineVirtualCamera _virtualCamera;
     [SerializeField] protected float _spawnRadius = 1.5f;
     [SerializeField] protected float _colliderHitRadius = 0.3f;
-    [SerializeField] protected float _groupSpawn—ircleRadius = 20f;
+    [SerializeField] protected float _groupSpawnCircleRadius = 20f;
     protected bool isGround = false;
     protected RaycastHit hit;
 
@@ -50,7 +50,7 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
         float angleStep = 360f / 16f;
         for (int i = 0; i < 16; i++)
         {
-            Vector3 corner = _botsSpawnInRandomPointOnCircle + Quaternion.AngleAxis(i * angleStep, Vector3.up) * Vector3.forward * _groupSpawn—ircleRadius;
+            Vector3 corner = _botsSpawnInRandomPointOnCircle + Quaternion.AngleAxis(i * angleStep, Vector3.up) * Vector3.forward * _groupSpawnCircleRadius;
             Ray cornerRay = new Ray(corner, Vector3.down);
             if (!Physics.Raycast(cornerRay, out hit, distanceToCheckGround))
             {

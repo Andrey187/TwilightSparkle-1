@@ -32,8 +32,7 @@ public class PlayerStats : MonoCache
 
             if (_currentHealth <= 0)
             {
-                // Handle player death or other actions
-                // ...
+                Die();
             }
             else
             {
@@ -46,7 +45,15 @@ public class PlayerStats : MonoCache
 
     public int TalentPoints { get => _talentPoints; set => _talentPoints = value; }
 
-    public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
+    public int CurrentLevel
+    {
+        get => _currentLevel;
+        set
+        {
+            _currentLevel = value;
+            OnTalentChanged(); // Invoke the event when the current level changes
+        }
+    }
 
     public int CurrentExp { get => _currentExp; set => _currentExp = value; }
 
@@ -62,11 +69,18 @@ public class PlayerStats : MonoCache
 
     private void Die()
     {
-        
+        Action setDie = EventManager.Instance.PlayerDie;
+        setDie?.Invoke();
     }
 
     private void OnSpeedChanged()
     {
         SpeedChanged?.Invoke();
+    }
+
+    private void OnTalentChanged()
+    {
+        Action levelUp = EventManager.Instance.AbilityChoiceUI;
+        levelUp?.Invoke();
     }
 }
