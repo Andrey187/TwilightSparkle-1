@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,6 +57,10 @@ public class HealthBarManagerMvvm : MonoCache
         {
             // If the object is being activated, create a new health bar view model and add it to the map
             HealthBarView healthBarView = _healthBarPool.GetObjects(transform.position, _prefab);
+
+            Action<GameObject> objectCreated = EventManager.Instance.CreateHealthBar;
+            objectCreated?.Invoke(healthBarView.gameObject);
+
             if (healthBarView != null)
             {
                 _enemyHealthBarController = enemy.Get<HealthBarController>();
@@ -76,6 +81,9 @@ public class HealthBarManagerMvvm : MonoCache
             {
                 _objectToHealthBarMap.Remove(enemy);
                 _healthBarPool.ReturnObject(healthBarView);
+
+                Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyHealthBar;
+                objectReturnToPool?.Invoke(healthBarView.gameObject);
             }
         }
     }

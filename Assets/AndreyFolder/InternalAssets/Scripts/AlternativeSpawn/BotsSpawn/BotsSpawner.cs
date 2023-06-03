@@ -14,7 +14,7 @@ public class BotsSpawner : MonoCache
     private Dictionary<WaveSpawner.Wave, List<BaseEnemy>> _spawnedBotsForWave;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         InitCreatePool();
     }
@@ -59,15 +59,15 @@ public class BotsSpawner : MonoCache
 
     public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.05f);
 
         List<BaseEnemy> botsForWave = _spawnedBotsForWave[wave];
         BaseEnemy[] botPrefabs = botsForWave.ToArray();
+
+
         for (int j = 0; j < botPrefabs.Length; j++)
         {
-
             BaseEnemy botPrefab = botPrefabs[j].GetComponent<BaseEnemy>();
-
             // Check if there are any inactive bot objects in the pool that match the current wave and prefab
             BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
 
@@ -75,15 +75,23 @@ public class BotsSpawner : MonoCache
             wave.SpawnMethod.SpawnEnemies(wave);
             wave.SpawnMethod.GroundCheck();
 
+
+            Action<GameObject> objectCreated = EventManager.Instance.CreatedObject;
+            objectCreated?.Invoke(inactiveBot.gameObject);
+
             if (wave.SpawnMethod.ColliderCheck(inactiveBot.gameObject))
             {
                 Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
                 setObjectActive?.Invoke(inactiveBot.gameObject, true);
+                yield return new WaitForSeconds(0.05f);
             }
             else
             {
                 inactiveBot.gameObject.SetActive(false);
                 PoolObject<BaseEnemy>.Instance.ReturnObject(inactiveBot);
+
+                Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyedObject;
+                objectReturnToPool?.Invoke(gameObject);
             }
         }
     }

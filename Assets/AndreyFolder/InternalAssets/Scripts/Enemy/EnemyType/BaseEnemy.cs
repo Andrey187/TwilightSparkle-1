@@ -140,6 +140,10 @@ public abstract class BaseEnemy : MonoCache
     {
         Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);
+
+        Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyedObject;
+        objectReturnToPool?.Invoke(gameObject);
+
         LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
     }
 

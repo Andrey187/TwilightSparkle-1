@@ -8,9 +8,13 @@ public class EventManager : MonoBehaviour
     private Action<GameObject> _onObjectSetActive;//For check object active or enable
     private Action<GameObject> _wallsSpawnedEvent;//For Wall Spawn
 
-    private Action<BaseEnemy,int, IAbility, IDoTEffect> _takeAbilityDamage;//For TakeDamage
+    private Action<BaseEnemy, int, IAbility, IDoTEffect> _takeAbilityDamage;//For TakeDamage
     private Action _playerDeath;
     private Action _abilityChoice;
+    private Action<GameObject> _objectCreated;
+    private Action<GameObject> _objectDestroyed;
+    private Action<GameObject> _healthBarCreated;
+    private Action<GameObject> _healthBarDestroyed;
 
     private static EventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -55,7 +59,7 @@ public class EventManager : MonoBehaviour
         remove { _wallsSpawnedEvent -= value; }
     }
 
-    public event Action<BaseEnemy,int, IAbility, IDoTEffect> TakeAbilityDamage
+    public event Action<BaseEnemy, int, IAbility, IDoTEffect> TakeAbilityDamage
     {
         add { _takeAbilityDamage += value; }
         remove { _takeAbilityDamage -= value; }
@@ -72,6 +76,34 @@ public class EventManager : MonoBehaviour
         add { _abilityChoice += value; }
         remove { _abilityChoice -= value; }
     }
+
+    #region{Enemy}
+    public event Action<GameObject> ObjectCreated
+    {
+        add { _objectCreated += value; }
+        remove { _objectCreated -= value; }
+    }
+
+    public event Action<GameObject> ObjectDestroyed
+    {
+        add { _objectDestroyed += value; }
+        remove { _objectDestroyed -= value; }
+    }
+    #endregion
+
+    #region{UI}
+    public event Action<GameObject> HealthBarCreated
+    {
+        add { _healthBarCreated += value; }
+        remove { _healthBarCreated -= value; }
+    }
+
+    public event Action<GameObject> HealthBarDestroyed
+    {
+        add { _healthBarDestroyed += value; }
+        remove { _healthBarDestroyed -= value; }
+    }
+    #endregion
 
     public void SetObjectActive(GameObject obj, bool isActive)
     {
@@ -91,9 +123,9 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    public void AbillityDamage(BaseEnemy enemy,int amount , IAbility ability, IDoTEffect doTEffect)
+    public void AbillityDamage(BaseEnemy enemy, int amount, IAbility ability, IDoTEffect doTEffect)
     {
-        _takeAbilityDamage?.Invoke(enemy,amount, ability, doTEffect);
+        _takeAbilityDamage?.Invoke(enemy, amount, ability, doTEffect);
     }
 
     public void PlayerDie()
@@ -105,4 +137,28 @@ public class EventManager : MonoBehaviour
     {
         _abilityChoice?.Invoke();
     }
+    #region{Enemy}
+    public void CreatedObject(GameObject obj)
+    {
+        _objectCreated?.Invoke(obj);
+    }
+
+    public void DestroyedObject(GameObject obj)
+    {
+        _objectDestroyed?.Invoke(obj);
+    }
+    #endregion
+
+    #region{UI}
+    //UI HealthBarElements
+    public void CreateHealthBar(GameObject obj)
+    {
+        _healthBarCreated?.Invoke(obj);
+    }
+
+    public void DestroyHealthBar(GameObject obj)
+    {
+        _healthBarDestroyed?.Invoke(obj);
+    }
+    #endregion
 }
