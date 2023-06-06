@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class RenderingManager : MonoCache
 {
     public Camera mainCamera;
-    public List<Renderer> enemyObjects;
+    public List<Renderer> enemyObjectsRenderer;
     public List<Image> healthBarFill;
     public List<Image> healthBarBorder;
     private EventManager _eventManager;
@@ -34,12 +34,12 @@ public class RenderingManager : MonoCache
 
     private void AddEnemyObject(GameObject enemyObject)
     {
-        enemyObjects.Add(enemyObject.GetComponent<Renderer>());
+        enemyObjectsRenderer.Add(enemyObject.GetComponent<Renderer>());
     }
 
     private void RemoveEnemyObject(GameObject enemyObject)
     {
-        enemyObjects.Remove(enemyObject.GetComponent<Renderer>());
+        enemyObjectsRenderer.Remove(enemyObject.GetComponent<Renderer>());
     }
 
     private void AddHealthBar(GameObject _healthBar)
@@ -57,7 +57,7 @@ public class RenderingManager : MonoCache
     protected override void Run()
     {
         // Perform the visibility check and update rendering status for each object
-        foreach (Renderer enemyObject in enemyObjects)
+        foreach (Renderer enemyObject in enemyObjectsRenderer)
         {
             if (enemyObject.gameObject.activeInHierarchy)
             {
