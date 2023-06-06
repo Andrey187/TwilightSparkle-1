@@ -13,6 +13,8 @@ public abstract class BaseEnemy : MonoCache
     [SerializeField] protected float _pushbackDistance = 0.2f;
     [SerializeField] protected float _pushbackDuration = 0.5f;
     protected HealthBarController _healthBarController;
+    protected internal float _xpChangeTimer = 0f;
+    protected bool _shouldIncrementXPTimer = true;
     protected bool _isBeingPushed = false;
     protected Vector3 _pushbackDirection;
     protected Coroutine _pushbackCoroutine;
@@ -42,12 +44,30 @@ public abstract class BaseEnemy : MonoCache
         }
     }
 
-    protected override void OnDisabled() { }
+    protected override void OnDisabled()
+    {
+
+        ResetXPTimer();
+        SetShouldIncrementXPTimer(false);
+    }
 
     protected internal void OnCreate(Vector3 position, Quaternion rotation)
     {
         transform.position = position;
         transform.rotation = rotation;
+    }
+
+    protected override void Run()
+    {
+        if (_shouldIncrementXPTimer)
+        {
+            _xpChangeTimer += Time.deltaTime;
+
+            if (_xpChangeTimer >= 7f)
+            {
+                ReturnToPool();
+            }
+        }
     }
 
     protected virtual void TakeDamage(BaseEnemy enemy,int damageAmount, IAbility ability, IDoTEffect doTEffect)
@@ -61,6 +81,7 @@ public abstract class BaseEnemy : MonoCache
         {
             _currentHealth = ability.ApplyDamage(_currentHealth, damageAmount);
             _healthBarController.SetCurrentHealth(_currentHealth);
+            _xpChangeTimer = 0f;
             if (enemy != null && damageAmount > 0 && _currentHealth > 0)
             {
                 KnockBack();
@@ -136,15 +157,31 @@ public abstract class BaseEnemy : MonoCache
         _isBeingPushed = false;
     }
 
+    public void ResetXPTimer()
+    {
+        _xpChangeTimer = 0f;
+    }
+
+    public void SetShouldIncrementXPTimer(bool shouldIncrement)
+    {
+        _shouldIncrementXPTimer = shouldIncrement;
+    }
+
     public void Die()
     {
+        ReturnToPool();
+        LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
+    }
+
+    private void ReturnToPool()
+    {
+        PoolObject<BaseEnemy>.Instance.ReturnObject(this);
+
         Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);
 
         Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyedObject;
         objectReturnToPool?.Invoke(gameObject);
-
-        LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
     }
 
     private void NavMeshParams()

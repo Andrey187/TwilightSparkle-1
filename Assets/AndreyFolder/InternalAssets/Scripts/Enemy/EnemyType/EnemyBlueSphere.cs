@@ -8,6 +8,7 @@ public class EnemyBlueSphere : BaseEnemy
 
     protected override void OnDisabled()
     {
+        base.OnDisabled();
         if (EventManager.Instance != null)
         {
             EventManager.Instance.TakeAbilityDamage -= TakeDamage;

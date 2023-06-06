@@ -11,6 +11,7 @@ TagManager:
   - InnerWall
   - FireBall
   - FrostBall
+  - HealthBar
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Ground
   - Wall
   - Player
-  - 
+  - HealthBar
   - 
   - 
   - 

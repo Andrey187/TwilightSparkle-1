@@ -7,7 +7,7 @@ public class Counters : MonoCache
     [SerializeField] private TextMeshProUGUI _fpsText;
     [SerializeField] private TextMeshProUGUI _enemyText;
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private RenderingManager _renderingManager;
+    [SerializeField] private CameraArea _cameraArea;
 
     private float elapsedTime;
     private bool isTimerRunning;
@@ -33,7 +33,7 @@ public class Counters : MonoCache
         _fps = 1.0f / Time.deltaTime;
         _fpsText.text = "FPS: " + (int)_fps;
 
-        _enemyText.text = "Enemy Count: " + _renderingManager.enemyObjectsRenderer.Count;
+        _enemyText.text = "Enemy Count: " + _cameraArea.enemyObjectsRenderer.Count;
 
         if (isTimerRunning)
         {
