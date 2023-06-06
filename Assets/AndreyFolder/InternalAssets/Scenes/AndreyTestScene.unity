@@ -2026,7 +2026,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 983
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
@@ -3545,8 +3545,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   enemyObjectsRenderer: []
-  healthBarFill: []
-  healthBarBorder: []
 --- !u!1 &973808787
 GameObject:
   m_ObjectHideFlags: 0
@@ -4861,7 +4859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc26f018b5cd3a45908188652b451fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasTransform: {fileID: 1530239833}
+  CanvasTransform: {fileID: 761968573}
   TextMeshPrefab: {fileID: 5900774010683723399, guid: 1de00c4eb8a7679408b3ac40ba87d810, type: 3}
   _containerName: TextDoTContainer
 --- !u!1 &1333539848
@@ -5801,7 +5799,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 1832303693
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!224 &1530239833
 RectTransform:
@@ -6832,7 +6830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7477bcb293fc44fa272dcb62d4c3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasTransform: {fileID: 1530239833}
+  CanvasTransform: {fileID: 761968573}
   TextMeshPrefab: {fileID: 5900774010683723399, guid: 57f17726b55c6954a89570c7d56bdb8a, type: 3}
   _containerName: AbilityTextContainer
 --- !u!1 &1768740709
@@ -10832,7 +10830,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592969261670812039}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e51731ad50b6b964189ae9a405fd6f71, type: 3}
   m_Name: 

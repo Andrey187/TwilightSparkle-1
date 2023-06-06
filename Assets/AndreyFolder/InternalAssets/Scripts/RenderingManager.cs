@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,14 +8,19 @@ public class RenderingManager : MonoCache
 {
     public Camera mainCamera;
     public List<Renderer> enemyObjectsRenderer;
-    public List<Image> healthBarFill;
-    public List<Image> healthBarBorder;
+    public HashSet<Image> healthBarFill;
+    public HashSet<Image> healthBarBorder;
+    private Dictionary<Image, Image> healthBarBorderMap;
     private EventManager _eventManager;
 
     private void Start()
     {
+        healthBarFill = new HashSet<Image>();
+        healthBarBorder = new HashSet<Image>();
+        healthBarBorderMap = new Dictionary<Image, Image>();
         mainCamera = Camera.main;
         _eventManager = EventManager.Instance;
+
         // Subscribe to the events for adding/removing objects to/from the pools
         _eventManager.ObjectCreated += AddEnemyObject;
         _eventManager.ObjectDestroyed += RemoveEnemyObject;
@@ -44,60 +51,47 @@ public class RenderingManager : MonoCache
 
     private void AddHealthBar(GameObject _healthBar)
     {
-        healthBarFill.Add(_healthBar.transform.GetComponentInChildren<Image>());
-        healthBarBorder.Add(_healthBar.transform.Find("Border").GetComponent<Image>());
+        Image healthBarFillComponent = _healthBar.transform.GetComponentInChildren<Image>();
+        healthBarFill.Add(healthBarFillComponent);
+
+        Image healthBarBorderComponent = _healthBar.transform.Find("Border").GetComponent<Image>();
+        healthBarBorder.Add(healthBarBorderComponent);
+
+        healthBarBorderMap.Add(healthBarFillComponent, healthBarBorderComponent);
     }
 
     private void RemoveHealthBar(GameObject _healthBar)
     {
-        healthBarFill.Remove(_healthBar.transform.GetComponentInChildren<Image>());
-        healthBarBorder.Remove(_healthBar.transform.Find("Border").GetComponent<Image>());
+        Image healthBarFillComponent = _healthBar.transform.GetComponentInChildren<Image>();
+        healthBarFill.Remove(healthBarFillComponent);
+
+        Image healthBarBorderComponent = _healthBar.transform.Find("Border").GetComponent<Image>();
+        healthBarBorder.Remove(healthBarBorderComponent);
+
+        healthBarBorderMap.Remove(healthBarFillComponent);
     }
 
     protected override void Run()
     {
-        // Perform the visibility check and update rendering status for each object
         foreach (Renderer enemyObject in enemyObjectsRenderer)
         {
             if (enemyObject.gameObject.activeInHierarchy)
             {
-                if (IsVisibleFromCamera(mainCamera, enemyObject) && mainCamera != null)
-                {
-                    enemyObject.enabled = true;
-                }
-                else
-                {
-                    enemyObject.enabled = false;
-                }
+                bool isVisible = IsVisibleFromCamera(mainCamera, enemyObject) && mainCamera != null;
+                enemyObject.enabled = isVisible;
             }
         }
-
         foreach (Image healthBarFillComponent in healthBarFill)
         {
             if (healthBarFillComponent.gameObject.activeInHierarchy)
             {
-                if (IsVisibleFromCamera(mainCamera, healthBarFillComponent) && mainCamera != null)
-                {
-                    SetRenderingFillEnabled(true, healthBarFillComponent);
-                }
-                else
-                {
-                    SetRenderingFillEnabled(false, healthBarFillComponent);
-                }
-            }
-        }
+                bool isVisible = IsVisibleFromCamera(mainCamera, healthBarFillComponent) && mainCamera != null;
+                SetRenderingHealthBarViewEnabled(isVisible, healthBarFillComponent);
 
-        foreach (Image healthBarBorderComponent in healthBarBorder)
-        {
-            if (healthBarBorderComponent.gameObject.activeInHierarchy)
-            {
-                if (IsVisibleFromCamera(mainCamera, healthBarBorderComponent) && mainCamera != null)
+                Image healthBarBorderComponent;
+                if (healthBarBorderMap.TryGetValue(healthBarFillComponent, out healthBarBorderComponent))
                 {
-                    SetRenderingBorderEnabled(true, healthBarBorderComponent);
-                }
-                else
-                {
-                    SetRenderingBorderEnabled(false, healthBarBorderComponent);
+                    SetRenderingHealthBarViewEnabled(isVisible, healthBarBorderComponent);
                 }
             }
         }
@@ -115,11 +109,7 @@ public class RenderingManager : MonoCache
         return image != null && GeometryUtility.TestPlanesAABB(planes, bounds);
     }
 
-    private void SetRenderingFillEnabled(bool enabled, Image image)
-    {
-        image.enabled = enabled;
-    }
-    private void SetRenderingBorderEnabled(bool enabled, Image image)
+    private void SetRenderingHealthBarViewEnabled(bool enabled, Image image)
     {
         image.enabled = enabled;
     }
