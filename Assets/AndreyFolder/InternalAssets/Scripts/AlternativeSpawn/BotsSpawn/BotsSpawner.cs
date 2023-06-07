@@ -88,7 +88,7 @@ public class BotsSpawner : MonoCache
             else
             {
                 inactiveBot.gameObject.SetActive(false);
-                PoolObject<BaseEnemy>.Instance.ReturnObject(inactiveBot);
+                _botPool.ReturnObject(inactiveBot);
 
                 Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyedObject;
                 objectReturnToPool?.Invoke(gameObject);

@@ -1030,6 +1030,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 137256949}
+  - {fileID: 581172625}
   m_Father: {fileID: 1686733185}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1068,7 +1069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 50
+  m_ReferencePixelsPerUnit: 1
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
@@ -1136,7 +1137,6 @@ RectTransform:
   - {fileID: 1290979072}
   - {fileID: 1027396397}
   - {fileID: 1247023945}
-  - {fileID: 581172625}
   m_Father: {fileID: 1686733185}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1810,7 +1810,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &581172625
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1825,8 +1825,8 @@ RectTransform:
   m_Children:
   - {fileID: 2929252284778519371}
   - {fileID: 293369768}
-  m_Father: {fileID: 257025356}
-  m_RootOrder: 5
+  m_Father: {fileID: 238608393}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2373,7 +2373,7 @@ GameObject:
   - component: {fileID: 637277014}
   m_Layer: 5
   m_Name: HealthBarSlider
-  m_TagString: Untagged
+  m_TagString: HealthBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -3106,7 +3106,7 @@ MonoBehaviour:
   - Name: BlueCube
     Bot: {fileID: 8234744067425265355, guid: 7f15a5884fa1a3d45b3d963162b43507, type: 3}
     SpawnLimit: 200
-    WaveDuration: 20
+    WaveDuration: 10
     SpawnMethod: {fileID: 973808789}
 --- !u!114 &852128250
 MonoBehaviour:
@@ -3575,9 +3575,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _virtualCamera: {fileID: 2094273396}
-  _spawnRadius: 3
+  _spawnRadius: 1.5
   _colliderHitRadius: 2
-  _groupSpawnCircleRadius: 20
+  _groupSpawnCircleRadius: 10
 --- !u!1 &1027396396
 GameObject:
   m_ObjectHideFlags: 0
@@ -7039,9 +7039,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _virtualCamera: {fileID: 2094273396}
-  _spawnRadius: 3
+  _spawnRadius: 2
   _colliderHitRadius: 1
-  _groupSpawnCircleRadius: 20
+  _groupSpawnCircleRadius: 15
 --- !u!1 &1858783802
 GameObject:
   m_ObjectHideFlags: 0

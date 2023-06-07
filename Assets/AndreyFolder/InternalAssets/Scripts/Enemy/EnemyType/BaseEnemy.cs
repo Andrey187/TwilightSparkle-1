@@ -17,6 +17,7 @@ public abstract class BaseEnemy : MonoCache
     protected bool _shouldIncrementXPTimer = true;
     protected bool _isBeingPushed = false;
     protected Vector3 _pushbackDirection;
+    protected Renderer _renderer;
     protected Coroutine _pushbackCoroutine;
     protected Rigidbody _rigidbody;
     protected MeshFilter _meshFilter;
@@ -26,6 +27,7 @@ public abstract class BaseEnemy : MonoCache
     protected void Awake()
     {
         _rigidbody = Get<Rigidbody>();
+        _renderer = Get<Renderer>();
         _healthBarController = Get<HealthBarController>();
         _meshFilter = Get<MeshFilter>();
         _meshRenderer = Get<MeshRenderer>();
@@ -41,12 +43,14 @@ public abstract class BaseEnemy : MonoCache
         {
             _enemyType.SetCurrentHealthToMax();
             _currentHealth = _enemyType.CurrentHealth;
+            _renderer.enabled = false;
+            ResetXPTimer();
+            SetShouldIncrementXPTimer(true);
         }
     }
 
     protected override void OnDisabled()
     {
-
         ResetXPTimer();
         SetShouldIncrementXPTimer(false);
     }
@@ -63,7 +67,7 @@ public abstract class BaseEnemy : MonoCache
         {
             _xpChangeTimer += Time.deltaTime;
 
-            if (_xpChangeTimer >= 7f)
+            if (_xpChangeTimer >= 12f)
             {
                 ReturnToPool();
             }
@@ -175,8 +179,6 @@ public abstract class BaseEnemy : MonoCache
 
     private void ReturnToPool()
     {
-        PoolObject<BaseEnemy>.Instance.ReturnObject(this);
-
         Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);
 

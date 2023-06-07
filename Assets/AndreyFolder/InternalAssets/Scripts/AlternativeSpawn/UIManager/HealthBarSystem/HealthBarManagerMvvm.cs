@@ -80,11 +80,11 @@ public class HealthBarManagerMvvm : MonoCache
             // If the object is being deactivated, destroy its health bar view model and remove it from the map
             if (_objectToHealthBarMap.TryGetValue(enemy, out HealthBarView healthBarView))
             {
-                _objectToHealthBarMap.Remove(enemy);
-                _healthBarPool.ReturnObject(healthBarView);
-
                 Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyHealthBar;
                 objectReturnToPool?.Invoke(healthBarView.gameObject);
+
+                _objectToHealthBarMap.Remove(enemy);
+                _healthBarPool.ReturnObject(healthBarView);
             }
         }
     }

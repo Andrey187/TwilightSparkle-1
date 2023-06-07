@@ -8,6 +8,7 @@ public class EnemyRedCube : BaseEnemy
 
     protected override void OnDisabled()
     {
+        base.OnEnabled();
         if (EventManager.Instance != null)
         {
             EventManager.Instance.TakeAbilityDamage -= TakeDamage;
