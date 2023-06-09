@@ -15,6 +15,7 @@ public class EventManager : MonoBehaviour
     private Action<GameObject> _objectDestroyed;
     private Action<GameObject> _healthBarCreated;
     private Action<GameObject> _healthBarDestroyed;
+    private Action<GameObject> _dropCreated;
 
     private static EventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -105,6 +106,12 @@ public class EventManager : MonoBehaviour
     }
     #endregion
 
+    public event Action<GameObject> DropCreated
+    {
+        add { _dropCreated += value; }
+        remove { _dropCreated -= value; }
+    }
+
     public void SetObjectActive(GameObject obj, bool isActive)
     {
         obj.SetActive(isActive);
@@ -161,4 +168,9 @@ public class EventManager : MonoBehaviour
         _healthBarDestroyed?.Invoke(obj);
     }
     #endregion
+
+    public void DropsCreated(GameObject obj)
+    {
+        _dropCreated?.Invoke(obj);
+    }
 }

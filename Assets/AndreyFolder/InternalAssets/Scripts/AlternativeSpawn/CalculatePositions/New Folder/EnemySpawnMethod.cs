@@ -45,7 +45,7 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
         // Check the center of the spawn area
         Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);
         bool hasHit = Physics.Raycast(centerRay, out hit, distanceToCheckGround);
-
+        
         // Check the corners of the spawn area
         float angleStep = 360f / 16f;
         for (int i = 0; i < 16; i++)
@@ -61,21 +61,24 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
         isGround = hasHit;
     }
 
-    protected internal abstract bool ColliderCheck(GameObject bots);
-    
-    protected void CheckSphere(GameObject bots, Vector3 vector)
-    {
-        NavMeshAgent agent = bots.GetComponent<NavMeshAgent>();
-        BaseEnemy enemy = bots.GetComponent<BaseEnemy>();
+    protected internal abstract bool ColliderCheck<T>(T bots) where T : Component;
 
+    protected virtual void CheckSphere<T>(T obj, Vector3 vector) where T : Component
+    {
         if (Physics.CheckSphere(vector, _colliderHitRadius))
         {
-            if (bots != null)
+            if (obj != null)
             {
                 if (isGround)
                 {
-                    enemy?.OnCreate(vector, Quaternion.identity);
-                    agent.Warp(vector);
+                    Vector3 newPosition = obj.transform.position + vector; // Calculate new position relative to the current position
+                    obj.transform.position = newPosition;
+                    
+                    if (obj is BaseEnemy baseEnemy)
+                    {
+                        NavMeshAgent agent = baseEnemy.GetComponent<NavMeshAgent>();
+                        agent.Warp(vector);
+                    }
                 }
             }
             else
@@ -85,5 +88,5 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
         }
     }
 
-    protected internal abstract void SpawnEnemies(WaveSpawner.Wave wave);
+    protected internal abstract void SpawnEnemies();
 }

@@ -24,6 +24,7 @@ public abstract class BaseEnemy : MonoCache
     protected MeshRenderer _meshRenderer;
     protected NavMeshAgent _navMeshAgent;
 
+    
     protected void Awake()
     {
         _rigidbody = Get<Rigidbody>();
@@ -44,6 +45,7 @@ public abstract class BaseEnemy : MonoCache
             _enemyType.SetCurrentHealthToMax();
             _currentHealth = _enemyType.CurrentHealth;
             _renderer.enabled = false;
+            transform.rotation = Quaternion.identity;
             ResetXPTimer();
             SetShouldIncrementXPTimer(true);
         }
@@ -55,10 +57,10 @@ public abstract class BaseEnemy : MonoCache
         SetShouldIncrementXPTimer(false);
     }
 
-    protected internal void OnCreate(Vector3 position, Quaternion rotation)
+    protected internal Vector3 OnCreate(Vector3 position)
     {
         transform.position = position;
-        transform.rotation = rotation;
+        return transform.position;
     }
 
     protected override void Run()
@@ -174,6 +176,7 @@ public abstract class BaseEnemy : MonoCache
     public void Die()
     {
         ReturnToPool();
+        EventManager.Instance.DropsCreated(gameObject);
         LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
     }
 

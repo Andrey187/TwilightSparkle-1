@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CircleSpawnMethod : EnemySpawnMethod
 {
-    protected internal override void SpawnEnemies(WaveSpawner.Wave wave)
+    protected internal override void SpawnEnemies()
     {
         // Implement the logic for spawning enemies in a circle
 
@@ -13,7 +13,7 @@ public class CircleSpawnMethod : EnemySpawnMethod
         
     }
 
-    protected internal override bool ColliderCheck(GameObject bots)
+    protected internal override bool ColliderCheck<T>(T bots)
     {
         CheckSphere(bots, _botsSpawnInRandomPointOnCircle);
         return isGround;

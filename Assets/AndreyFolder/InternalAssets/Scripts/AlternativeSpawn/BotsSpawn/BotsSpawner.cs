@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class BotsSpawner : MonoCache
 {
-    [SerializeField] private CalculateSpawnPositionForBots _spawnAreaCalculation;
     [SerializeField] private WaveSpawner _waveSpawner;
     private PoolObject<BaseEnemy> _botPool;
     private IObjectFactory _objectFactory;
@@ -64,7 +63,6 @@ public class BotsSpawner : MonoCache
         List<BaseEnemy> botsForWave = _spawnedBotsForWave[wave];
         BaseEnemy[] botPrefabs = botsForWave.ToArray();
 
-
         for (int j = 0; j < botPrefabs.Length; j++)
         {
             BaseEnemy botPrefab = botPrefabs[j].GetComponent<BaseEnemy>();
@@ -72,14 +70,14 @@ public class BotsSpawner : MonoCache
             BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
 
             wave.SpawnMethod.NewUnitCircle();
-            wave.SpawnMethod.SpawnEnemies(wave);
+            wave.SpawnMethod.SpawnEnemies();
             wave.SpawnMethod.GroundCheck();
 
 
             Action<GameObject> objectCreated = EventManager.Instance.CreatedObject;
             objectCreated?.Invoke(inactiveBot.gameObject);
 
-            if (wave.SpawnMethod.ColliderCheck(inactiveBot.gameObject))
+            if (wave.SpawnMethod.ColliderCheck(inactiveBot))
             {
                 Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
                 setObjectActive?.Invoke(inactiveBot.gameObject, true);

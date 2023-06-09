@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CameraArea : MonoCache
 {
-    [SerializeField] private LayerMask targetLayerMask;
+    [SerializeField] private LayerMask _targetLayerMask;
     public List<Renderer> enemyObjectsRenderer;
     private HashSet<Image> healthBarFill;
     private HashSet<Image> healthBarBorder;
@@ -94,7 +94,7 @@ public class CameraArea : MonoCache
 
     private void OnTriggerEnter(Collider other)
     {
-        if (targetLayerMask == (targetLayerMask | (1 << other.gameObject.layer)))
+        if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
             Renderer renderer = other.GetComponent<Renderer>();
             if (renderer != null && enemyObjectsRenderer.Contains(renderer))
@@ -129,7 +129,7 @@ public class CameraArea : MonoCache
 
     private void OnTriggerExit(Collider other)
     {
-        if (targetLayerMask == (targetLayerMask | (1 << other.gameObject.layer)))
+        if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
             Renderer renderer = other.GetComponent<Renderer>();
             if (renderer != null && enemyObjectsRenderer.Contains(renderer))
