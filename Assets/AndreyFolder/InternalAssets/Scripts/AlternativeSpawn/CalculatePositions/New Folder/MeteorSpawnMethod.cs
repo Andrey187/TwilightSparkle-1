@@ -12,8 +12,6 @@ public class MeteorSpawnMethod : GroupSpawnMethod
                 Vector3 newPosition = obj.transform.position + vector; // Calculate new position relative to the current position
                 obj.transform.position = newPosition;
                 
-                Debug.Log(newPosition + " newPosition");
-                Debug.Log(obj.transform.position + " obj.transform.position");
                 if (obj is BaseEnemy baseEnemy)
                 {
                     NavMeshAgent agent = baseEnemy.GetComponent<NavMeshAgent>();

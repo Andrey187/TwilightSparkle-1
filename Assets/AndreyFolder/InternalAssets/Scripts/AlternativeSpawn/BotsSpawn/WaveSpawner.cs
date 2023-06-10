@@ -19,26 +19,32 @@ public class WaveSpawner : MonoCache
 
     private void Start()
     {
-        foreach(var a in Waves)
+        StartCoroutine(SpawnFirstWave()); // Start the first wave immediately
+
+        for (int i = 0; i < Waves.Length; i++) // Start from index 1 for subsequent waves
         {
-            StartCoroutine(SpawnWave(a));
+            StopCoroutine(SpawnFirstWave());
+            StartCoroutine(SpawnWave(Waves[i], false));
         }
     }
 
-    private IEnumerator SpawnWave(Wave wave)
+    private IEnumerator SpawnWave(Wave wave, bool isFirstWave)
     {
-        float timeAccumulator = 0f;
+        if (!isFirstWave)
+        {
+            yield return new WaitForSeconds(wave.WaveDuration); // Wait for the specified WaveDuration before spawning the wave
+        }
 
         while (true)
         {
-            if (timeAccumulator >= wave.WaveDuration)
-            {
-                yield return StartCoroutine(_botSpawner.SpawnObjects(wave));
-                timeAccumulator = 0f;
-            }
+            yield return StartCoroutine(_botSpawner.SpawnObjects(wave));
 
-            timeAccumulator += Time.deltaTime;
-            yield return null;
+            yield return new WaitForSeconds(wave.WaveDuration); // Wait for the specified WaveDuration before spawning the next wave
         }
+    }
+    private IEnumerator SpawnFirstWave()
+    {
+        yield return new WaitForSeconds(1f); // Wait for 1 second before spawning the first wave
+        StartCoroutine(SpawnWave(Waves[0], true)); // Start the first wave
     }
 }
