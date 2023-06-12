@@ -74,12 +74,12 @@ public class BotsSpawner : MonoCache
             wave.SpawnMethod.GroundCheck();
 
 
-            Action<GameObject> objectCreated = EventManager.Instance.CreatedObject;
+            Action<GameObject> objectCreated = EnemyEventManager.Instance.CreatedObject;
             objectCreated?.Invoke(inactiveBot.gameObject);
 
             if (wave.SpawnMethod.ColliderCheck(inactiveBot))
             {
-                Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
+                Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
                 setObjectActive?.Invoke(inactiveBot.gameObject, true);
                 yield return new WaitForSeconds(0.05f);
             }
@@ -88,7 +88,7 @@ public class BotsSpawner : MonoCache
                 inactiveBot.gameObject.SetActive(false);
                 _botPool.ReturnObject(inactiveBot);
 
-                Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyedObject;
+                Action<GameObject> objectReturnToPool = EnemyEventManager.Instance.DestroyedObject;
                 objectReturnToPool?.Invoke(gameObject);
             }
         }

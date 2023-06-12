@@ -17,7 +17,7 @@ public class FireBallAbility: BaseAbilities
     {
         _fireBall = new FireBall();
         _fireDotEffect = new FireDoTEffect();
-        _setDamage = EventManager.Instance.AbillityDamage;
+        _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _fireBall.CurrentAbility = _fireBall;
         _fireBall.DoTEffect = _fireDotEffect;
     }

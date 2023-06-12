@@ -10,31 +10,32 @@ public class CameraArea : MonoCache
     private HashSet<Image> healthBarBorder;
     private Dictionary<Image, Renderer> _healthBarFillToEnemyMap;
     private Dictionary<Image, Renderer> _healthBarBorderToEnemyMap;
-    private EventManager _eventManager;
-
+    private EnemyEventManager _enemyEventManager;
+    private UIEventManager _uiEventManager;
     private void Start()
     {
         healthBarFill = new HashSet<Image>();
         healthBarBorder = new HashSet<Image>();
         _healthBarFillToEnemyMap = new Dictionary<Image, Renderer>();
         _healthBarBorderToEnemyMap = new Dictionary<Image, Renderer>();
-        _eventManager = EventManager.Instance;
+        _enemyEventManager = EnemyEventManager.Instance;
+        _uiEventManager = UIEventManager.Instance;
 
         // Subscribe to the events for adding/removing objects to/from the pools
-        _eventManager.ObjectCreated += AddEnemyObject;
-        _eventManager.ObjectDestroyed += RemoveEnemyObject;
+        _enemyEventManager.ObjectCreated += AddEnemyObject;
+        _enemyEventManager.ObjectDestroyed += RemoveEnemyObject;
 
-        _eventManager.HealthBarCreated += AddHealthBar;
-        _eventManager.HealthBarDestroyed += RemoveHealthBar;
+        _uiEventManager.HealthBarCreated += AddHealthBar;
+        _uiEventManager.HealthBarDestroyed += RemoveHealthBar;
     }
     protected override void OnDisabled()
     {
         // Unsubscribe from the events to avoid memory leaks
-        _eventManager.ObjectCreated -= AddEnemyObject;
-        _eventManager.ObjectDestroyed -= RemoveEnemyObject;
+        _enemyEventManager.ObjectCreated -= AddEnemyObject;
+        _enemyEventManager.ObjectDestroyed -= RemoveEnemyObject;
 
-        _eventManager.HealthBarCreated -= AddHealthBar;
-        _eventManager.HealthBarDestroyed -= RemoveHealthBar;
+        _uiEventManager.HealthBarCreated -= AddHealthBar;
+        _uiEventManager.HealthBarDestroyed -= RemoveHealthBar;
     }
 
     private void AddEnemyObject(GameObject enemyObject)

@@ -15,7 +15,7 @@ public class FrostBallAbility : BaseAbilities
     private void Start()
     {
         _frostBall = new FrostBall();
-        _setDamage = EventManager.Instance.AbillityDamage;
+        _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _frostBall.CurrentAbility = _frostBall;
     }
 

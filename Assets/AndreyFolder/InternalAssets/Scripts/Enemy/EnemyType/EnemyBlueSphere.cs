@@ -3,15 +3,15 @@ public class EnemyBlueSphere : BaseEnemy
     protected override void OnEnabled()
     {
         base.OnEnabled();
-        EventManager.Instance.TakeAbilityDamage += TakeDamage;
+        AbilityEventManager.Instance.TakeAbilityDamage += TakeDamage;
     }
 
     protected override void OnDisabled()
     {
         base.OnDisabled();
-        if (EventManager.Instance != null)
+        if (AbilityEventManager.Instance != null)
         {
-            EventManager.Instance.TakeAbilityDamage -= TakeDamage;
+            AbilityEventManager.Instance.TakeAbilityDamage -= TakeDamage;
         }
     }
 

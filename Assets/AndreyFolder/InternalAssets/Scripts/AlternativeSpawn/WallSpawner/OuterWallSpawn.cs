@@ -29,7 +29,7 @@ public class OuterWallSpawn : WallsSpawner
     }
     private void SpawnObjects()
     {
-        Action<GameObject> setObjectActive = EventManager.Instance.WallsSpawned;
+        Action<GameObject> setObjectActive = WallsEventManager.Instance.WallsSpawned;
         for (int i =0; i < _calculatePos._listOuterWall.Length; i++)
         {
             _calculatePos._listOuterWall[i] = GetObjectFromPool(transform.position, _prefabsWall);

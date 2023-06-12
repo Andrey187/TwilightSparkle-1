@@ -7,13 +7,14 @@ public class UIPanelController : MonoBehaviour
     [SerializeField] private GameObject restartGamePanel;
     [SerializeField] private GameObject abilitySelectionPanel;
     [SerializeField] private AbilityChoicePool abilityChoicePool;
-    private EventManager eventManager;
-
+    private UIEventManager _uIEventManager;
+    private PlayerEventManager _playerEventManager;
     private void Start()
     {
-        eventManager = EventManager.Instance;
-        eventManager.PlayerDeath += HandlePlayerDeath;
-        eventManager.AbilityChoice += HandleLevelIncreased;
+        _uIEventManager = UIEventManager.Instance;
+        _playerEventManager = PlayerEventManager.Instance;
+        _playerEventManager.PlayerDeath += HandlePlayerDeath;
+        _uIEventManager.AbilityChoice += HandleLevelIncreased;
 
         // Subscribe to the ButtonObtainedFromPool event
         abilityChoicePool.ButtonObtainedFromPool += HandleButtonObtainedFromPool;
@@ -21,8 +22,8 @@ public class UIPanelController : MonoBehaviour
 
     private void OnDisable()
     {
-        eventManager.PlayerDeath -= HandlePlayerDeath;
-        eventManager.AbilityChoice -= HandleLevelIncreased;
+        _playerEventManager.PlayerDeath -= HandlePlayerDeath;
+        _uIEventManager.AbilityChoice -= HandleLevelIncreased;
         abilityChoicePool.ButtonObtainedFromPool -= HandleButtonObtainedFromPool;
     }
 

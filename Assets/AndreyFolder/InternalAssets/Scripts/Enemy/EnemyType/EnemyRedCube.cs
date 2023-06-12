@@ -3,15 +3,15 @@ public class EnemyRedCube : BaseEnemy
     protected override void OnEnabled()
     {
         base.OnEnabled();
-        EventManager.Instance.TakeAbilityDamage += TakeDamage;
+        AbilityEventManager.Instance.TakeAbilityDamage += TakeDamage;
     }
 
     protected override void OnDisabled()
     {
         base.OnEnabled();
-        if (EventManager.Instance != null)
+        if (AbilityEventManager.Instance != null)
         {
-            EventManager.Instance.TakeAbilityDamage -= TakeDamage;
+            AbilityEventManager.Instance.TakeAbilityDamage -= TakeDamage;
         }
     }
 

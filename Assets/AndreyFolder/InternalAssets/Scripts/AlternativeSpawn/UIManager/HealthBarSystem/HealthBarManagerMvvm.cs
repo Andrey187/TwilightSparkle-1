@@ -20,14 +20,14 @@ public class HealthBarManagerMvvm : MonoCache
         PoolObject<HealthBarView>.CreateInstance(_prefab, 15,
             _canvasTransform, "HealthBarsContainer");
         _healthBarPool = PoolObject<HealthBarView>.Instance;
-        EventManager.Instance.OnObjectSetActive += HandleObjectSetActive;
+        EnemyEventManager.Instance.OnObjectSetActive += HandleObjectSetActive;
     }
 
     protected override void OnDisabled()
     {
-        if (EventManager.Instance != null)
+        if (EnemyEventManager.Instance != null)
         {
-            EventManager.Instance.OnObjectSetActive -= HandleObjectSetActive;
+            EnemyEventManager.Instance.OnObjectSetActive -= HandleObjectSetActive;
         }
     }
 
@@ -59,7 +59,7 @@ public class HealthBarManagerMvvm : MonoCache
             // If the object is being activated, create a new health bar view model and add it to the map
             HealthBarView healthBarView = _healthBarPool.GetObjects(transform.position, _prefab);
 
-            Action<GameObject> objectCreated = EventManager.Instance.CreateHealthBar;
+            Action<GameObject> objectCreated = UIEventManager.Instance.CreateHealthBar;
             objectCreated?.Invoke(healthBarView.gameObject);
 
             if (healthBarView != null)
@@ -80,7 +80,7 @@ public class HealthBarManagerMvvm : MonoCache
             // If the object is being deactivated, destroy its health bar view model and remove it from the map
             if (_objectToHealthBarMap.TryGetValue(enemy, out HealthBarView healthBarView))
             {
-                Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyHealthBar;
+                Action<GameObject> objectReturnToPool = UIEventManager.Instance.DestroyHealthBar;
                 objectReturnToPool?.Invoke(healthBarView.gameObject);
 
                 _objectToHealthBarMap.Remove(enemy);

@@ -176,16 +176,16 @@ public abstract class BaseEnemy : MonoCache
     public void Die()
     {
         ReturnToPool();
-        EventManager.Instance.DropsCreated(gameObject);
+        DropEventManager.Instance.DropsCreated(gameObject);
         LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
     }
 
     private void ReturnToPool()
     {
-        Action<GameObject, bool> setObjectActive = EventManager.Instance.SetObjectActive;
+        Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);
 
-        Action<GameObject> objectReturnToPool = EventManager.Instance.DestroyedObject;
+        Action<GameObject> objectReturnToPool = EnemyEventManager.Instance.DestroyedObject;
         objectReturnToPool?.Invoke(gameObject);
     }
 

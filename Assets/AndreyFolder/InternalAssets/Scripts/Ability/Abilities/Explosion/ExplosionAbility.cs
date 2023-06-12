@@ -21,7 +21,7 @@ public class ExplosionAbility : BaseAbilities
     {
         _explosion = new Explosion();
         _fireDotEffect = new FireDoTEffect();
-        _setDamage = EventManager.Instance.AbillityDamage;
+        _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _explosion.CurrentAbility = _explosion;
         _explosion.DoTEffect = _fireDotEffect;
     }

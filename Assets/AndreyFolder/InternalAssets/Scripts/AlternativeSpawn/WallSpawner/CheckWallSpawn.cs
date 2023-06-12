@@ -7,25 +7,25 @@ public class CheckWallSpawn : MonoCache
     public event WallsSpawnedEventHandler WallsSpawnedEvent;
 
     [SerializeField] private NavMeshSurface _navMeshSurface;
-    private EventManager _eventManager;
+    private WallsEventManager _wallsEventManager;
 
     private void Start()
     {
-        _eventManager = EventManager.Instance;
+        _wallsEventManager = WallsEventManager.Instance;
         // Subscribe to the walls spawned event
-        _eventManager.WallsSpawnedEvent += HandleWallsSpawned;
+        _wallsEventManager.WallsSpawnedEvent += HandleWallsSpawned;
     }
 
     protected override void OnDisabled()
     {
-        _eventManager.WallsSpawnedEvent -= HandleWallsSpawned;
+        _wallsEventManager.WallsSpawnedEvent -= HandleWallsSpawned;
     }
 
     private void HandleWallsSpawned(GameObject obj)
     {
         if (WallManager.WallsSpawnedCount >= WallManager.TotalWallsToSpawn)
         {
-            EventManager.Instance.WallsSpawnedEvent -= HandleWallsSpawned;
+            WallsEventManager.Instance.WallsSpawnedEvent -= HandleWallsSpawned;
             if (_navMeshSurface != null)
             {
                 _navMeshSurface.BuildNavMesh();

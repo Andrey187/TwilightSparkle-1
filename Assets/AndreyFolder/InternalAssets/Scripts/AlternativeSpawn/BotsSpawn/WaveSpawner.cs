@@ -28,6 +28,14 @@ public class WaveSpawner : MonoCache
         }
     }
 
+    protected override void OnDisabled()
+    {
+        for (int i = 0; i < Waves.Length; i++) // Start from index 1 for subsequent waves
+        {
+            StopCoroutine(SpawnWave(Waves[i], false));
+        }
+    }
+
     private IEnumerator SpawnWave(Wave wave, bool isFirstWave)
     {
         if (!isFirstWave)

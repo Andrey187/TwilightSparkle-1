@@ -38,7 +38,7 @@ public class InnerWallSpawn : WallsSpawner
     {
         Collider[] hitColliders = new Collider[WallManager.TotalWallsToSpawn];
         Collider[] sameColliders = new Collider[WallManager.TotalWallsToSpawn];
-        Action<GameObject> setObjectActive = EventManager.Instance.WallsSpawned;
+        Action<GameObject> setObjectActive = WallsEventManager.Instance.WallsSpawned;
 
         for (int i = _spawnedObjects.Count; i < WallManager.TotalWallsToSpawn; i++)
         {

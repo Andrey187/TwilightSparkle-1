@@ -21,7 +21,7 @@ public class ArcaneBallAbility : BaseAbilities
     private void Start()
     {
         _arcaneBall = new ArcaneBall();
-        _setDamage = EventManager.Instance.AbillityDamage;
+        _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _arcaneBall.CurrentAbility = _arcaneBall;
     }
 

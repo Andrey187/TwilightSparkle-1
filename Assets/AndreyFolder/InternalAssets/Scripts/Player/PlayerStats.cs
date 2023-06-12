@@ -69,7 +69,7 @@ public class PlayerStats : MonoCache
 
     private void Die()
     {
-        Action setDie = EventManager.Instance.PlayerDie;
+        Action setDie = PlayerEventManager.Instance.PlayerDie;
         setDie?.Invoke();
     }
 
@@ -80,7 +80,7 @@ public class PlayerStats : MonoCache
 
     private void OnTalentChanged()
     {
-        Action levelUp = EventManager.Instance.AbilityChoiceUI;
+        Action levelUp = UIEventManager.Instance.AbilityChoiceUI;
         levelUp?.Invoke();
     }
 }

@@ -12,7 +12,7 @@ public class DropManager : MonoBehaviour
 
     private PoolObject<BaseDrop> _objectsToPool;
     private IObjectFactory _objectFactory;
-    private EventManager _eventManager;
+    private DropEventManager _eventManager;
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public class DropManager : MonoBehaviour
             PoolObject<BaseDrop>.CreateInstance(baseDrop, 0, gameObject.transform, baseDrop.name + "_Drops");
             _objectsToPool = PoolObject<BaseDrop>.Instance;
         }
-        _eventManager = EventManager.Instance;
+        _eventManager = DropEventManager.Instance;
         _eventManager.DropCreated += EnemyKilled;
     }
 
