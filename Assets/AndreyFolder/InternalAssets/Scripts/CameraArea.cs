@@ -5,19 +5,19 @@ using UnityEngine.UI;
 public class CameraArea : MonoCache
 {
     [SerializeField] private LayerMask _targetLayerMask;
-    public List<Renderer> enemyObjectsRenderer;
+    public List<SkinnedMeshRenderer> enemyObjectsRenderer;
     private HashSet<Image> healthBarFill;
     private HashSet<Image> healthBarBorder;
-    private Dictionary<Image, Renderer> _healthBarFillToEnemyMap;
-    private Dictionary<Image, Renderer> _healthBarBorderToEnemyMap;
+    private Dictionary<Image, SkinnedMeshRenderer> _healthBarFillToEnemyMap;
+    private Dictionary<Image, SkinnedMeshRenderer> _healthBarBorderToEnemyMap;
     private EnemyEventManager _enemyEventManager;
     private UIEventManager _uiEventManager;
     private void Start()
     {
         healthBarFill = new HashSet<Image>();
         healthBarBorder = new HashSet<Image>();
-        _healthBarFillToEnemyMap = new Dictionary<Image, Renderer>();
-        _healthBarBorderToEnemyMap = new Dictionary<Image, Renderer>();
+        _healthBarFillToEnemyMap = new Dictionary<Image, SkinnedMeshRenderer>();
+        _healthBarBorderToEnemyMap = new Dictionary<Image, SkinnedMeshRenderer>();
         _enemyEventManager = EnemyEventManager.Instance;
         _uiEventManager = UIEventManager.Instance;
 
@@ -40,7 +40,7 @@ public class CameraArea : MonoCache
 
     private void AddEnemyObject(GameObject enemyObject)
     {
-        Renderer renderer = enemyObject.GetComponent<Renderer>();
+        SkinnedMeshRenderer renderer = enemyObject.GetComponent<BaseEnemy>()._skinnedMesh;
         if (renderer != null)
         {
             enemyObjectsRenderer.Add(renderer);
@@ -49,7 +49,7 @@ public class CameraArea : MonoCache
 
     private void RemoveEnemyObject(GameObject enemyObject)
     {
-        Renderer renderer = enemyObject.GetComponent<Renderer>();
+        SkinnedMeshRenderer renderer = enemyObject.GetComponent<BaseEnemy>()._skinnedMesh;
         if (renderer != null)
         {
             enemyObjectsRenderer.Remove(renderer);
@@ -65,17 +65,17 @@ public class CameraArea : MonoCache
         Image healthBarBorderComponent = _healthBar.transform.Find("Border").GetComponent<Image>();
         healthBarBorder.Add(healthBarBorderComponent);
 
-        foreach (Renderer enemyRenderer in enemyObjectsRenderer)
+        foreach (SkinnedMeshRenderer enemyRenderer in enemyObjectsRenderer)
         {
-            if (enemyRenderer.gameObject.activeInHierarchy)
+            if (enemyRenderer.gameObject.transform.parent.gameObject.activeInHierarchy)
             {
                 _healthBarFillToEnemyMap[healthBarFillComponent] = enemyRenderer;
             }
         }
 
-        foreach (Renderer enemyRenderer in enemyObjectsRenderer)
+        foreach (SkinnedMeshRenderer enemyRenderer in enemyObjectsRenderer)
         {
-            if (enemyRenderer.gameObject.activeInHierarchy)
+            if (enemyRenderer.gameObject.transform.parent.gameObject.activeInHierarchy)
             {
                 _healthBarBorderToEnemyMap[healthBarBorderComponent] = enemyRenderer;
             }
@@ -97,11 +97,11 @@ public class CameraArea : MonoCache
     {
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
-            Renderer renderer = other.GetComponent<Renderer>();
-            if (renderer != null && enemyObjectsRenderer.Contains(renderer))
+            BaseEnemy enemy = other.GetComponent<BaseEnemy>();
+            
+            if(enemy._skinnedMesh != null && enemyObjectsRenderer.Contains(enemy._skinnedMesh))
             {
-                renderer.enabled = true;
-                BaseEnemy enemy = renderer.GetComponent<BaseEnemy>();
+                enemy._skinnedMesh.enabled = true;
 
                 if (enemy != null)
                 {
@@ -109,17 +109,17 @@ public class CameraArea : MonoCache
                     enemy.SetShouldIncrementHPTimer(false); // Stop incrementing the timer
                 }
 
-                foreach (KeyValuePair<Image, Renderer> kvp in _healthBarFillToEnemyMap)
+                foreach (KeyValuePair<Image, SkinnedMeshRenderer> kvp in _healthBarFillToEnemyMap)
                 {
-                    if (kvp.Value == renderer)
+                    if (kvp.Value == enemy._skinnedMesh)
                     {
                         SetRenderingHealthBarViewEnabled(true, kvp.Key);
                     }
                 }
 
-                foreach (KeyValuePair<Image, Renderer> kvp in _healthBarBorderToEnemyMap)
+                foreach (KeyValuePair<Image, SkinnedMeshRenderer> kvp in _healthBarBorderToEnemyMap)
                 {
-                    if (kvp.Value == renderer)
+                    if (kvp.Value == enemy._skinnedMesh)
                     {
                         SetRenderingHealthBarViewEnabled(true, kvp.Key);
                     }
@@ -132,18 +132,19 @@ public class CameraArea : MonoCache
     {
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
-            Renderer renderer = other.GetComponent<Renderer>();
+            SkinnedMeshRenderer renderer = other.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+            
             if (renderer != null && enemyObjectsRenderer.Contains(renderer))
             {
                 renderer.enabled = false;
 
-                BaseEnemy enemy = renderer.GetComponent<BaseEnemy>();
+                BaseEnemy enemy = renderer.GetComponentInParent<BaseEnemy>();
                 if (enemy != null)
                 {
                     enemy.SetShouldIncrementHPTimer(true); // Start incrementing the timer
                 }
 
-                foreach (KeyValuePair<Image, Renderer> kvp in _healthBarFillToEnemyMap)
+                foreach (KeyValuePair<Image, SkinnedMeshRenderer> kvp in _healthBarFillToEnemyMap)
                 {
                     if (kvp.Value == renderer)
                     {
@@ -151,7 +152,7 @@ public class CameraArea : MonoCache
                     }
                 }
 
-                foreach (KeyValuePair<Image, Renderer> kvp in _healthBarBorderToEnemyMap)
+                foreach (KeyValuePair<Image, SkinnedMeshRenderer> kvp in _healthBarBorderToEnemyMap)
                 {
                     if (kvp.Value == renderer)
                     {

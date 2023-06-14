@@ -24,7 +24,7 @@ public class FireBallAbility: BaseAbilities
     private void OnTriggerEnter(Collider other)
     {
         // Check if the object that collided with the fireball is an enemy
-        BaseEnemy enemy = other.GetComponent<BaseEnemy>();
+        BaseEnemy enemy = other.GetComponentInParent<BaseEnemy>();
         if (enemy != null)
         {
             // If so, damage the enemy and destroy the fireball

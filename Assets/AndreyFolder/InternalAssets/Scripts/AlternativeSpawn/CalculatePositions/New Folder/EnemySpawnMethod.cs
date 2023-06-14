@@ -76,7 +76,7 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
                     
                     if (obj is BaseEnemy baseEnemy)
                     {
-                        NavMeshAgent agent = baseEnemy.GetComponent<NavMeshAgent>();
+                        NavMeshAgent agent = baseEnemy.GetComponentInChildren<NavMeshAgent>();
                         agent.Warp(vector);
                     }
                 }

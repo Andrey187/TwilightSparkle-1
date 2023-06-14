@@ -14,8 +14,8 @@ public class EnemyAttack : MonoCache
 
     private void Start()
     {
-        _baseEnemy = Get<BaseEnemy>();
-        _damageAmount = _baseEnemy._enemyType.Damage;
+        _baseEnemy = ParentGet<BaseEnemy>();
+        _damageAmount = _baseEnemy.EnemyType.Damage;
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerStats = _player.GetComponent<PlayerStats>();
         _playerCollider = _player.GetComponentInChildren<Collider>();
@@ -55,5 +55,6 @@ public class EnemyAttack : MonoCache
     private void AttackPlayer()
     {
         _playerStats.CurrentHealth -= _damageAmount;
+        _baseEnemy.ChangeState(new AttackingState());
     }
 }

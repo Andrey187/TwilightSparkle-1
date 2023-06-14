@@ -4,48 +4,44 @@ using UnityEngine.AI;
 using System.Collections;
 using DamageNumber;
 
-[RequireComponent(typeof(MeshFilter), typeof(Mesh), typeof(MeshRenderer))]
-[RequireComponent(typeof(Rigidbody), typeof(NavMeshAgent))]
 public abstract class BaseEnemy : MonoCache
 {
-    [SerializeField] protected internal EnemyData _enemyType;
+    [SerializeField] protected internal EnemyData EnemyType;
     [SerializeField] protected int _currentHealth;
     [SerializeField] protected int _maxHealth;
     [SerializeField] protected float _pushbackDistance = 0.2f;
     [SerializeField] protected float _pushbackDuration = 0.5f;
     protected HealthBarController _healthBarController;
-    protected internal float _hpChangeTimer = 0f;
+    protected internal EnemyState CurrentState;
+    protected internal float HpChangeTimer = 0f;
     protected bool _shouldIncrementHPTimer = true;
     protected bool _isBeingPushed = false;
     protected Vector3 _pushbackDirection;
-    protected Renderer _renderer;
     protected Coroutine _pushbackCoroutine;
     protected Rigidbody _rigidbody;
-    protected MeshFilter _meshFilter;
-    protected MeshRenderer _meshRenderer;
     protected NavMeshAgent _navMeshAgent;
+    protected internal Animator Animator;
+    protected internal SkinnedMeshRenderer _skinnedMesh;
 
     protected void Awake()
     {
+        Animator = Get<Animator>();
         _rigidbody = Get<Rigidbody>();
-        _renderer = Get<Renderer>();
+        _skinnedMesh = ChildrenGet<SkinnedMeshRenderer>();
         _healthBarController = Get<HealthBarController>();
-        _meshFilter = Get<MeshFilter>();
-        _meshRenderer = Get<MeshRenderer>();
         _navMeshAgent = Get<NavMeshAgent>();
-        _meshFilter.mesh = _enemyType.Mesh;
-        _meshRenderer.material = _enemyType.Material;
+
         NavMeshParams();
     }
 
     protected override void OnEnabled()
     {
-        if (_enemyType != null)
+        if (EnemyType != null)
         {
-            _enemyType.SetCurrentHealthToMax();
-            _currentHealth = _enemyType.CurrentHealth;
-            _maxHealth = _enemyType.MaxHealth;
-            _renderer.enabled = false;
+            EnemyType.SetCurrentHealthToMax();
+            _currentHealth = EnemyType.CurrentHealth;
+            _maxHealth = EnemyType.MaxHealth;
+            _skinnedMesh.enabled = false;
             transform.rotation = Quaternion.identity;
             ResetHPTimer();
             SetShouldIncrementHPTimer(true);
@@ -74,13 +70,28 @@ public abstract class BaseEnemy : MonoCache
         return transform.position;
     }
 
+    protected internal void ChangeState(EnemyState newState)
+    {
+        if (CurrentState != null)
+        {
+            CurrentState.Exit(this);
+        }
+
+        CurrentState = newState;
+
+        if (CurrentState != null)
+        {
+            CurrentState.Enter(this);
+        }
+    }
+
     protected override void Run()
     {
         if (_shouldIncrementHPTimer)
         {
-            _hpChangeTimer += Time.deltaTime;
+            HpChangeTimer += Time.deltaTime;
 
-            if (_hpChangeTimer >= 12f)
+            if (HpChangeTimer >= 12f)
             {
                 ReturnToPool();
             }
@@ -97,7 +108,7 @@ public abstract class BaseEnemy : MonoCache
         if (enemy == this)
         {
             CurrentHealth = ability.ApplyDamage(CurrentHealth, damageAmount);
-            _hpChangeTimer = 0f;
+            HpChangeTimer = 0f;
             if (enemy != null && damageAmount > 0 && CurrentHealth > 0)
             {
                 KnockBack();
@@ -149,6 +160,7 @@ public abstract class BaseEnemy : MonoCache
             if (!_isBeingPushed)
             {
                 _pushbackDirection = -transform.forward;
+                ChangeState(new TakingDamageState());
                 _pushbackCoroutine = StartCoroutine(MoveToDestination());
             }
         }
@@ -173,7 +185,7 @@ public abstract class BaseEnemy : MonoCache
 
     public void ResetHPTimer()
     {
-        _hpChangeTimer = 0f;
+        HpChangeTimer = 0f;
     }
 
     public void SetShouldIncrementHPTimer(bool shouldIncrement)
@@ -185,7 +197,7 @@ public abstract class BaseEnemy : MonoCache
     {
         ReturnToPool();
         DropEventManager.Instance.DropsCreated(gameObject);
-        LevelUpSystem.Instance.AddExperience(_enemyType._type, _enemyType);
+        LevelUpSystem.Instance.AddExperience(EnemyType._type, EnemyType);
     }
 
     private void ReturnToPool()
@@ -199,10 +211,7 @@ public abstract class BaseEnemy : MonoCache
 
     private void NavMeshParams()
     {
-        _navMeshAgent.baseOffset = 0.5f;
-        _navMeshAgent.speed = _enemyType.Speed;
-        _navMeshAgent.radius = 0.5f;
-        _navMeshAgent.height = 0.5f;
+        _navMeshAgent.speed = EnemyType.Speed;
         _navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
     }
 }

@@ -66,7 +66,7 @@ public class HealthBarManagerMvvm : MonoCache
             {
                 _enemyHealthBarController = enemy.Get<HealthBarController>();
                 _enemyHealthBarController._healthBarView = healthBarView;
-                EnemyData enemyType = enemy._enemyType;
+                EnemyData enemyType = enemy.EnemyType;
                 int maxHealth = enemyType.MaxHealth;
                 _enemyHealthBarController.Initialize(maxHealth);
 

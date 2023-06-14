@@ -3033,17 +3033,11 @@ MonoBehaviour:
   _botSpawner: {fileID: 852128250}
   Waves:
   - Name: RedCube
-    Bot: {fileID: 2310039377504664988, guid: 13192c25926c7b4479022e2d6997a708, type: 3}
+    Bot: {fileID: 5076860644017609433, guid: b59b9257b78da474d9a485f6c549e21e, type: 3}
     SpawnLimit: 50
     WaveDuration: 10
     BaseDuration: 10
     SpawnMethod: {fileID: 1850406041}
-  - Name: BlueCube
-    Bot: {fileID: 8234744067425265355, guid: 7f15a5884fa1a3d45b3d963162b43507, type: 3}
-    SpawnLimit: 200
-    WaveDuration: 20
-    BaseDuration: 20
-    SpawnMethod: {fileID: 973808789}
 --- !u!114 &852128250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7357,7 +7351,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.999756, y: 0}
+  m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: -36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2061837927

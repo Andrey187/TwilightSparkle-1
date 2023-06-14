@@ -5,10 +5,11 @@ public class BotsMoveable : MonoCache
 {
     [SerializeField] private Position _targetPosition;
     [SerializeField] private NavMeshAgent _navMeshAgent;
-    
+    [SerializeField] private BaseEnemy _baseEnemy;
+
     private void Awake()
     {
-        _navMeshAgent = ChildrenGet<NavMeshAgent>();
+        _navMeshAgent = Get<NavMeshAgent>();
         _targetPosition = Find<PositionWritter>()._position;
     }
 
@@ -16,5 +17,6 @@ public class BotsMoveable : MonoCache
     {
         if (gameObject.activeSelf && _navMeshAgent.isOnNavMesh)
             _navMeshAgent.destination = _targetPosition.Value;
+            _baseEnemy.ChangeState(new WalkingState());
     }
 }
