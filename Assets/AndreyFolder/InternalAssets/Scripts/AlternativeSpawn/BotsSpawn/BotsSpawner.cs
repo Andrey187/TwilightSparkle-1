@@ -59,7 +59,6 @@ public class BotsSpawner : MonoCache
     public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
     {
         yield return new WaitForSeconds(0.05f);
-
         List<BaseEnemy> botsForWave = _spawnedBotsForWave[wave];
         BaseEnemy[] botPrefabs = botsForWave.ToArray();
 

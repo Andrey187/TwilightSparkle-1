@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityName: FrostBall
   Damage: 20
+  FireInterval: 5
   Color: {r: 0, g: 0.25998163, b: 1, a: 1}
   HasDoT: 0
+  _baseDamage: 20
+  _baseFireInterval: 5

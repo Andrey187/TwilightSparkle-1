@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FireBall : IAbility
 {
-    private readonly AbilityData _abilityData;
+    private static AbilityData _abilityData;
 
     private IAbility _currentAbility;
     public IAbility CurrentAbility
@@ -21,6 +21,18 @@ public class FireBall : IAbility
     public FireBall()
     {
         _abilityData = DataLoader.Instance.GetAbilityData("FireBall");
+    }
+
+    private static FireBall _instance;
+    public static FireBall Instance
+    {
+        get
+        {
+            if (_instance == null)
+            
+            _instance = new FireBall();
+            return _instance;
+        }
     }
 
     public int Damage { get => _abilityData.Damage; }

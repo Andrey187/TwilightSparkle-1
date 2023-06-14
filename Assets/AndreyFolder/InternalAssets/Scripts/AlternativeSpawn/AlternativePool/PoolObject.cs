@@ -57,7 +57,6 @@ public class PoolObject<T> where T : Component
         {
             _instance.ClearInstances();
             _instance = null;
-            Debug.Log("reset");
         }
     }
 

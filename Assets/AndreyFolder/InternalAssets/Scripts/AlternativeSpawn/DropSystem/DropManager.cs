@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DropManager : MonoBehaviour
+public class DropManager : MonoCache
 {
     [SerializeField] private List<BaseDrop> DropPrefab;
     [SerializeField] private int _countForFirstAid;
@@ -27,6 +27,11 @@ public class DropManager : MonoBehaviour
         }
         _eventManager = DropEventManager.Instance;
         _eventManager.DropCreated += EnemyKilled;
+    }
+
+    protected override void OnDisabled()
+    {
+        _eventManager.DropCreated -= EnemyKilled;
     }
 
     private void EnemyKilled(GameObject obj)

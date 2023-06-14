@@ -1,10 +1,8 @@
 using AbilitySystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonOnClick : MonoCache
+public class AddingAbilityOnButtonClick : MonoCache
 {
     [SerializeField] private AttackSystem _attackSystem;
     [SerializeField] private BaseAbilities _abilities;

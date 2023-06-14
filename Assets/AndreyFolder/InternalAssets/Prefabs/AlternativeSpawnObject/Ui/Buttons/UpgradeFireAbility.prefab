@@ -66,7 +66,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add +1 Arcane Ball
+  m_text: 'Decrease 0.1s interval
+
+    Icrease damage +5'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -147,9 +149,9 @@ GameObject:
   - component: {fileID: 819702211494600931}
   - component: {fileID: 819702211494600932}
   - component: {fileID: 819702211494600933}
-  - component: {fileID: 1575337846334279177}
+  - component: {fileID: 164980035282976107}
   m_Layer: 5
-  m_Name: ArcaneBallButton
+  m_Name: UpgradeFireAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.9529972, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -236,10 +238,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 1, g: 0, b: 0, a: 1}
+    m_HighlightedColor: {r: 0.9622642, g: 0, b: 0, a: 0.8}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -259,8 +261,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AttackSystem, Assembly-CSharp
+      - m_Target: {fileID: 1573279644432811302, guid: b93c7eedd7437b44e806e5841e3c1964, type: 3}
+        m_TargetAssemblyTypeName: AbilitySystem.AttackSystem, Assembly-CSharp
         m_MethodName: AddAttackScript
         m_Mode: 2
         m_Arguments:
@@ -271,7 +273,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1575337846334279177
+--- !u!114 &164980035282976107
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,11 +282,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 819702211494600920}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33e7fede4c05a2c45a06709c0f628363, type: 3}
+  m_Script: {fileID: 11500000, guid: 46d93b6d4975ab3488c894fb8271b4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackSystem: {fileID: 0}
-  _abilities: {fileID: 5082977161458799626, guid: da0048948ffc6c2448b313f7df0b4102, type: 3}
+  _abilities: {fileID: 11400000, guid: 8b6871a006dfa6841bcb5574c49984eb, type: 2}
+  _fireIntervalDecrease: 0.1
+  _damageIncrease: 5
 --- !u!1 &819702211582461875
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +354,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Arcane Ball
+  m_text: Upgrade FireBall
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

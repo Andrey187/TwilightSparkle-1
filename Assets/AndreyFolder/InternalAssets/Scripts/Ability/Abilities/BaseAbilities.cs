@@ -4,9 +4,7 @@ using UnityEngine;
 
 public abstract class BaseAbilities : MonoCache
 {
-    [SerializeField] protected Transform _startPoint;
-    [SerializeField] protected Transform _endPoint;
-
+    [SerializeField] protected AbilityData abilityData;
     [SerializeField] protected float _speed = 20f;
     [SerializeField] protected float _fireInterval;
     [SerializeField] protected float _baseLifeTime;
@@ -16,8 +14,6 @@ public abstract class BaseAbilities : MonoCache
     protected internal abstract event Action<BaseAbilities> SetDie;
     protected Rigidbody _thisRb;
     
-    protected internal Transform StartPoint { get => _startPoint; set => _startPoint = value; }
-    protected internal Transform EndPoint { get => _endPoint; set => _endPoint = value; }
     protected internal virtual Vector3 TargetPoint { get; set; }
     protected internal virtual int AreaRadius { get; set; }
     protected internal virtual bool HasTargetPoint => false;
@@ -27,6 +23,7 @@ public abstract class BaseAbilities : MonoCache
     
     protected override void OnEnabled()
     {
+        _fireInterval = abilityData.FireInterval;
         StartCoroutine(DecreaseLifeTime());
     }
 
@@ -50,9 +47,9 @@ public abstract class BaseAbilities : MonoCache
         }
     }
 
-    protected internal virtual void MoveWithPhysics()
+    protected internal virtual void MoveWithPhysics(Transform endPoint, Transform startPoint)
     {
-        Vector3 direction = _endPoint.position - _startPoint.position;
+        Vector3 direction = endPoint.position - startPoint.position;
         direction.Normalize();
 
         _thisRb.velocity = direction * _speed;

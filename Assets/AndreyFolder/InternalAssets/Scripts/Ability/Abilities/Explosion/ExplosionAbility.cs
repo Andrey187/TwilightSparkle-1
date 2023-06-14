@@ -12,8 +12,6 @@ public class ExplosionAbility : BaseAbilities
 
     private void Awake()
     {
-        _startPoint = null;
-        _endPoint = null;
         _thisRb = Get<Rigidbody>();
     }
 
@@ -26,7 +24,7 @@ public class ExplosionAbility : BaseAbilities
         _explosion.DoTEffect = _fireDotEffect;
     }
 
-    public void Explode(Collider other, bool hitGround)
+    public void Explode(bool hitGround)
     {
         if (hitGround)
         {

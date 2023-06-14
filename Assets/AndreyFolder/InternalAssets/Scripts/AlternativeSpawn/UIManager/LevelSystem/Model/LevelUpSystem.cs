@@ -6,8 +6,10 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
     [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private float expFactor = 1.3f;
+    [SerializeField] private float levelFactor = 0.3f;
     private static LevelUpSystem _instance;
-    private Dictionary<EnemyType.ObjectType, EnemyType> _expTable = new Dictionary<EnemyType.ObjectType, EnemyType>();
+    private Dictionary<EnemyData.ObjectType, EnemyData> _expTable = new Dictionary<EnemyData.ObjectType, EnemyData>();
     private int _talentPoints;
 
     public static LevelUpSystem Instance
@@ -39,14 +41,14 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 
     public int NextLevelExp { get; set; } = 1000;
 
-    public void AddExperience(EnemyType.ObjectType type, EnemyType enemyType)
+    public void AddExperience(EnemyData.ObjectType type, EnemyData enemyType)
     {
         if (!_expTable.ContainsKey(type))
         {
             _expTable.Add(type, enemyType);
         }
 
-        if (_expTable.TryGetValue(type, out EnemyType enemy))
+        if (_expTable.TryGetValue(type, out EnemyData enemy))
         {
             int gainExp = enemy.GainExp;
             _playerStats.CurrentExp += gainExp;
@@ -75,11 +77,11 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
     private int GetNextLevelExp(int level)
     {
         const float baseExp = 1000f;
-        const float expFactor = 1.5f;
-        const float levelFactor = 0.2f;
+        //const float expFactor = 1.3f;
+        //const float levelFactor = 0.3f;
 
         float exp = baseExp * Mathf.Pow(expFactor, level - 1);
-        float levelBonus = level * levelFactor * exp;
+        float levelBonus = (level - 1) * levelFactor * exp;
 
         return Mathf.FloorToInt(exp + levelBonus);
     }

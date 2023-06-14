@@ -15,13 +15,12 @@ public class FireBallAbility: BaseAbilities
 
     private void Start()
     {
-        _fireBall = new FireBall();
+        _fireBall = FireBall.Instance;
         _fireDotEffect = new FireDoTEffect();
         _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _fireBall.CurrentAbility = _fireBall;
         _fireBall.DoTEffect = _fireDotEffect;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         // Check if the object that collided with the fireball is an enemy

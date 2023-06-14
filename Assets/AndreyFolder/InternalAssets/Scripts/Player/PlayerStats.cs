@@ -51,7 +51,7 @@ public class PlayerStats : MonoCache
         set
         {
             _currentLevel = value;
-            OnTalentChanged(); // Invoke the event when the current level changes
+            OnLevelChanged(); // Invoke the event when the current level changes
         }
     }
 
@@ -78,9 +78,12 @@ public class PlayerStats : MonoCache
         SpeedChanged?.Invoke();
     }
 
-    private void OnTalentChanged()
+    private void OnLevelChanged()
     {
         Action levelUp = UIEventManager.Instance.AbilityChoiceUI;
         levelUp?.Invoke();
+
+        Action<int> levelChanged = PlayerEventManager.Instance.PlayerLevelChanged;
+        levelChanged?.Invoke(CurrentLevel);
     }
 }

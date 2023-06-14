@@ -11,6 +11,7 @@ public class WaveSpawner : MonoCache
         public Transform Bot;
         public int SpawnLimit;
         public float WaveDuration;
+        public float BaseDuration;
         public EnemySpawnMethod SpawnMethod;
     }
 
@@ -19,6 +20,11 @@ public class WaveSpawner : MonoCache
 
     private void Start()
     {
+        foreach(Wave wave in Waves)
+        {
+            wave.WaveDuration = wave.BaseDuration;
+        }
+
         StartCoroutine(SpawnFirstWave()); // Start the first wave immediately
 
         for (int i = 0; i < Waves.Length; i++) // Start from index 1 for subsequent waves
@@ -46,7 +52,7 @@ public class WaveSpawner : MonoCache
         while (true)
         {
             yield return StartCoroutine(_botSpawner.SpawnObjects(wave));
-
+            
             yield return new WaitForSeconds(wave.WaveDuration); // Wait for the specified WaveDuration before spawning the next wave
         }
     }

@@ -5,9 +5,11 @@ public class DataLoader : MonoCache
 {
     [SerializeField] public AbilityDatabase _abilityDataBase;
     [SerializeField] public DoTDataBase _dotDataBase;
+    [SerializeField] public EnemyDataBase _enemyDataBase;
 
-    private Dictionary<string, AbilityData> abilityDataDictionary = new Dictionary<string, AbilityData>();
+    private Dictionary<string, AbilityData> _abilityDataDictionary = new Dictionary<string, AbilityData>();
     private Dictionary<string, DoTData> _dotDataBaseDictionary = new Dictionary<string, DoTData>();
+    private Dictionary<string, EnemyData> _enemyDataBaseDictionary = new Dictionary<string, EnemyData>();
 
     private static DataLoader instance;
     public static DataLoader Instance
@@ -24,15 +26,17 @@ public class DataLoader : MonoCache
     {
         InitializeAbilities();
         InitializeDoTs();
+        InitializeEnemies();
     }
 
     public void InitializeAbilities()
     {
-        abilityDataDictionary.Clear();
+        _abilityDataDictionary.Clear();
 
         foreach (AbilityData abilityData in _abilityDataBase.AbilityDataList)
         {
-            abilityDataDictionary.Add(abilityData.AbilityName, abilityData);
+            _abilityDataDictionary.Add(abilityData.AbilityName, abilityData);
+            abilityData.ResetOnExitPlay();
         }
     }
 
@@ -46,9 +50,19 @@ public class DataLoader : MonoCache
         }
     }
 
+    public void InitializeEnemies()
+    {
+        _enemyDataBaseDictionary.Clear();
+        foreach (EnemyData enemyData in _enemyDataBase.EnemyDataList)
+        {
+            _enemyDataBaseDictionary.Add(enemyData.EnemyName, enemyData);
+            enemyData.ResetOnExitPlay();
+        }
+    }
+
     public AbilityData GetAbilityData(string abilityName)
     {
-        if (abilityDataDictionary.TryGetValue(abilityName, out AbilityData abilityData))
+        if (_abilityDataDictionary.TryGetValue(abilityName, out AbilityData abilityData))
         {
             return abilityData;
         }

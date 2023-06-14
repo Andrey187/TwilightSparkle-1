@@ -105,8 +105,8 @@ public class CameraArea : MonoCache
 
                 if (enemy != null)
                 {
-                    enemy.ResetXPTimer(); // Reset the XP change timer
-                    enemy.SetShouldIncrementXPTimer(false); // Stop incrementing the timer
+                    enemy.ResetHPTimer(); // Reset the XP change timer
+                    enemy.SetShouldIncrementHPTimer(false); // Stop incrementing the timer
                 }
 
                 foreach (KeyValuePair<Image, Renderer> kvp in _healthBarFillToEnemyMap)
@@ -140,7 +140,7 @@ public class CameraArea : MonoCache
                 BaseEnemy enemy = renderer.GetComponent<BaseEnemy>();
                 if (enemy != null)
                 {
-                    enemy.SetShouldIncrementXPTimer(true); // Start incrementing the timer
+                    enemy.SetShouldIncrementHPTimer(true); // Start incrementing the timer
                 }
 
                 foreach (KeyValuePair<Image, Renderer> kvp in _healthBarFillToEnemyMap)

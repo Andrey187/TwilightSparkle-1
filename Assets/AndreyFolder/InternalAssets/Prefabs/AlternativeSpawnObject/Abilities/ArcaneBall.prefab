@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5133332e6817ea7499d17ad76469f63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityData: {fileID: 11400000, guid: b8932a5f8cfef194690cdab995a689c4, type: 2}
   _startPoint: {fileID: 0}
   _endPoint: {fileID: 0}
   _speed: 5

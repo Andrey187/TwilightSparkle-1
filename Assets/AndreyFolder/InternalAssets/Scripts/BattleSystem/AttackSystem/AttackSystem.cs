@@ -1,28 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AbilitySystem
 {
-    public class AttackSystem : MonoBehaviour
+    public class AttackSystem : MonoCache
     {
         [SerializeField] private List<BaseAbilities> _attackAbilities = new List<BaseAbilities>();
         [SerializeField] private Transform _startAttackPoint;
         [SerializeField] private Transform _endPoint;
-        private event Action<BaseAbilities, Vector3> _createPrefabAbility;
-        private Vector3 nearestEnemyPosition;
 
+        private event Action<BaseAbilities, Vector3> _createPrefabAbility;
+        private AbilitiesSpawn _abilitiesSpawn;
+        private HashSet<BaseAbilities> _instantiateCloneAbilities = new HashSet<BaseAbilities>();
+        public Vector3 _nearestEnemyPosition;
+        public event Action<BaseAbilities> NewInitializationComplete;
         public List<BaseAbilities> AttackScriptsList { get => _attackAbilities; set => _attackAbilities = value; }
+        public HashSet<BaseAbilities> InstantiateCloneAbilities { get => _instantiateCloneAbilities; set => _instantiateCloneAbilities = value; }
+        public Transform StartAttackPoint { get => _startAttackPoint; set => _startAttackPoint = value; }
+        public Transform EndAttackPoint { get => _endPoint; set => _endPoint = value; }
+
         private void Awake()
         {
             if (_startAttackPoint == null) { _startAttackPoint = transform.Find("StartAttackPoint"); }
             if (_endPoint == null) { _endPoint = transform.Find("EndPoint"); }
-
-            foreach (var ability in _attackAbilities)
-            {
-                SetPositions(ability);
-            }
         }
 
         private void Start()
@@ -30,8 +33,16 @@ namespace AbilitySystem
             // Spawn the first ability
             if (_attackAbilities.Count > 0)
             {
-                SetUpInvokeRepeatingForAbility(_attackAbilities[0]);
+                _nearestEnemyPosition = FindNearestEnemyInArea(_attackAbilities[0].AreaRadius);
+                InvokeCreatePrefabAbility(_attackAbilities[0], _nearestEnemyPosition);
             }
+            _abilitiesSpawn = FindObjectOfType<AbilitiesSpawn>();
+            _abilitiesSpawn.InitializationComplete += OnInitializationComplete;
+        }
+
+        protected override void OnDisabled()
+        {
+            _abilitiesSpawn.InitializationComplete -= OnInitializationComplete;
         }
 
         public Vector3 FindNearestEnemyInArea(float areaRadius)
@@ -47,31 +58,26 @@ namespace AbilitySystem
             return Vector3.zero;
         }
         
-        private void SetPositions(BaseAbilities ability)
-        {
-            ability.StartPoint = _startAttackPoint;
-            ability.EndPoint = _endPoint;
-        }
         private void SetUpInvokeRepeatingForAbility(BaseAbilities ability)
         {
-            SetPositions(ability);
             StartCoroutine(SpawnAbilitiesCoroutine(ability));
         }
+
+        private void OnInitializationComplete()
+        {
+            foreach (var ability in InstantiateCloneAbilities)
+            {
+                SetUpInvokeRepeatingForAbility(ability);
+            }
+        }
+
         private IEnumerator SpawnAbilitiesCoroutine(BaseAbilities ability)
         {
-            float lastSpawnTime = Time.time - ability.FireInterval;
-
             while (true)
             {
-                float timeSinceLastSpawn = Time.time - lastSpawnTime;
-
-                if (timeSinceLastSpawn >= ability.FireInterval)
-                {
-                    lastSpawnTime = Time.time;
-                    nearestEnemyPosition = FindNearestEnemyInArea(ability.AreaRadius);
-                    InvokeCreatePrefabAbility(ability, nearestEnemyPosition);
-                }
-                yield return null;
+                _nearestEnemyPosition = FindNearestEnemyInArea(ability.AreaRadius);
+                InvokeCreatePrefabAbility(ability, _nearestEnemyPosition);
+                yield return new WaitForSeconds(ability.FireInterval);
             }
         }
 
@@ -88,7 +94,8 @@ namespace AbilitySystem
         public void AddAttackScript(BaseAbilities ability)
         {
             _attackAbilities.Add(ability);
-            SetUpInvokeRepeatingForAbility(_attackAbilities[_attackAbilities.Count - 1]);
+            NewInitializationComplete?.Invoke(ability);
+            SetUpInvokeRepeatingForAbility(InstantiateCloneAbilities.LastOrDefault());
         }
     }
 }

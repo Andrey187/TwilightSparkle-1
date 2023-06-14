@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e25f339ae29bbe54a961377169f5ce30, type: 3}
-  m_Name: Explosion_SO
+  m_Script: {fileID: 11500000, guid: 28011694f66ea0b4baf5639b15c69955, type: 3}
+  m_Name: EnemyData
   m_EditorClassIdentifier: 
-  AbilityName: Explosion
-  Damage: 30
-  FireInterval: 0
-  Color: {r: 0.46226418, g: 0, b: 0, a: 0}
-  HasDoT: 1
-  _baseDamage: 30
-  _baseFireInterval: 0
+  EnemyDataList:
+  - {fileID: 11400000, guid: d84e5077a9bb08b488f78e1e562e421a, type: 2}
+  - {fileID: 11400000, guid: 29601e8e2a946f847b8e2d4b231e8496, type: 2}

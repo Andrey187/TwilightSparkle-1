@@ -20,4 +20,5 @@ MonoBehaviour:
   _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   _material: {fileID: 2100000, guid: c764897acbc5e654d8ec9b1fdfbc90c8, type: 2}
   _gainExp: 150
+  _startingMaxHealth: 50
   _type: 1

@@ -38,7 +38,7 @@ public class Meteor : BaseDrop
             _explosion.Play();
             hasHitGround = true;
             Invoke("ReturnToPool", 2);
-            _explosionAbility.Explode(other, hasHitGround);
+            _explosionAbility.Explode(hasHitGround);
         }
     }
 

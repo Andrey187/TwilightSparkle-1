@@ -25,9 +25,9 @@ public class ArcaneBallAbility : BaseAbilities
         _arcaneBall.CurrentAbility = _arcaneBall;
     }
 
-    protected internal override void MoveWithPhysics()
+    protected internal override void MoveWithPhysics(Transform endPoint, Transform startPoint)
     {
-        Vector3 direction = (_targetPoint - _startPoint.position).normalized;
+        Vector3 direction = (_targetPoint - startPoint.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
 
