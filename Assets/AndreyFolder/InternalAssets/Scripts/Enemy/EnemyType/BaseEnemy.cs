@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using DamageNumber;
+using FSG.MeshAnimator;
 
 public abstract class BaseEnemy : MonoCache
 {
@@ -22,12 +23,15 @@ public abstract class BaseEnemy : MonoCache
     protected NavMeshAgent _navMeshAgent;
     protected internal Animator Animator;
     protected internal SkinnedMeshRenderer _skinnedMesh;
+    [SerializeField] protected internal Renderer _renderer;
+    [SerializeField]
+    protected internal MeshAnimator meshAnimator;
 
     protected void Awake()
     {
         Animator = Get<Animator>();
         _rigidbody = Get<Rigidbody>();
-        _skinnedMesh = ChildrenGet<SkinnedMeshRenderer>();
+        //_skinnedMesh = ChildrenGet<SkinnedMeshRenderer>();
         _healthBarController = Get<HealthBarController>();
         _navMeshAgent = Get<NavMeshAgent>();
 
@@ -41,7 +45,8 @@ public abstract class BaseEnemy : MonoCache
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
-            _skinnedMesh.enabled = false;
+            //_skinnedMesh.enabled = false;
+            _renderer.enabled = false;
             transform.rotation = Quaternion.identity;
             ResetHPTimer();
             SetShouldIncrementHPTimer(true);

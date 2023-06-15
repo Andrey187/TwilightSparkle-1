@@ -4,7 +4,8 @@ public class TakingDamageState : EnemyState
 
     public override void Enter(BaseEnemy enemy)
     {
-        enemy.Animator.SetTrigger(AnimationTrigger);
+        //enemy.Animator.SetTrigger(AnimationTrigger);
+        enemy.meshAnimator.Play("GetHit");
     }
 
     public override void Exit(BaseEnemy enemy)

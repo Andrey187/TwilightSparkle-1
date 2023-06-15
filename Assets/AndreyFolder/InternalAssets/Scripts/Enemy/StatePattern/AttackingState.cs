@@ -4,7 +4,8 @@ public class AttackingState : EnemyState
 
     public override void Enter(BaseEnemy enemy)
     {
-        enemy.Animator.SetTrigger(AnimationTrigger);
+        //enemy.Animator.SetTrigger(AnimationTrigger);
+        enemy.meshAnimator.Play("Attack01");
     }
 
     public override void Exit(BaseEnemy enemy)
