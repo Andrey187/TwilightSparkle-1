@@ -14,10 +14,11 @@ public class AbilityChoicePool : MonoBehaviour
 
     private PoolObject<Button> _buttonPool;
     private IObjectFactory _objectFactory;
-
+    private Dictionary<Button, UpgradeAbilitiesOnButtonClick> _buttonInPool;
 
     private void Start()
     {
+        _buttonInPool = new Dictionary<Button, UpgradeAbilitiesOnButtonClick>();
         foreach (var button in _abilityAddWindow.AbilityButtons)
         {
             _objectFactory = new ObjectsFactory(button.GetComponent<Button>().transform);
@@ -29,6 +30,10 @@ public class AbilityChoicePool : MonoBehaviour
             Button buttonInstance = _buttonPool.GetObjects(buttons.transform.position, buttons);
             buttonInstance.transform.SetParent(buttonContainer);
             _shiffleButtons.Add(buttonInstance);
+            if (buttonInstance.GetComponent<UpgradeAbilitiesOnButtonClick>())
+            {
+                _buttonInPool.Add(buttonInstance, buttonInstance.GetComponent<UpgradeAbilitiesOnButtonClick>());
+            }
             _abilityAddWindow.ShuffleButtons = _shiffleButtons;
         }
 
@@ -51,5 +56,24 @@ public class AbilityChoicePool : MonoBehaviour
     private void ReturnObjectInPool(Button button)
     {
         _buttonPool.ReturnObject(button);
+    }
+
+    public void RemoveButtonFromPool(Button prefabButton)
+    {
+        // Iterate over the dictionary entries
+        foreach (var entry in _buttonInPool)
+        {
+            Button button = entry.Key;
+            UpgradeAbilitiesOnButtonClick upgrade = entry.Value;
+
+            //// Check if the prefab of the button matches the provided prefab
+            if (upgrade.Index == prefabButton.GetComponent<UpgradeAbilitiesOnButtonClick>().Index)
+            {
+                // Remove the entry from the dictionary
+                _buttonInPool.Remove(button);
+                _shiffleButtons.Remove(button);
+                break; // Exit the loop since the button was found and removed
+            }
+        }
     }
 }

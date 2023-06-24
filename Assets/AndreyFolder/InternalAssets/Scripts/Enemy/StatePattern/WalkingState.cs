@@ -1,10 +1,7 @@
 public class WalkingState : EnemyState
 {
-    private const string AnimationTrigger = "WalkFWD";
-
     public override void Enter(BaseEnemy enemy)
     {
-        //enemy.Animator.SetTrigger(AnimationTrigger);
         enemy.meshAnimator.Play("WalkFWD");
     }
 

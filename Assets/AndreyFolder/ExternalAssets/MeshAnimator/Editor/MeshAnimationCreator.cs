@@ -103,6 +103,7 @@ namespace FSG.MeshAnimator
 
         #region Initialization
         /// Reload the target prefab
+        [System.Obsolete]
         private void OnEnable()
         {
             if (prefab == null && Selection.activeGameObject)
@@ -137,6 +138,7 @@ namespace FSG.MeshAnimator
 
         #region GUI
         /// Draw the UI
+        [System.Obsolete]
         private void OnGUI()
         {
             if (GUILayout.Button("Batch Bake Selected Objects"))
@@ -588,6 +590,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Get all clips related to or attached to the prefab
+        [System.Obsolete]
         private List<AnimationClip> GetClips()
         {
             var clips = EditorUtility.CollectDependencies(new Object[] { prefab }).ToList();
@@ -652,6 +655,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Return the path of the specified prefab
+        [System.Obsolete]
         private string GetPrefabPath()
         {
             string assetPath = AssetDatabase.GetAssetPath(prefab);
@@ -664,6 +668,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Return the path of the original FBX or imported mesh
+        [System.Obsolete]
         private string GetSourcePrefabPath()
         {
             string assetPath = AssetDatabase.GetAssetPath(prefab);
@@ -676,6 +681,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Callback to refresh what's needed when the user changes which prefab is baking
+        [System.Obsolete]
         private void OnPrefabChanged()
         {
             if (spawnedAsset != null)
@@ -739,6 +745,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Find all exposed transforms of the imported rig
+        [System.Obsolete]
         private void AutoPopulateExposedTransforms()
         {
             exposedTransforms.Clear();
@@ -788,6 +795,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Loads preferences associated with the target prefab
+        [System.Obsolete]
         private void LoadPreferencesForAsset()
         {
             try
@@ -826,6 +834,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Saves preferences associated with the target prefab
+        [System.Obsolete]
         private void SavePreferencesForAsset()
         {
             try
@@ -866,6 +875,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Clears preferences associated with the target prefab
+        [System.Obsolete]
         private void ClearPreferencesForAsset()
         {
             try
@@ -883,6 +893,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Gets extra exposed transforms
+        [System.Obsolete]
         private string[] GetExtraExposedTranforms()
         {
             if (prefab == null)
@@ -907,6 +918,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Gets all transforms from the prefab
+        [System.Obsolete]
         private string[] GetAllTranforms()
         {
             if (prefab == null)
@@ -922,6 +934,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Cleans up the exposed transform list
+        [System.Obsolete]
         private void CleanExposedTransforms()
         {
             if (IsOptimizedAnimator())
@@ -935,6 +948,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Returns true if the prefab uses an optimized rig
+        [System.Obsolete]
         private bool IsOptimizedAnimator()
         {
             var i = GetAllImporters();
@@ -968,6 +982,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Returns all model importers used on the prefab
+        [System.Obsolete]
         private List<ModelImporter> GetAllImporters()
         {
             List<ModelImporter> importers = new List<ModelImporter>();
@@ -1011,6 +1026,7 @@ namespace FSG.MeshAnimator
 
         #region Baking Methods
         /// Create the MeshAnimator prefab, baking all the animations
+        [System.Obsolete]
         private void CreateSnapshots()
         {
             UnityEditor.Animations.AnimatorController bakeController = null;
@@ -1553,6 +1569,7 @@ namespace FSG.MeshAnimator
         }
 
         /// Creates a temporary AnimatorController for baking
+        [System.Obsolete]
         private UnityEditor.Animations.AnimatorController CreateBakeController()
         {
             // Creates the controller automatically containing all animation clips

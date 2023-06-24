@@ -57,7 +57,9 @@ namespace FSG.MeshAnimator
 				spawnedObjects.Add(g);
 			}
 		}
-		void OnGUI()
+
+        [System.Obsolete]
+        void OnGUI()
 		{
 			GUI.skin.label.richText = true;
 			GUILayout.BeginArea(new Rect(Screen.height * 0.1f, Screen.width * 0.1f, Screen.width * 0.3f, Screen.height));

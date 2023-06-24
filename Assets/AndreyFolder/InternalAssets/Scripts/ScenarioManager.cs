@@ -4,7 +4,6 @@ public class ScenarioManager : MonoCache
 {
     [SerializeField] private int _countLevelForDecreaseDuration;
     [SerializeField] private float _durationTime;
-    [SerializeField] private int _countLevelForIncreaseDuration;
     [SerializeField] private int _countLevelForIncreaseEnemyHp;
     [SerializeField] private int _increaseMaxHpEnemy;
     private PlayerEventManager _playerEvent;
@@ -39,22 +38,15 @@ public class ScenarioManager : MonoCache
             // Calculate the updated values based on the player's level
             for (int i = 0; i < _waveSpawner.Waves.Length; i++)
             {
-                float baseWaveDuration = _waveSpawner.Waves[i].WaveDuration;
-                float newWaveDuration = baseWaveDuration - decreaseAmount;// Decrease by _durationTime seconds
+                float waveDuration = _waveSpawner.Waves[i].WaveDuration;
+                float newWaveDuration = waveDuration - decreaseAmount;// Decrease by _durationTime seconds
+
+                float minWaveDuration = _waveSpawner.Waves[i].BaseDuration / 2f;
+                newWaveDuration = Mathf.Max(newWaveDuration, minWaveDuration);
 
                 // Apply the updated values to the wave spawner and enemy prefab
                 _waveSpawner.Waves[i].WaveDuration = newWaveDuration;
                
-            }
-        }
-
-        if (newLevel % _countLevelForIncreaseDuration == 0)
-        {
-            for (int i = 0; i < _waveSpawner.Waves.Length; i++)
-            {
-                float newWaveDuration = _waveSpawner.Waves[i].BaseDuration; //return BaseDuration
-
-                _waveSpawner.Waves[i].WaveDuration = newWaveDuration;
             }
         }
 
@@ -63,6 +55,13 @@ public class ScenarioManager : MonoCache
             foreach (EnemyData enemyData in DataLoader.Instance._enemyDataBase.EnemyDataList)
             {
                 enemyData.MaxHealth += _increaseMaxHpEnemy;
+            }
+        }
+        else if(newLevel % 10 == 0) 
+        {
+            foreach (EnemyData enemyData in DataLoader.Instance._enemyDataBase.EnemyDataList)
+            {
+                enemyData.MaxHealth += 500;
             }
         }
     }

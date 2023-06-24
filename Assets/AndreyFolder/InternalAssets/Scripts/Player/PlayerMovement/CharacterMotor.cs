@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMotor : MonoBehaviour
 {
-    [SerializeField] private int _runSpeed = 0;
     [SerializeField] private PlayerStats _playerStats;
     private Rigidbody _rigidbody;
+    private int _runSpeed = 0;
 
     public int RunSpeed { get => _runSpeed; set => _runSpeed = value; }
 
@@ -22,8 +23,8 @@ public class CharacterMotor : MonoBehaviour
 
     public void Move(Vector3 direction, int speed)
     {
-        Vector3 movement = direction * speed;
-        _rigidbody.velocity = new Vector3(movement.x, 0f, movement.z);
+        Vector3 movement = direction * speed * 25;
+        _rigidbody.velocity = new Vector3(movement.x, 0f, movement.z) * Time.deltaTime;
     }
 
     public void Rotate(Vector3 direction)

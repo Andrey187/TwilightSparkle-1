@@ -8,7 +8,8 @@ public class PlayerStats : MonoCache
     [SerializeField] private int _talentPoints = 0;
     [SerializeField] private int _currentLevel = 1;
     [SerializeField] private int _currentExp = 0;
-    [SerializeField] private int _speed = 6;
+    [SerializeField] private int _speed = 3;
+    [SerializeField] private int _magicPower;
     private HealthBarController _healthBarController;
 
     private void Start()
@@ -41,7 +42,15 @@ public class PlayerStats : MonoCache
         }
     }
 
-    public int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+    public int MaxHealth
+    {
+        get => _maxHealth;
+        set
+        {
+            _maxHealth = value;
+            _healthBarController.SetMaxHealth(_maxHealth);
+        }
+    }
 
     public int TalentPoints { get => _talentPoints; set => _talentPoints = value; }
 
@@ -65,7 +74,13 @@ public class PlayerStats : MonoCache
         }
     }
 
-    public event Action SpeedChanged;
+    public int MagicPower { get => _magicPower;
+        set
+        {
+            _magicPower = value;
+            OnMagicPowerChanged();
+        }
+    }
 
     private void Die()
     {
@@ -73,6 +88,7 @@ public class PlayerStats : MonoCache
         setDie?.Invoke();
     }
 
+    public event Action SpeedChanged;
     private void OnSpeedChanged()
     {
         SpeedChanged?.Invoke();
@@ -85,5 +101,11 @@ public class PlayerStats : MonoCache
 
         Action<int> levelChanged = PlayerEventManager.Instance.PlayerLevelChanged;
         levelChanged?.Invoke(CurrentLevel);
+    }
+
+    public event Action<int> MagicPowerChanged;
+    private void OnMagicPowerChanged()
+    {
+        MagicPowerChanged?.Invoke(_magicPower);
     }
 }

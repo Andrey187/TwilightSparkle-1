@@ -1,5 +1,6 @@
 public enum TalentStatType
 {
     MaxHealth,
-    Speed
+    Speed,
+    MagicPower
 }

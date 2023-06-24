@@ -11,7 +11,6 @@ public class BotsSpawner : MonoCache
     private IObjectFactory _objectFactory;
 
     private Dictionary<WaveSpawner.Wave, List<BaseEnemy>> _spawnedBotsForWave;
-
     // Start is called before the first frame update
     private void Start()
     {
@@ -25,7 +24,7 @@ public class BotsSpawner : MonoCache
             Debug.LogWarning("No waves found to spawn bots for.");
             return;
         }
-
+       
         // Initialize the dictionary with empty lists for each wave
         _spawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
         foreach (WaveSpawner.Wave wave in _waveSpawner.Waves)
@@ -64,13 +63,13 @@ public class BotsSpawner : MonoCache
 
         for (int j = 0; j < botPrefabs.Length; j++)
         {
-            BaseEnemy botPrefab = botPrefabs[j].GetComponent<BaseEnemy>();
+            BaseEnemy botPrefab = botPrefabs[j];
             // Check if there are any inactive bot objects in the pool that match the current wave and prefab
-            BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
-
             wave.SpawnMethod.NewUnitCircle();
             wave.SpawnMethod.SpawnEnemies();
             wave.SpawnMethod.GroundCheck();
+            BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, botPrefab);
+            inactiveBot.GetComponentInChildren<MeshRenderer>().sharedMaterial = wave._objMaterial;
 
 
             Action<GameObject> objectCreated = EnemyEventManager.Instance.CreatedObject;

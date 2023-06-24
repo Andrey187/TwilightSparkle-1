@@ -16,13 +16,16 @@ public class HealthBarViewModel : INotifyPropertyChanged
         set
         {
             _model.CurrentHealth = value;
-            OnPropertyChanged(nameof(CurrentHealth));
         }
     }
 
     public int MaxHealth
     {
         get { return _model.MaxHealth; }
+        set
+        {
+            _model.MaxHealth = value;
+        }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -38,7 +41,7 @@ public class HealthBarViewModel : INotifyPropertyChanged
         {
             OnPropertyChanged(nameof(CurrentHealth));
         }
-        else if (e.PropertyName == nameof(HealthBarModel.MaxHealth))
+        if (e.PropertyName == nameof(HealthBarModel.MaxHealth))
         {
             OnPropertyChanged(nameof(MaxHealth));
             OnPropertyChanged(nameof(CurrentHealth));

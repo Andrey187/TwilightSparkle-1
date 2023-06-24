@@ -17,12 +17,17 @@ public class HealthBar : MonoCache
         }
 	}
 
-    public void SetMaxHealth(int health)
+    public void SetBaseMaxHealth(int health)
 	{
 		slider.maxValue = health;
 		slider.value = health;
 
 		Fill.color = gradient.Evaluate(1f);
+	}
+
+	public void SetDynamicMaxHealth(int maxHealth)
+    {
+		slider.maxValue = maxHealth;
 	}
 
 	public void SetHealth(int health)

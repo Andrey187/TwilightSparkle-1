@@ -19,11 +19,15 @@ public class HealthBarView : MonoBehaviour
         {
             _healthBar.SetHealth(_viewModel.CurrentHealth);
         }
+        if (e.PropertyName == nameof(HealthBarViewModel.MaxHealth))
+        {
+            _healthBar.SetDynamicMaxHealth(_viewModel.MaxHealth);
+        }
     }
 
     private void ResetUI()
     {
-        _healthBar.SetMaxHealth(_viewModel.MaxHealth);
+        _healthBar.SetBaseMaxHealth(_viewModel.MaxHealth);
         _healthBar.SetHealth(_viewModel.CurrentHealth);
     }
 }

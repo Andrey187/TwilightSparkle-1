@@ -22,6 +22,7 @@ public class Meteor : BaseDrop
     protected override void OnEnabled()
     {
         _particleFlame.Play();
+        transform.position = Vector3.zero;
         _rb.isKinematic = false;
         render.enabled = true;
         _collider.enabled = true;

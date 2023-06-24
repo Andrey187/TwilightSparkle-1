@@ -45,7 +45,7 @@ public class TalentViewModel : INotifyPropertyChanged
         }
     }
 
-    public void OnButtonClick(TalentStatType statType,int buttonValue)
+    public void OnButtonClick(TalentStatType statType, int buttonValue)
     {
         _talentSystem.Upgrade(statType,buttonValue, _pointsInvested);
     }

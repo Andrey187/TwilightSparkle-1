@@ -32,7 +32,8 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     private void Awake()
     {
         _ground = GameObject.FindGameObjectWithTag("Plane");
-        _positionWritter = Find<PositionWritter>();
+        GameObject targetObject = GameObject.Find("PolyArtWizardStandardMat");
+        _positionWritter = targetObject.transform.GetComponent<PositionWritter>();
         _player = _positionWritter.transform;
     }
 

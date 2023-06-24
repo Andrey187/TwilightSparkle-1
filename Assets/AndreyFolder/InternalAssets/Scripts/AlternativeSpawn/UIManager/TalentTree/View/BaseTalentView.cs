@@ -25,26 +25,26 @@ public abstract class BaseTalentView: MonoBehaviour
         _talentViewModel = new TalentViewModel(_talentSystem);
         _currentTalent.Add(_statType, _currentTalentPointsValue);
         _maxTalent.Add(_statType, _maxTalentsPointCount);
-
-        _talentSystem.OnCurrentTalentPoint += SetCurrentTalentPoint;
         _talentViewModel.SetMaxTalentPoints(_maxTalent);
         _talentViewModel.SetCurrentTalentPoints(_currentTalent);
 
+
         _buttons.Add(_statType, _button);
         _buttons[_statType].onClick.AddListener(() => _talentViewModel.OnButtonClick(_statType, _buttonTextValue));
+        _talentSystem.OnCurrentTalentPoint += SetCurrentTalentPoint;
     }
 
-    private void SetCurrentTalentPoint(TalentStatType statType, int value)
+    protected void SetCurrentTalentPoint(TalentStatType statType, int value)
     {
         if (_statType == statType)
         {
             _currentTalent[_statType] = value;
             _currentTalentPointText.SetText(value.ToString());
+            _currentTalentPointsValue++;
             if (_currentTalent[_statType] >= _maxTalent[_statType])
             {
                 _buttons[_statType].enabled = false;
             }
-            Debug.Log(value);
         }
     }
 }

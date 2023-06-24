@@ -12,6 +12,7 @@ TagManager:
   - FireBall
   - FrostBall
   - HealthBar
+  - Bomb
   layers:
   - Default
   - TransparentFX

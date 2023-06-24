@@ -1,10 +1,7 @@
 public class TakingDamageState : EnemyState
 {
-    private const string AnimationTrigger = "TakeDamage";
-
     public override void Enter(BaseEnemy enemy)
     {
-        //enemy.Animator.SetTrigger(AnimationTrigger);
         enemy.meshAnimator.Play("GetHit");
     }
 

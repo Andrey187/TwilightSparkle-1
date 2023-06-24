@@ -287,7 +287,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _abilities: {fileID: 11400000, guid: b8932a5f8cfef194690cdab995a689c4, type: 2}
   _fireIntervalDecrease: 0.2
-  _damageIncrease: 10
+  _damageIncrease: 15
+  _baseDamage: 15
+  _descriptionText: {fileID: 7651293656493899796}
+  Index: 0
 --- !u!1 &819702211582461875
 GameObject:
   m_ObjectHideFlags: 0

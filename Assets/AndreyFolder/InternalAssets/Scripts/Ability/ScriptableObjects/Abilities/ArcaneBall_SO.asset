@@ -18,4 +18,6 @@ MonoBehaviour:
   Color: {r: 0, g: 0.97121596, b: 1, a: 1}
   HasDoT: 0
   _baseDamage: 5
+  _baseMagicPower: 0
   _baseFireInterval: 2
+  _currentMagicPower: 0

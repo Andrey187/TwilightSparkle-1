@@ -11,7 +11,7 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
     protected bool isGround = false;
     protected RaycastHit hit;
 
-    protected void Start()
+    protected virtual void Start()
     {
         FindCameraBoundries();
     }

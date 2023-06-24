@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Decrease 0.5s interval
 
-    Icrease damage +10'
+    Increase damage +10'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -287,7 +287,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _abilities: {fileID: 11400000, guid: 911db692e2b5c934392c649514c9a47b, type: 2}
   _fireIntervalDecrease: 0.5
-  _damageIncrease: 10
+  _damageIncrease: 15
+  _baseDamage: 15
+  _descriptionText: {fileID: 7651293656493899796}
+  Index: 2
 --- !u!1 &819702211582461875
 GameObject:
   m_ObjectHideFlags: 0

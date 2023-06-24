@@ -3,10 +3,14 @@ using UnityEngine;
 public class FirstAidDrop : BaseDrop
 {
     [SerializeField] private int _restorHp = 50;
-
+    private Camera _camera;
+    private Canvas _canvas;
     protected override void Start()
     {
         base.Start();
+        _canvas = ChildrenGet<Canvas>();
+        _camera = Camera.main;
+        _canvas.worldCamera = _camera;
     }
 
     private void OnTriggerEnter(Collider other)

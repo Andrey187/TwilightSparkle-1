@@ -9,13 +9,17 @@ public class HealthBarController : MonoCache
     {
         var model = Get<HealthBarModel>();
         model.MaxHealth = maxHealth;
+        model.CurrentHealth = maxHealth;
         _viewModel = new HealthBarViewModel(model);
         _healthBarView.SetViewModel(_viewModel);
-        _viewModel.CurrentHealth = maxHealth;
     }
 
     public void SetCurrentHealth(int currentHealth)
     {
         _viewModel.CurrentHealth = currentHealth;
+    }
+    public void SetMaxHealth(int maxHealth)
+    {
+        _viewModel.MaxHealth = maxHealth;
     }
 }

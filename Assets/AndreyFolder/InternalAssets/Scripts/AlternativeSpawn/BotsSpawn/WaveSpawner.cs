@@ -13,9 +13,11 @@ public class WaveSpawner : MonoCache
         public float WaveDuration;
         public float BaseDuration;
         public EnemySpawnMethod SpawnMethod;
+        public Material _objMaterial;
     }
 
     [SerializeField] private BotsSpawner _botSpawner;
+    [SerializeField] private int _startWaveIndex;
     public Wave[] Waves;
 
     private void Start()
@@ -23,11 +25,12 @@ public class WaveSpawner : MonoCache
         foreach(Wave wave in Waves)
         {
             wave.WaveDuration = wave.BaseDuration;
+            wave._objMaterial = Instantiate(wave.Bot.GetComponentInChildren<MeshRenderer>().sharedMaterial);
         }
 
         StartCoroutine(SpawnFirstWave()); // Start the first wave immediately
 
-        for (int i = 0; i < Waves.Length; i++) // Start from index 1 for subsequent waves
+        for (int i = _startWaveIndex; i < Waves.Length; i++) // Start from index 1 for subsequent waves
         {
             StopCoroutine(SpawnFirstWave());
             StartCoroutine(SpawnWave(Waves[i], false));
@@ -36,7 +39,7 @@ public class WaveSpawner : MonoCache
 
     protected override void OnDisabled()
     {
-        for (int i = 0; i < Waves.Length; i++) // Start from index 1 for subsequent waves
+        for (int i = 0; i < Waves.Length; i++)
         {
             StopCoroutine(SpawnWave(Waves[i], false));
         }

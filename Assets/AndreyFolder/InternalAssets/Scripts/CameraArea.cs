@@ -5,22 +5,13 @@ using UnityEngine.UI;
 public class CameraArea : MonoCache
 {
     [SerializeField] private LayerMask _targetLayerMask;
-    //public List<SkinnedMeshRenderer> enemyObjectsRenderer;
     public List<Renderer> enemyObjectsRenderer;
-    private HashSet<Image> healthBarFill;
-    private HashSet<Image> healthBarBorder;
-    //private Dictionary<Image, SkinnedMeshRenderer> _healthBarFillToEnemyMap;
-    //private Dictionary<Image, SkinnedMeshRenderer> _healthBarBorderToEnemyMap;
     private Dictionary<Image, Renderer> _healthBarFillToEnemyMap;
     private Dictionary<Image, Renderer> _healthBarBorderToEnemyMap;
     private EnemyEventManager _enemyEventManager;
     private UIEventManager _uiEventManager;
     private void Start()
     {
-        healthBarFill = new HashSet<Image>();
-        healthBarBorder = new HashSet<Image>();
-        //_healthBarFillToEnemyMap = new Dictionary<Image, SkinnedMeshRenderer>();
-        //_healthBarBorderToEnemyMap = new Dictionary<Image, SkinnedMeshRenderer>();
         _healthBarFillToEnemyMap = new Dictionary<Image, Renderer>();
         _healthBarBorderToEnemyMap = new Dictionary<Image, Renderer>();
         _enemyEventManager = EnemyEventManager.Instance;
@@ -45,7 +36,6 @@ public class CameraArea : MonoCache
 
     private void AddEnemyObject(GameObject enemyObject)
     {
-        //SkinnedMeshRenderer renderer = enemyObject.GetComponent<BaseEnemy>()._skinnedMesh;
         Renderer renderer = enemyObject.GetComponent<BaseEnemy>()._renderer;
         if (renderer != null)
         {
@@ -55,7 +45,6 @@ public class CameraArea : MonoCache
 
     private void RemoveEnemyObject(GameObject enemyObject)
     {
-        //SkinnedMeshRenderer renderer = enemyObject.GetComponent<BaseEnemy>()._skinnedMesh;
         Renderer renderer = enemyObject.GetComponent<BaseEnemy>()._renderer;
         if (renderer != null)
         {
@@ -66,27 +55,11 @@ public class CameraArea : MonoCache
     private void AddHealthBar(GameObject _healthBar)
     {
         Image healthBarFillComponent = _healthBar.transform.GetComponentInChildren<Image>();
-        healthBarFill.Add(healthBarFillComponent);
         _healthBarFillToEnemyMap.Add(healthBarFillComponent, null);
 
         Image healthBarBorderComponent = _healthBar.transform.Find("Border").GetComponent<Image>();
-        healthBarBorder.Add(healthBarBorderComponent);
+        _healthBarBorderToEnemyMap.Add(healthBarBorderComponent,null);
 
-        //foreach (SkinnedMeshRenderer enemyRenderer in enemyObjectsRenderer)
-        //{
-        //    if (enemyRenderer.gameObject.transform.parent.gameObject.activeInHierarchy)
-        //    {
-        //        _healthBarFillToEnemyMap[healthBarFillComponent] = enemyRenderer;
-        //    }
-        //}
-
-        //foreach (SkinnedMeshRenderer enemyRenderer in enemyObjectsRenderer)
-        //{
-        //    if (enemyRenderer.gameObject.transform.parent.gameObject.activeInHierarchy)
-        //    {
-        //        _healthBarBorderToEnemyMap[healthBarBorderComponent] = enemyRenderer;
-        //    }
-        //}
         foreach (Renderer enemyRenderer in enemyObjectsRenderer)
         {
             if (enemyRenderer.gameObject.activeInHierarchy)
@@ -101,17 +74,14 @@ public class CameraArea : MonoCache
                 _healthBarBorderToEnemyMap[healthBarBorderComponent] = enemyRenderer;
             }
         }
-
     }
 
     private void RemoveHealthBar(GameObject _healthBar)
     {
         Image healthBarFillComponent = _healthBar.transform.GetComponentInChildren<Image>();
-        healthBarFill.Remove(healthBarFillComponent);
         _healthBarFillToEnemyMap.Remove(healthBarFillComponent);
 
         Image healthBarBorderComponent = _healthBar.transform.Find("Border").GetComponent<Image>();
-        healthBarBorder.Remove(healthBarBorderComponent);
         _healthBarBorderToEnemyMap.Remove(healthBarBorderComponent);
     }
 
@@ -123,7 +93,6 @@ public class CameraArea : MonoCache
             
             if(enemy._renderer != null && enemyObjectsRenderer.Contains(enemy._renderer))
             {
-                //enemy._skinnedMesh.enabled = true;
                 enemy._renderer.enabled = true;
 
                 if (enemy != null)
@@ -155,14 +124,12 @@ public class CameraArea : MonoCache
     {
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
-            //SkinnedMeshRenderer renderer = other.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
             BaseEnemy enemy = other.GetComponent<BaseEnemy>();
 
             if (enemy._renderer != null && enemyObjectsRenderer.Contains(enemy._renderer))
             {
                 enemy._renderer.enabled = false;
 
-                //BaseEnemy enemy = renderer.GetComponentInParent<BaseEnemy>();
                 if (enemy != null)
                 {
                     enemy.SetShouldIncrementHPTimer(true); // Start incrementing the timer

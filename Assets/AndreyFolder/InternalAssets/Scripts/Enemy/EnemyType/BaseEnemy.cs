@@ -31,7 +31,6 @@ public abstract class BaseEnemy : MonoCache
     {
         Animator = Get<Animator>();
         _rigidbody = Get<Rigidbody>();
-        //_skinnedMesh = ChildrenGet<SkinnedMeshRenderer>();
         _healthBarController = Get<HealthBarController>();
         _navMeshAgent = Get<NavMeshAgent>();
 
@@ -45,7 +44,6 @@ public abstract class BaseEnemy : MonoCache
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
-            //_skinnedMesh.enabled = false;
             _renderer.enabled = false;
             transform.rotation = Quaternion.identity;
             ResetHPTimer();
@@ -96,7 +94,7 @@ public abstract class BaseEnemy : MonoCache
         {
             HpChangeTimer += Time.deltaTime;
 
-            if (HpChangeTimer >= 12f)
+            if (HpChangeTimer >= 8f)
             {
                 ReturnToPool();
             }
@@ -178,9 +176,11 @@ public abstract class BaseEnemy : MonoCache
 
         while (timer < _pushbackDuration)
         {
-            float distance = Mathf.Lerp(0f, _pushbackDistance, timer / _pushbackDuration);
-            transform.position += _pushbackDirection * distance;
-
+            if (Time.timeScale > 0f)
+            {
+                float distance = Mathf.Lerp(0f, _pushbackDistance, timer / _pushbackDuration);
+                transform.position += _pushbackDirection * distance;
+            }
             timer += Time.deltaTime;
             yield return null;
         }

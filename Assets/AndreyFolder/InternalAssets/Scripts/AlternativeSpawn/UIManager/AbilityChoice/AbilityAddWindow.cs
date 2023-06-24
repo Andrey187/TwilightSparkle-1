@@ -44,7 +44,7 @@ public class AbilityAddWindow : MonoBehaviour
     private void OnDisable()
     {
         // Deactivate the button container and remove the instantiated buttons when the script is disabled
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
 
         foreach (Button buttonInstance in InstantiatedButtons)
         {

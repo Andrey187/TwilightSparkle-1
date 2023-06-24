@@ -6,6 +6,7 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
     [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private int _gainExpMyltiply = 1;
     [SerializeField] private float expFactor = 1.3f;
     [SerializeField] private float levelFactor = 0.3f;
     private static LevelUpSystem _instance;
@@ -39,6 +40,8 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 
     public int CurrentExp { get => _playerStats.CurrentExp; set => _playerStats.CurrentExp = value; }
 
+    public int GainExpMyltiply { get => _gainExpMyltiply; set => _gainExpMyltiply = value; }
+
     public int NextLevelExp { get; set; } = 1000;
 
     public void AddExperience(EnemyData.ObjectType type, EnemyData enemyType)
@@ -50,7 +53,8 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
 
         if (_expTable.TryGetValue(type, out EnemyData enemy))
         {
-            int gainExp = enemy.GainExp;
+            int expMyltiply = Mathf.RoundToInt(enemy.GainExp * GainExpMyltiply / 100f);
+            int gainExp = enemy.GainExp + expMyltiply;
             _playerStats.CurrentExp += gainExp;
             OnPropertyChanged(nameof(CurrentExp));
             CheckLevelUp();
@@ -77,13 +81,21 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
     private int GetNextLevelExp(int level)
     {
         const float baseExp = 1000f;
-        //const float expFactor = 1.3f;
-        //const float levelFactor = 0.3f;
+        const float reductionFactor = 0.9f;  // Gradual reduction factor for growth rate
 
         float exp = baseExp * Mathf.Pow(expFactor, level - 1);
         float levelBonus = (level - 1) * levelFactor * exp;
 
-        return Mathf.FloorToInt(exp + levelBonus);
+        int result = Mathf.FloorToInt(exp + levelBonus);
+
+        if (level % 10 == 0)
+        {
+            int reductionLevel = level / 10;  // Calculate reduction level
+            float growthReduction = Mathf.Pow(reductionFactor, reductionLevel);
+            result = Mathf.FloorToInt(result * growthReduction);
+        }
+
+        return result;
     }
 
     protected void OnPropertyChanged(string propertyName)

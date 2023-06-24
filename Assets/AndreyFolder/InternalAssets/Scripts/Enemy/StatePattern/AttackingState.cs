@@ -1,10 +1,7 @@
 public class AttackingState : EnemyState
 {
-    private const string AnimationTrigger = "Attack";
-
     public override void Enter(BaseEnemy enemy)
     {
-        //enemy.Animator.SetTrigger(AnimationTrigger);
         enemy.meshAnimator.Play("Attack01");
     }
 
