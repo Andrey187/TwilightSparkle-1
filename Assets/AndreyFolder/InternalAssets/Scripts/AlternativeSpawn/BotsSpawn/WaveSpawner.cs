@@ -62,6 +62,11 @@ public class WaveSpawner : MonoCache
     private IEnumerator SpawnFirstWave()
     {
         yield return new WaitForSeconds(1f); // Wait for 1 second before spawning the first wave
-        StartCoroutine(SpawnWave(Waves[0], true)); // Start the first wave
+        StartCoroutine(SpawnWave(Waves[1], true)); // Start the first wave
+    }
+
+    public void BossSpawn(Wave wave)
+    {
+        StartCoroutine(_botSpawner.SpawnObjects(wave));
     }
 }

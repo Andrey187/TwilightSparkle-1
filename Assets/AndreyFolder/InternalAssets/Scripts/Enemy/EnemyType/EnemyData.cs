@@ -16,7 +16,8 @@ public class EnemyData : ScriptableObject, IResetOnExitPlay
     {
         Type1,
         Type2,
-        Type3
+        Type3,
+        Boss
     }
 
     private void OnValidate()

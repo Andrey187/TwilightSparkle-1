@@ -1011,7 +1011,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &238608393
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3320,8 +3320,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _botSpawner: {fileID: 852128250}
-  _startWaveIndex: 0
+  _startWaveIndex: 2
   Waves:
+  - Name: BossTurtle
+    Bot: {fileID: 4882590064214274, guid: 4ab16fc09522f324cba43a51e6ad91b2, type: 3}
+    SpawnLimit: 1
+    WaveDuration: 0
+    BaseDuration: 0
+    SpawnMethod: {fileID: 973808789}
+    _objMaterial: {fileID: 0}
   - Name: Slime
     Bot: {fileID: 258048862765242877, guid: add6a17e6b99f4d4dbfb6aabfc8a7ba8, type: 3}
     SpawnLimit: 50
@@ -11920,7 +11927,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592969261670812039}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e51731ad50b6b964189ae9a405fd6f71, type: 3}
   m_Name: 

@@ -46,7 +46,6 @@ public class ScenarioManager : MonoCache
 
                 // Apply the updated values to the wave spawner and enemy prefab
                 _waveSpawner.Waves[i].WaveDuration = newWaveDuration;
-               
             }
         }
 
@@ -57,12 +56,18 @@ public class ScenarioManager : MonoCache
                 enemyData.MaxHealth += _increaseMaxHpEnemy;
             }
         }
-        else if(newLevel % 10 == 0) 
+
+        if(newLevel % 10 == 0) 
         {
             foreach (EnemyData enemyData in DataLoader.Instance._enemyDataBase.EnemyDataList)
             {
                 enemyData.MaxHealth += 500;
             }
+        }
+
+        if(newLevel % 5 == 0)
+        {
+            _waveSpawner.BossSpawn(_waveSpawner.Waves[0]);
         }
     }
 }
