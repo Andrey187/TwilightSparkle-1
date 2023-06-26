@@ -83,11 +83,7 @@ public class BotsSpawner : MonoCache
             }
             else
             {
-                inactiveBot.gameObject.SetActive(false);
                 _botPool.ReturnObject(inactiveBot);
-
-                Action<GameObject> objectReturnToPool = EnemyEventManager.Instance.DestroyedObject;
-                objectReturnToPool?.Invoke(gameObject);
             }
         }
     }

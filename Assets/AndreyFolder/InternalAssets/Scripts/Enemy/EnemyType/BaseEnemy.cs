@@ -21,7 +21,6 @@ public abstract class BaseEnemy : MonoCache
     protected Coroutine _pushbackCoroutine;
     protected Rigidbody _rigidbody;
     protected NavMeshAgent _navMeshAgent;
-    protected internal Animator Animator;
     protected internal SkinnedMeshRenderer _skinnedMesh;
     [SerializeField] protected internal Renderer _renderer;
     [SerializeField]
@@ -29,7 +28,6 @@ public abstract class BaseEnemy : MonoCache
 
     protected void Awake()
     {
-        Animator = Get<Animator>();
         _rigidbody = Get<Rigidbody>();
         _healthBarController = Get<HealthBarController>();
         _navMeshAgent = Get<NavMeshAgent>();
@@ -114,6 +112,7 @@ public abstract class BaseEnemy : MonoCache
             HpChangeTimer = 0f;
             if (enemy != null && damageAmount > 0 && CurrentHealth > 0)
             {
+                ChangeState(new TakingDamageState());
                 KnockBack();
                 DamageNumberPool.Instance.Initialize(damageAmount, enemy.transform, ability);
 
@@ -163,7 +162,6 @@ public abstract class BaseEnemy : MonoCache
             if (!_isBeingPushed)
             {
                 _pushbackDirection = -transform.forward;
-                ChangeState(new TakingDamageState());
                 _pushbackCoroutine = StartCoroutine(MoveToDestination());
             }
         }

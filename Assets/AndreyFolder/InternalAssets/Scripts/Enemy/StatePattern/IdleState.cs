@@ -4,7 +4,7 @@ public class IdleState : EnemyState
 
     public override void Enter(BaseEnemy enemy)
     {
-        enemy.Animator.SetTrigger(AnimationTrigger);
+        
     }
 
     public override void Exit(BaseEnemy enemy)

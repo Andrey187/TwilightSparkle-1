@@ -24,9 +24,9 @@ public class CameraArea : MonoCache
         _uiEventManager.HealthBarCreated += AddHealthBar;
         _uiEventManager.HealthBarDestroyed += RemoveHealthBar;
     }
-    protected override void OnDisabled()
+
+    private void OnDestroy()
     {
-        // Unsubscribe from the events to avoid memory leaks
         _enemyEventManager.ObjectCreated -= AddEnemyObject;
         _enemyEventManager.ObjectDestroyed -= RemoveEnemyObject;
 

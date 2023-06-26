@@ -18,7 +18,7 @@ MonoBehaviour:
   smoothNormalsAngle: -1
   instantNormalCalculation: 0
   recalculateNormalsOnRotation: 0
-  wrapMode: 2
+  wrapMode: 1
   rootMotionMode: 0
   compressedFrameData:
     accuracy: 1000

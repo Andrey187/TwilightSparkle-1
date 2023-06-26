@@ -15,6 +15,10 @@ public class BossTurtle : BaseEnemy
         }
     }
 
+    protected override void Run()
+    {
+    }
+
     protected override void TakeDamage(BaseEnemy enemy, int damageAmount, IAbility ability, IDoTEffect doTEffect)
     {
         base.TakeDamage(enemy, damageAmount, ability, doTEffect);
