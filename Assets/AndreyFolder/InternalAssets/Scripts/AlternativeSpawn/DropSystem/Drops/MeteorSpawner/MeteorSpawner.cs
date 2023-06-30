@@ -28,17 +28,16 @@ public class MeteorSpawner : MonoBehaviour
 
     public IEnumerator SpawnMeteor()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.05f);
 
         Meteor[] meteors = _meteors.ToArray();
-        for (int i = 0; i < meteors.Length; i++)
+        for (int i = 0; i < _meteorCount; i++)
         {
-            Meteor MeteorPrefab = meteors[i];
+            Meteor activeMeteor = _objectsPool.GetObjects(meteors[i].transform.position, meteors[i]);
             spawnMethod.NewUnitCircle();
             spawnMethod.SpawnEnemies();
             spawnMethod.GroundCheck();
 
-            Meteor activeMeteor = _objectsPool.GetObjects(MeteorPrefab.transform.position, MeteorPrefab);
             if (spawnMethod.ColliderCheck(activeMeteor))
             {
                 yield return new WaitForSeconds(0.2f);
