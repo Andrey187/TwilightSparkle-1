@@ -15,6 +15,7 @@ public class MeteorSpawner : MonoBehaviour
 
     private void Start()
     {
+        _meteors.Clear();
         for (int i = 0; i < _meteorCount; i++)
         {
             _objectFactory = new ObjectsFactory(_meteorPrefab.transform);

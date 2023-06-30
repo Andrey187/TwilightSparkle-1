@@ -17,7 +17,7 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     protected Vector3 _botsSpawnInRandomPointOnCircle;
     protected Vector3 _botsSpawnField;
 
-    protected const float distanceToCheckGround = 2f;
+    protected const float distanceToCheckGround = 3f;
 
 
     private void Awake()

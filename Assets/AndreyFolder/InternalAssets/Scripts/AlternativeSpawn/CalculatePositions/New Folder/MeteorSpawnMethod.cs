@@ -13,11 +13,6 @@ public class MeteorSpawnMethod : GroupSpawnMethod
         }
     }
 
-    protected internal override void SpawnEnemies()
-    {
-        base.SpawnEnemies();
-    }
-
     protected internal override bool ColliderCheck<T>(T obj)
     {
         CheckSphere(obj, new Vector3(_botsSpawnField.x, 10f, _botsSpawnField.z));

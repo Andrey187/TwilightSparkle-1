@@ -14,7 +14,13 @@ public class BotsSpawner : MonoCache
     // Start is called before the first frame update
     private void Start()
     {
+        SpawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
         InitCreatePool();
+    }
+
+    protected override void OnDisabled()
+    {
+        SpawnedBotsForWave.Clear();
     }
 
     private void InitCreatePool()
@@ -26,7 +32,6 @@ public class BotsSpawner : MonoCache
         }
        
         // Initialize the dictionary with empty lists for each wave
-        SpawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
         foreach (WaveSpawner.Wave wave in _waveSpawner.Waves)
         {
             SpawnedBotsForWave[wave] = new List<BaseEnemy>();

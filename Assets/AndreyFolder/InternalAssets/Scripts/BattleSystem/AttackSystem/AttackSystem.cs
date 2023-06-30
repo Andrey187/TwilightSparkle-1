@@ -30,6 +30,7 @@ namespace AbilitySystem
 
         private void Start()
         {
+            InstantiateCloneAbilities.Clear();
             // Spawn the first ability
             if (_attackAbilities.Count > 0)
             {

@@ -18,7 +18,7 @@ public class MeteorDrop : BaseDrop
         {
             StartCoroutine(_meteorSpawner.SpawnMeteor());
             _render.enabled = false;
-            Invoke("ReturnToPool",2);
+            Invoke("ReturnToPool", 2);
         }
     }
 

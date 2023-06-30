@@ -18,6 +18,7 @@ public class DropManager : MonoCache
 
     private void Start()
     {
+        _cachePrefab.Clear();
         enemiesKilledCount = 0;
         for (int i = 0; i < DropPrefab.Count; i++)
         {
