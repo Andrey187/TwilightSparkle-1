@@ -6,10 +6,14 @@ public class DataLoader : MonoCache
     [SerializeField] public AbilityDatabase _abilityDataBase;
     [SerializeField] public DoTDataBase _dotDataBase;
     [SerializeField] public EnemyDataBase _enemyDataBase;
+    [SerializeField] public ParticleDataBase _particleDataBase;
 
     private Dictionary<string, AbilityData> _abilityDataDictionary = new Dictionary<string, AbilityData>();
     private Dictionary<string, DoTData> _dotDataBaseDictionary = new Dictionary<string, DoTData>();
     private Dictionary<string, EnemyData> _enemyDataBaseDictionary = new Dictionary<string, EnemyData>();
+    private Dictionary<ParticleData.ParticleType, ParticleData> _particleDataBaseDictionary = new Dictionary<ParticleData.ParticleType, ParticleData>();
+
+    public Dictionary<ParticleData.ParticleType, ParticleData> ParticleDataBaseDictionary { get => _particleDataBaseDictionary; set => _particleDataBaseDictionary = value; }
 
     private static DataLoader instance;
     public static DataLoader Instance
@@ -27,6 +31,7 @@ public class DataLoader : MonoCache
         InitializeAbilities();
         InitializeDoTs();
         InitializeEnemies();
+        InitializePaticle();
     }
 
     public void InitializeAbilities()
@@ -57,6 +62,15 @@ public class DataLoader : MonoCache
         {
             _enemyDataBaseDictionary.Add(enemyData.EnemyName, enemyData);
             enemyData.ResetOnExitPlay();
+        }
+    }
+
+    public void InitializePaticle()
+    {
+        _particleDataBaseDictionary.Clear();
+        foreach (ParticleData particleData in _particleDataBase.ParticleDataList)
+        {
+            _particleDataBaseDictionary.Add(particleData.Type, particleData);
         }
     }
 

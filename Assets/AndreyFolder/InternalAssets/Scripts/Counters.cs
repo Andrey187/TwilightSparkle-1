@@ -30,6 +30,11 @@ public class Counters : MonoCache
 
     protected override void Run()
     {
+        CounterUpdate();
+    }
+
+    private void CounterUpdate()
+    {
         _fps = 1.0f / Time.deltaTime;
         _fpsText.text = "FPS: " + (int)_fps;
 

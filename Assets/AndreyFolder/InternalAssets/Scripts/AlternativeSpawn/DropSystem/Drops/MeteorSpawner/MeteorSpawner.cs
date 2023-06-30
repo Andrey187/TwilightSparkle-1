@@ -11,7 +11,7 @@ public class MeteorSpawner : MonoBehaviour
     [SerializeField] private int _meteorCount;
     private PoolObject<Meteor> _objectsPool;
     private IObjectFactory _objectFactory;
-    private List<Meteor> _meteorsHashSet = new List<Meteor>();
+    private List<Meteor> _meteors = new List<Meteor>();
 
     private void Start()
     {
@@ -19,29 +19,28 @@ public class MeteorSpawner : MonoBehaviour
         {
             _objectFactory = new ObjectsFactory(_meteorPrefab.transform);
             Meteor meteor = _objectFactory.CreateObject(_meteorPrefab.transform.position).GetComponent<Meteor>();
-            _meteorsHashSet.Add(meteor);
+            _meteors.Add(meteor);
         }
-        Meteor[] meteors = _meteorsHashSet.ToArray();
+        Meteor[] meteors = _meteors.ToArray();
         PoolObject<Meteor>.CreateInstance(meteors, meteors.Length, gameObject.transform, meteors.First().name + "_Container");
         _objectsPool = PoolObject<Meteor>.Instance;
     }
 
     public IEnumerator SpawnMeteor()
     {
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.2f);
 
-        Meteor[] meteors = _meteorsHashSet.ToArray();
-        for (int i = 0; i < _meteorCount; i++)
+        Meteor[] meteors = _meteors.ToArray();
+        for (int i = 0; i < meteors.Length; i++)
         {
-            Meteor activeMeteor = _objectsPool.GetObjects(meteors[i].transform.position, meteors[i]);
+            Meteor MeteorPrefab = meteors[i];
             spawnMethod.NewUnitCircle();
             spawnMethod.SpawnEnemies();
             spawnMethod.GroundCheck();
-            
+
+            Meteor activeMeteor = _objectsPool.GetObjects(MeteorPrefab.transform.position, MeteorPrefab);
             if (spawnMethod.ColliderCheck(activeMeteor))
             {
-                activeMeteor.gameObject.SetActive(true);
-
                 yield return new WaitForSeconds(0.2f);
             }
         }

@@ -73,7 +73,7 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
                 {
                     Vector3 newPosition = obj.transform.position + vector; // Calculate new position relative to the current position
                     obj.transform.position = newPosition;
-                    
+
                     if (obj is BaseEnemy baseEnemy)
                     {
                         NavMeshAgent agent = baseEnemy.GetComponentInChildren<NavMeshAgent>();

@@ -12,7 +12,7 @@ public class GroupSpawnMethod : EnemySpawnMethod
             _player.transform.position.z + _spawnCircleRadius.y);
 
         Vector2 randomInsideUnitCircle2D = Random.insideUnitCircle;
-        _botsSpawnField = _botsSpawnInRandomPointOnCircle + _ground.transform.position +
+        _botsSpawnField = _botsSpawnInRandomPointOnCircle /*+ _ground.transform.position*/ +
             new Vector3(randomInsideUnitCircle2D.x, 0f, randomInsideUnitCircle2D.y)
             * _groupSpawnCircleRadius;
     }

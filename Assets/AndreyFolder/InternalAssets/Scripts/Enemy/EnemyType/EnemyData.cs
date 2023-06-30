@@ -40,7 +40,7 @@ public class EnemyData : ScriptableObject, IResetOnExitPlay
     public string EnemyName { get { return _enemyName; } }
     public int CurrentHealth { get { return _currentHealth; } set { _currentHealth = value; } }
     public int MaxHealth { get { return _maxHealth; } set { _maxHealth = value; } }
-    public int Damage { get { return _damage; } }
+    public int Damage { get { return _damage; } set { _damage = value; } }
     public float Speed { get { return _speed; } }
     public int GainExp { get { return _gainExp; } set { _gainExp = value; } }
 }

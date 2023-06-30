@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
-
 public class MeteorSpawnMethod : GroupSpawnMethod
 {
     protected override void CheckSphere<T>(T obj, Vector3 vector)
@@ -11,12 +9,6 @@ public class MeteorSpawnMethod : GroupSpawnMethod
             {
                 Vector3 newPosition = obj.transform.position + vector; // Calculate new position relative to the current position
                 obj.transform.position = newPosition;
-                
-                if (obj is BaseEnemy baseEnemy)
-                {
-                    NavMeshAgent agent = baseEnemy.GetComponent<NavMeshAgent>();
-                    agent.Warp(vector);
-                }
             }
         }
     }

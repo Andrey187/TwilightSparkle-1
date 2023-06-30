@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,18 +14,35 @@ public class DropManager : MonoCache
     private PoolObject<BaseDrop> _objectsToPool;
     private IObjectFactory _objectFactory;
     private DropEventManager _eventManager;
+    private Dictionary<Type, List<BaseDrop>> _cachePrefab = new Dictionary<Type, List<BaseDrop>>();
 
     private void Start()
     {
         enemiesKilledCount = 0;
-        foreach (var drop in DropPrefab)
+        for (int i = 0; i < DropPrefab.Count; i++)
         {
-            _objectFactory = new ObjectsFactory(drop.GetComponent<BaseDrop>().transform);
-            BaseDrop baseDrop = _objectFactory.CreateObject(drop.transform.position).GetComponent<BaseDrop>();
+            _objectFactory = new ObjectsFactory(DropPrefab[i].GetComponent<BaseDrop>().transform);
+            BaseDrop baseDrop = _objectFactory.CreateObject(DropPrefab[i].transform.position).GetComponent<BaseDrop>();
 
-            PoolObject<BaseDrop>.CreateInstance(baseDrop, 0, gameObject.transform, baseDrop.name + "_Drops");
-            _objectsToPool = PoolObject<BaseDrop>.Instance;
+            Type dropType = DropPrefab[i].GetType();
+
+            // Check if the key already exists in the dictionary
+            if (!_cachePrefab.ContainsKey(dropType))
+            {
+                _cachePrefab[dropType] = new List<BaseDrop>();
+            }
+
+            // Add the baseDrop object to the list associated with the dropType key
+            for (int j = 0; j < 10; j++)
+            {
+                _cachePrefab[dropType].Add(baseDrop);
+            }
         }
+        BaseDrop[] objects = _cachePrefab.SelectMany(pair => pair.Value).ToArray();
+
+        PoolObject<BaseDrop>.CreateInstance(objects, 10, gameObject.transform, "_Drops");
+        _objectsToPool = PoolObject<BaseDrop>.Instance;
+
         _eventManager = DropEventManager.Instance;
         _eventManager.DropCreated += EnemyKilled;
     }

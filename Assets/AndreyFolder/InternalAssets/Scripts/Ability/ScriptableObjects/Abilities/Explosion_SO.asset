@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Explosion_SO
   m_EditorClassIdentifier: 
   AbilityName: Explosion
-  Damage: 30
+  Damage: 50
   FireInterval: 0
   Color: {r: 0.46226418, g: 0, b: 0, a: 0}
   HasDoT: 1
-  _baseDamage: 30
+  _baseDamage: 50
+  _baseMagicPower: 0
   _baseFireInterval: 0
+  _currentMagicPower: 0

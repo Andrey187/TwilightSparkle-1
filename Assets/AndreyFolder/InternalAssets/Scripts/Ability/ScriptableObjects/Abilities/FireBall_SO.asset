@@ -17,7 +17,7 @@ MonoBehaviour:
   FireInterval: 1
   Color: {r: 1, g: 0.11183071, b: 0, a: 1}
   HasDoT: 1
-  _baseDamage: 10
+  _baseDamage: 15
   _baseMagicPower: 0
   _baseFireInterval: 1
   _currentMagicPower: 0

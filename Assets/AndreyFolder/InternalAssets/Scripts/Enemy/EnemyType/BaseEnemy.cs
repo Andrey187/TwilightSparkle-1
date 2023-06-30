@@ -39,6 +39,7 @@ public abstract class BaseEnemy : MonoCache
     {
         if (EnemyType != null)
         {
+            _navMeshAgent.enabled = true;
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
@@ -112,7 +113,10 @@ public abstract class BaseEnemy : MonoCache
             HpChangeTimer = 0f;
             if (enemy != null && damageAmount > 0 && CurrentHealth > 0)
             {
-                ChangeState(new TakingDamageState());
+                if (CurrentHealth != 0)
+                {
+                    ChangeState(new TakingDamageState());
+                }
                 KnockBack();
                 DamageNumberPool.Instance.Initialize(damageAmount, enemy.transform, ability);
 
@@ -198,6 +202,11 @@ public abstract class BaseEnemy : MonoCache
 
     public void Die()
     {
+        _navMeshAgent.enabled = false;
+
+        Action<GameObject> deathParticleInvoke = ParticleEventManager.Instance.DeathParticle;
+        deathParticleInvoke?.Invoke(gameObject);
+
         ReturnToPool();
         DropEventManager.Instance.DropsCreated(gameObject);
         LevelUpSystem.Instance.AddExperience(EnemyType._type, EnemyType);

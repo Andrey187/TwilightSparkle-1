@@ -10,7 +10,7 @@ public class BotsSpawner : MonoCache
     private PoolObject<BaseEnemy> _botPool;
     private IObjectFactory _objectFactory;
 
-    private Dictionary<WaveSpawner.Wave, List<BaseEnemy>> _spawnedBotsForWave;
+    public Dictionary<WaveSpawner.Wave, List<BaseEnemy>> SpawnedBotsForWave;
     // Start is called before the first frame update
     private void Start()
     {
@@ -26,10 +26,10 @@ public class BotsSpawner : MonoCache
         }
        
         // Initialize the dictionary with empty lists for each wave
-        _spawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
+        SpawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
         foreach (WaveSpawner.Wave wave in _waveSpawner.Waves)
         {
-            _spawnedBotsForWave[wave] = new List<BaseEnemy>();
+            SpawnedBotsForWave[wave] = new List<BaseEnemy>();
         }
 
         // Create object pool for the wave
@@ -44,24 +44,24 @@ public class BotsSpawner : MonoCache
             }
 
             // Add the bots to the List
-            for (int j = 0; j < wave.SpawnLimit; j++)
+            for (int j = 0; j < 350; j++)
             {
                 BaseEnemy bot = _objectFactory.CreateObject(wave.Bot.position).GetComponent<BaseEnemy>();
-                _spawnedBotsForWave[wave].Add(bot);
+                SpawnedBotsForWave[wave].Add(bot);
             }
         }
-        BaseEnemy[] objects = _spawnedBotsForWave.SelectMany(pair => pair.Value).ToArray();
-        PoolObject<BaseEnemy>.CreateInstance(objects, objects.Length, gameObject.transform, "Bots");
+        BaseEnemy[] objects = SpawnedBotsForWave.SelectMany(pair => pair.Value).ToArray();
+        PoolObject<BaseEnemy>.CreateInstance(objects, 0, gameObject.transform, "Bots");
         _botPool = PoolObject<BaseEnemy>.Instance;
     }
 
     public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
     {
         yield return new WaitForSeconds(0.05f);
-        List<BaseEnemy> botsForWave = _spawnedBotsForWave[wave];
+        List<BaseEnemy> botsForWave = SpawnedBotsForWave[wave];
         BaseEnemy[] botPrefabs = botsForWave.ToArray();
 
-        for (int j = 0; j < botPrefabs.Length; j++)
+        for (int j = 0; j < wave.SpawnLimit; j++)
         {
             BaseEnemy botPrefab = botPrefabs[j];
             // Check if there are any inactive bot objects in the pool that match the current wave and prefab
