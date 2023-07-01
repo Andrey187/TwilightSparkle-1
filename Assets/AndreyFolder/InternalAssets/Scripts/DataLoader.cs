@@ -13,8 +13,6 @@ public class DataLoader : MonoCache
     private Dictionary<string, EnemyData> _enemyDataBaseDictionary = new Dictionary<string, EnemyData>();
     private Dictionary<ParticleData.ParticleType, ParticleData> _particleDataBaseDictionary = new Dictionary<ParticleData.ParticleType, ParticleData>();
 
-    public Dictionary<ParticleData.ParticleType, ParticleData> ParticleDataBaseDictionary { get => _particleDataBaseDictionary; set => _particleDataBaseDictionary = value; }
-
     private static DataLoader instance;
     public static DataLoader Instance
     {

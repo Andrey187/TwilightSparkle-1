@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DropManager : MonoCache
 {
-    [SerializeField] private List<BaseDrop> DropPrefab;
+    [SerializeField] private List<BaseDrop> _dropPrefab;
     [SerializeField] private int _countForFirstAid;
     [SerializeField] private int _countForBomb;
 
@@ -20,12 +20,13 @@ public class DropManager : MonoCache
     {
         _cachePrefab.Clear();
         enemiesKilledCount = 0;
-        for (int i = 0; i < DropPrefab.Count; i++)
+        for (int i = 0; i < _dropPrefab.Count; i++)
         {
-            _objectFactory = new ObjectsFactory(DropPrefab[i].GetComponent<BaseDrop>().transform);
-            BaseDrop baseDrop = _objectFactory.CreateObject(DropPrefab[i].transform.position).GetComponent<BaseDrop>();
+            _objectFactory = new ObjectsFactory(_dropPrefab[i].GetComponent<BaseDrop>().transform);
 
-            Type dropType = DropPrefab[i].GetType();
+            BaseDrop baseDrop = _objectFactory.CreateObject(_dropPrefab[i].transform.position).GetComponent<BaseDrop>();
+
+            Type dropType = _dropPrefab[i].GetType();
 
             // Check if the key already exists in the dictionary
             if (!_cachePrefab.ContainsKey(dropType))
@@ -39,9 +40,8 @@ public class DropManager : MonoCache
                 _cachePrefab[dropType].Add(baseDrop);
             }
         }
-        BaseDrop[] objects = _cachePrefab.SelectMany(pair => pair.Value).ToArray();
-
-        PoolObject<BaseDrop>.CreateInstance(objects, 10, gameObject.transform, "_Drops");
+        List<BaseDrop> allObjects = _cachePrefab.SelectMany(pair => pair.Value).ToList();
+        PoolObject<BaseDrop>.CreateInstance(allObjects, 10, gameObject.transform, "_Drops");
         _objectsToPool = PoolObject<BaseDrop>.Instance;
 
         _eventManager = DropEventManager.Instance;
@@ -57,20 +57,22 @@ public class DropManager : MonoCache
     {
         enemiesKilledCount++;
 
+        Vector3 position = new Vector3(obj.transform.position.x, 0f, obj.transform.position.z);
+
         if (enemiesKilledCount % _countForFirstAid == 0)
         {
-            DropFirstAidKit(obj.transform.position);
+            DropFirstAidKit(position);
         }
 
         if (enemiesKilledCount % _countForBomb == 0)
         {
-            DropExplosiveDevice(obj.transform.position);
+            DropExplosiveDevice(position);
         }
     }
 
     private void DropFirstAidKit(Vector3 pos)
     {
-        FirstAidDrop firstAidDrop = DropPrefab.FirstOrDefault(drop => drop is FirstAidDrop) as FirstAidDrop;
+        FirstAidDrop firstAidDrop = _dropPrefab.FirstOrDefault(drop => drop is FirstAidDrop) as FirstAidDrop;
         if (firstAidDrop != null)
         {
             // Instantiate and activate the first aid kit prefab
@@ -80,7 +82,7 @@ public class DropManager : MonoCache
 
     private void DropExplosiveDevice(Vector3 pos)
     {
-        MeteorDrop bombDrop = DropPrefab.FirstOrDefault(drop => drop is MeteorDrop) as MeteorDrop;
+        MeteorDrop bombDrop = _dropPrefab.FirstOrDefault(drop => drop is MeteorDrop) as MeteorDrop;
         if (bombDrop != null)
         {
             // Instantiate and activate the first aid kit prefab

@@ -8,8 +8,7 @@ public class ExplosionAbility : BaseAbilities
     private Explosion _explosion;
     private FireDoTEffect _fireDotEffect;
     protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
-    protected internal override event Action<BaseAbilities> SetDie;
-
+   
     private void Awake()
     {
         _thisRb = Get<Rigidbody>();

@@ -39,8 +39,8 @@ namespace AbilitySystem
         private void CreateCloneAbility(BaseAbilities ability)
         {
             BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-            _attackSystem.InstantiateCloneAbilities.Add(prefabAbility);
             prefabAbility.gameObject.SetActive(false);
+            _attackSystem.InstantiateCloneAbilities.Add(prefabAbility);
         }
 
         private void CreatePrefabAbility(BaseAbilities ability, Vector3 targetPoint)

@@ -32,7 +32,7 @@ namespace DamageNumber
         {
             U _damageNumberList = new U();
 
-            PoolObject<T>.CreateInstance(_damageNumberList.ToArray(), _poolObjectCount,
+            PoolObject<T>.CreateInstance(_damageNumberList.ToList(), _poolObjectCount,
                CanvasTransform, _containerName);
             _textPool = PoolObject<T>.Instance;
         }

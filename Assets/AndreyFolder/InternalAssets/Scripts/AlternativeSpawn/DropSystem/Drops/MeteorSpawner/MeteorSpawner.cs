@@ -22,8 +22,8 @@ public class MeteorSpawner : MonoBehaviour
             Meteor meteor = _objectFactory.CreateObject(_meteorPrefab.transform.position).GetComponent<Meteor>();
             _meteors.Add(meteor);
         }
-        Meteor[] meteors = _meteors.ToArray();
-        PoolObject<Meteor>.CreateInstance(meteors, meteors.Length, gameObject.transform, meteors.First().name + "_Container");
+        
+        PoolObject<Meteor>.CreateInstance(_meteors, _meteors.Count, gameObject.transform, _meteors.First().name + "_Container");
         _objectsPool = PoolObject<Meteor>.Instance;
     }
 
@@ -31,10 +31,9 @@ public class MeteorSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
 
-        Meteor[] meteors = _meteors.ToArray();
         for (int i = 0; i < _meteorCount; i++)
         {
-            Meteor activeMeteor = _objectsPool.GetObjects(meteors[i].transform.position, meteors[i]);
+            Meteor activeMeteor = _objectsPool.GetObjects(_meteors[i].transform.position, _meteors[i]);
             spawnMethod.NewUnitCircle();
             spawnMethod.SpawnEnemies();
             spawnMethod.GroundCheck();

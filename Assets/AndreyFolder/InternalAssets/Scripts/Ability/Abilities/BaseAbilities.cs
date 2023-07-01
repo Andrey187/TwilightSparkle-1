@@ -11,7 +11,7 @@ public abstract class BaseAbilities : MonoCache
     [SerializeField] protected float _lifeTime;
     [SerializeField] protected LayerMask _layerMask;
     protected abstract event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
-    protected internal abstract event Action<BaseAbilities> SetDie;
+    protected virtual internal event Action<BaseAbilities> SetDie;
     protected Rigidbody _thisRb;
     
     protected internal virtual Vector3 TargetPoint { get; set; }

@@ -8,7 +8,6 @@ public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
     public event Action<TalentStatType, int> OnCurrentTalentPoint;
-    public event Action CurrentTalentPointChanged;
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private List<TalentSO> _talents;
     private Dictionary<TalentStatType, int> _maxTalentPoints = new Dictionary<TalentStatType, int>();

@@ -46,9 +46,6 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
         Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);
         bool hasHit = Physics.Raycast(centerRay, out hit, distanceToCheckGround);
 
-        // Draw center ray
-        Debug.DrawRay(_botsSpawnInRandomPointOnCircle, Vector3.down * distanceToCheckGround, Color.red);
-
         // Check the corners of the spawn area
         float angleStep = 360f / 16f;
         for (int i = 0; i < 16; i++)
@@ -56,8 +53,6 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
             Vector3 corner = _botsSpawnInRandomPointOnCircle + Quaternion.AngleAxis(i * angleStep, Vector3.up) * Vector3.forward * _groupSpawnCircleRadius;
             Ray cornerRay = new Ray(corner, Vector3.down);
 
-            // Draw corner ray
-            Debug.DrawRay(corner, Vector3.down * distanceToCheckGround, Color.green);
             if (!Physics.Raycast(cornerRay, out hit, distanceToCheckGround))
             {
                 hasHit = false;

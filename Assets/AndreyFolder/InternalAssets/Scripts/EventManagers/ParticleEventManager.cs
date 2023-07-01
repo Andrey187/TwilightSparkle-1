@@ -6,6 +6,7 @@ using UnityEngine;
 public class ParticleEventManager : MonoBehaviour
 {
     private Action<GameObject> _deathParticle;
+    private Action<GameObject> _healParticle;
 
     private static ParticleEventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -38,8 +39,19 @@ public class ParticleEventManager : MonoBehaviour
         remove { _deathParticle -= value; }
     }
 
+    public event Action<GameObject> OnHealParticleSetActive
+    {
+        add { _healParticle += value; }
+        remove { _healParticle -= value; }
+    }
+
     public void DeathParticle(GameObject obj)
     {
         _deathParticle?.Invoke(obj);
+    }
+
+    public void HealParticle(GameObject obj)
+    {
+        _healParticle?.Invoke(obj);
     }
 }

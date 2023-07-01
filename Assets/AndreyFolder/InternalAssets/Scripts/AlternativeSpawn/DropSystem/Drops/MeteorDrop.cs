@@ -3,29 +3,26 @@ using UnityEngine;
 public class MeteorDrop : BaseDrop
 {
     [SerializeField] private MeteorSpawner _meteorSpawner;
-    private MeshRenderer _render;
+    [SerializeField] private ParticleSystem _particleSystem;
     protected override void Start()
     {
         base.Start();
         _meteorSpawner = Find<MeteorSpawner>();
-        _render = Get<MeshRenderer>();
-        
+        _particleSystem.Play();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
+            _particleSystem.Stop();
             StartCoroutine(_meteorSpawner.SpawnMeteor());
-            _render.enabled = false;
             Invoke("ReturnToPool", 2);
         }
     }
 
     private void ReturnToPool()
     {
-        _render.enabled = true;
         gameObject.SetActive(false);
     }
-
 }

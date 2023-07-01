@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PoolObject<T> where T : Component
 {
-    //public static PoolObject<T> Instance { get; private set; }
     private static PoolObject<T> _instance;
     public static PoolObject<T> Instance
     {
@@ -17,7 +16,7 @@ public class PoolObject<T> where T : Component
         }
     }
 
-    private T[] _objectPrefab;
+    private List<T> _objectPrefab;
     private int _poolLimit;
     private Transform _parentObject;
     private string _containerName;
@@ -27,7 +26,7 @@ public class PoolObject<T> where T : Component
     private static GameObject _poolContainerPrefab;
     private static GameObject _poolContainerInstance;
 
-    public PoolObject(T[] objectPrefab, int poolLimit, Transform parentObject, string containerName)
+    public PoolObject(List<T> objectPrefab, int poolLimit, Transform parentObject, string containerName)
     {
         _objectPrefab = objectPrefab;
         _poolLimit = poolLimit;
@@ -38,10 +37,10 @@ public class PoolObject<T> where T : Component
 
     public static void CreateInstance(T prefab, int poolLimit, Transform parentObject, string containerName)
     {
-        CreateInstance(new T[] { prefab }, poolLimit, parentObject, containerName);
+        CreateInstance(new List<T> { prefab }, poolLimit, parentObject, containerName);
     }
 
-    public static void CreateInstance(T[] prefabs, int poolLimit, Transform parentObject, string containerName)
+    public static void CreateInstance(List<T> prefabs, int poolLimit, Transform parentObject, string containerName)
     {
         if (_instance == null)
         {
@@ -177,7 +176,7 @@ public class PoolObject<T> where T : Component
     {
         _objectPool = new Queue<T>();
 
-        for (int i = 0; i < _objectPrefab.Length; i++)
+        for (int i = 0; i < _objectPrefab.Count; i++)
         {
             T prefab = _objectPrefab[i];
             T obj = Object.Instantiate(prefab, _poolContainerInstance.transform);
