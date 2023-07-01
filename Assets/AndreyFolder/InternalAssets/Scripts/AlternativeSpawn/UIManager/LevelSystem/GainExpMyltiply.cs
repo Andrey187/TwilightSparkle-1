@@ -18,8 +18,8 @@ public class GainExpMyltiply : MonoCache
         // Trigger the AddAttackScript method of the AttackScript class
         if(_levelUpSystem.GainExpMyltiply == 1)
         {
-            _levelUpSystem.GainExpMyltiply *= 10;
+            _levelUpSystem.GainExpMyltiply *= 20;
         }
-        else { _levelUpSystem.GainExpMyltiply += 10; }
+        else { _levelUpSystem.GainExpMyltiply += 20; }
     }
 }

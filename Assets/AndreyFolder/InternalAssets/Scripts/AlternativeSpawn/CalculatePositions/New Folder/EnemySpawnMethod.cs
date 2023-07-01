@@ -10,27 +10,45 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
     [SerializeField] protected float _groupSpawnCircleRadius = 20f;
     protected bool isGround = false;
     protected RaycastHit hit;
+    private float distance;
 
     protected virtual void Start()
     {
+        _virtualCamera = Find<CinemachineVirtualCamera>();
         FindCameraBoundries();
     }
 
     protected void FindCameraBoundries()
     {
-        CameraState state = _virtualCamera.State;
+        // Check if the camera dimensions are already saved in PlayerPrefs
+        if (PlayerPrefs.HasKey("CameraWidth") && PlayerPrefs.HasKey("CameraHeight"))
+        {
+            // Load the camera dimensions from PlayerPrefs
+            _cameraWidth = PlayerPrefs.GetFloat("CameraWidth");
+            _cameraHeight = PlayerPrefs.GetFloat("CameraHeight");
+        }
+        else
+        {
+            // Calculate the camera dimensions and save them to PlayerPrefs
 
-        // Calculate the camera's display size based on the orthographic size and aspect ratio
-        float orthographicSize = state.Lens.OrthographicSize;
-        float aspectRatio = state.Lens.Aspect;
-        _cameraHeight = 2f * orthographicSize;
-        _cameraWidth = _cameraHeight * aspectRatio;
+            CameraState state = _virtualCamera.State;
 
+            // Calculate the camera's display size based on the orthographic size and aspect ratio
+            float orthographicSize = state.Lens.OrthographicSize;
+            float aspectRatio = state.Lens.Aspect;
+            _cameraHeight = 2f * orthographicSize;
+            _cameraWidth = _cameraHeight * aspectRatio;
+
+            // Save the camera dimensions to PlayerPrefs
+            PlayerPrefs.SetFloat("CameraWidth", _cameraWidth);
+            PlayerPrefs.SetFloat("CameraHeight", _cameraHeight);
+        }
 
         float sqrX = _cameraWidth * _cameraWidth;
         float sqrZ = _cameraHeight * _cameraHeight;
-        float distance = Mathf.Sqrt(sqrX + sqrZ);
+        distance = Mathf.Sqrt(sqrX + sqrZ);
         _circleOutsideTheCameraField = distance / 2f;
+
     }
     protected internal Vector2 NewUnitCircle()
     {

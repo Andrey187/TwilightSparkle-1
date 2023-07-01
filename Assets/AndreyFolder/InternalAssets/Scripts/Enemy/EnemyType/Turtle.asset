@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42bd06e7840adc478eb8d3c1a223047, type: 3}
   m_Name: Turtle
   m_EditorClassIdentifier: 
-  _enemyName: BlueSphere
+  _enemyName: Turtle
   _currentHealth: 50
   _maxHealth: 50
   _damage: 2
   _speed: 1.5
   _gainExp: 150
-  _startingMaxHealth: 50
   _type: 1
+  _defaultMaxHealth: 50
+  _defaultDamage: 2
+  _defaultSpeed: 1.5
+  _defaultGainExp: 150

@@ -8,11 +8,12 @@ public class AbilityData : ScriptableObject, IResetOnExitPlay, IMagicPowerObserv
     public float FireInterval;
     public Color Color;
     public bool HasDoT;
-
-    public int _baseDamage;
-    [SerializeField] private float _baseMagicPower;
-    [SerializeField] private float _baseFireInterval;
     [SerializeField] private float _currentMagicPower;
+
+    [Header("Default Settings")]
+    [SerializeField] private int _DefaultDamage;
+    [SerializeField] private float _DefaultFireInterval;
+    [SerializeField] private float _DefaultMagicPower;
 
     public void OnMagicPowerChanged(float newMagicPower)
     {
@@ -27,8 +28,8 @@ public class AbilityData : ScriptableObject, IResetOnExitPlay, IMagicPowerObserv
 
     public void ResetOnExitPlay()
     {
-        Damage = _baseDamage;
-        FireInterval = _baseFireInterval;
-        _currentMagicPower = _baseMagicPower;
+        Damage = _DefaultDamage;
+        FireInterval = _DefaultFireInterval;
+        _currentMagicPower = _DefaultMagicPower;
     }
 }

@@ -17,7 +17,6 @@ public class BeholderSpawnMethod : EnemySpawnMethod
         Vector2 randomPoint = Random.insideUnitCircle * _spawnRadius;
 
         _botsSpawnInRandomPointOnCircle = _startPointBeholderSpawn.position + new Vector3(randomPoint.x, 0f, randomPoint.y);
-
     }
 
     protected internal override bool ColliderCheck<T>(T bots)

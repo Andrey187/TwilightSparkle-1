@@ -9,8 +9,13 @@ public class EnemyData : ScriptableObject, IResetOnExitPlay
     [SerializeField] private int _damage;
     [SerializeField] private float _speed;
     [SerializeField] private int _gainExp;
-    [SerializeField] private int _startingMaxHealth = 0;
     public ObjectType _type;
+
+    [Header("Default Settings")]
+    [SerializeField] private int _defaultMaxHealth = 0;
+    [SerializeField] private int _defaultDamage = 0;
+    [SerializeField] private float _defaultSpeed = 0;
+    [SerializeField] private int _defaultGainExp = 0;
 
     public enum ObjectType
     {
@@ -33,7 +38,10 @@ public class EnemyData : ScriptableObject, IResetOnExitPlay
 
     public void ResetOnExitPlay()
     {
-        _maxHealth = _startingMaxHealth;
+        _maxHealth = _defaultMaxHealth;
+        _damage = _defaultDamage;
+        _speed = _defaultSpeed;
+        _gainExp = _defaultGainExp;
         SetCurrentHealthToMax();
     }
 

@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42bd06e7840adc478eb8d3c1a223047, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
-  _enemyName: RedCube
+  _enemyName: Slime
   _currentHealth: 35
   _maxHealth: 35
   _damage: 1
   _speed: 2
   _gainExp: 100
-  _startingMaxHealth: 35
   _type: 0
+  _defaultMaxHealth: 35
+  _defaultDamage: 1
+  _defaultSpeed: 2
+  _defaultGainExp: 100

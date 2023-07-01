@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: BossTurtle
   m_EditorClassIdentifier: 
   _enemyName: BossTurtle
-  _currentHealth: 30000
-  _maxHealth: 30000
+  _currentHealth: 25000
+  _maxHealth: 25000
   _damage: 13
   _speed: 2
   _gainExp: 25000
-  _startingMaxHealth: 20000
   _type: 3
+  _defaultMaxHealth: 25000
+  _defaultDamage: 13
+  _defaultSpeed: 2
+  _defaultGainExp: 25000

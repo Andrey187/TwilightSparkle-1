@@ -60,7 +60,6 @@ public class UpgradeAbilitiesOnButtonClick : MonoCache, INotifyPropertyChanged
 
     private void OnDestroy()
     {
-        DamageIncrease = _abilities._baseDamage;
         _button.onClick.RemoveAllListeners();
     }
 }
