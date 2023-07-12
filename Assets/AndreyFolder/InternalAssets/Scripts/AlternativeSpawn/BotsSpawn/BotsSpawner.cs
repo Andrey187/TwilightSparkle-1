@@ -11,14 +11,16 @@ public class BotsSpawner : MonoCache
     private IObjectFactory _objectFactory;
 
     public Dictionary<WaveSpawner.Wave, List<BaseEnemy>> SpawnedBotsForWave;
+
+   
     // Start is called before the first frame update
     private void Start()
     {
         SpawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
-        InitCreatePool();
+        InitCreatePool(); SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
-    protected override void OnDisabled()
+    private void UnsubscribeEvents()
     {
         SpawnedBotsForWave.Clear();
     }
@@ -64,11 +66,9 @@ public class BotsSpawner : MonoCache
     {
         yield return new WaitForSeconds(0.05f);
         List<BaseEnemy> botsForWave = SpawnedBotsForWave[wave];
-        
 
         for (int j = 0; j < wave.SpawnLimit; j++)
         {
-
             // Check if there are any inactive bot objects in the pool that match the current wave and prefab
             wave.SpawnMethod.NewUnitCircle();
             wave.SpawnMethod.SpawnEnemies();

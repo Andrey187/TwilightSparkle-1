@@ -5,7 +5,8 @@ public class EnemyEventManager : MonoBehaviour
 {
     private Action<GameObject> _onObjectSetActive;//For check object active or enable
     private Action<GameObject> _objectCreated;
-    private Action<GameObject> _objectDestroyed;
+    private Action<GameObject> _objectDestroyedOutCameraArea;
+    private Action<GameObject> _objectDie;
 
     private static EnemyEventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -44,10 +45,16 @@ public class EnemyEventManager : MonoBehaviour
         remove { _objectCreated -= value; }
     }
 
-    public event Action<GameObject> ObjectDestroyed
+    public event Action<GameObject> ObjectDestroyedOutCameraArea
     {
-        add { _objectDestroyed += value; }
-        remove { _objectDestroyed -= value; }
+        add { _objectDestroyedOutCameraArea += value; }
+        remove { _objectDestroyedOutCameraArea -= value; }
+    }
+
+    public event Action<GameObject> ObjectDie
+    {
+        add { _objectDie += value; }
+        remove { _objectDie -= value; }
     }
 
     public void SetObjectActive(GameObject obj, bool isActive)
@@ -62,6 +69,11 @@ public class EnemyEventManager : MonoBehaviour
 
     public void DestroyedObject(GameObject obj)
     {
-        _objectDestroyed?.Invoke(obj);
+        _objectDestroyedOutCameraArea?.Invoke(obj);
+    }
+
+    public void DieObject(GameObject obj)
+    {
+        _objectDie?.Invoke(obj);
     }
 }

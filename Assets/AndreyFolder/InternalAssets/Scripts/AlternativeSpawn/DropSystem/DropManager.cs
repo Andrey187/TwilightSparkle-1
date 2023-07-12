@@ -46,9 +46,10 @@ public class DropManager : MonoCache
 
         _eventManager = DropEventManager.Instance;
         _eventManager.DropCreated += EnemyKilled;
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
-    protected override void OnDisabled()
+    private void UnsubscribeEvents()
     {
         _eventManager.DropCreated -= EnemyKilled;
     }

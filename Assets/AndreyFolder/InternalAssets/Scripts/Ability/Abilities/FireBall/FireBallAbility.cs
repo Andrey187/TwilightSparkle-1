@@ -13,6 +13,12 @@ public class FireBallAbility: BaseAbilities
         _thisRb = Get<Rigidbody>();
     }
 
+    protected override void OnEnabled()
+    {
+        base.OnEnabled();
+        AudioManager.Instance.PlaySFX(Sound.SoundEnum.FireBall);
+    }
+
     private void Start()
     {
         _fireBall = FireBall.Instance;

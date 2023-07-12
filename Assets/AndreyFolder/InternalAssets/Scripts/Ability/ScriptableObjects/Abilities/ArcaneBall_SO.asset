@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ArcaneBall_SO
   m_EditorClassIdentifier: 
   AbilityName: ArcaneBall
-  Damage: 5
+  Damage: 30
   FireInterval: 2
   Color: {r: 0, g: 0.97121596, b: 1, a: 1}
   HasDoT: 0
   _currentMagicPower: 0
-  _DefaultDamage: 5
+  _DefaultDamage: 30
   _DefaultFireInterval: 2
   _DefaultMagicPower: 0

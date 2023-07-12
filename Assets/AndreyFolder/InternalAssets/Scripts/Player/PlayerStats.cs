@@ -12,6 +12,9 @@ public class PlayerStats : MonoCache
     [SerializeField] private int _magicPower;
     private HealthBarController _healthBarController;
 
+    public event Action SpeedChanged;
+    public event Action<int> MagicPowerChanged;
+
     private void Start()
     {
         _healthBarController = Get<HealthBarController>();
@@ -88,7 +91,6 @@ public class PlayerStats : MonoCache
         setDie?.Invoke();
     }
 
-    public event Action SpeedChanged;
     private void OnSpeedChanged()
     {
         SpeedChanged?.Invoke();
@@ -103,7 +105,6 @@ public class PlayerStats : MonoCache
         levelChanged?.Invoke(CurrentLevel);
     }
 
-    public event Action<int> MagicPowerChanged;
     private void OnMagicPowerChanged()
     {
         MagicPowerChanged?.Invoke(_magicPower);

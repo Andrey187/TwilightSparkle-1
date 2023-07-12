@@ -5,17 +5,22 @@ public class ArcaneBallAbility : BaseAbilities
 {
     [SerializeField] private int _rotationSpeed;
     [SerializeField] private Vector3 _targetPoint;
-    [SerializeField] public int _areaRadius = 10;
+    [SerializeField] private int _areaRadiusFindEnemy = 10;
     protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected internal override event Action<BaseAbilities> SetDie;
     protected internal override Vector3 TargetPoint { get => _targetPoint; set => _targetPoint = value; }
-    protected internal override int AreaRadius { get => _areaRadius; set => _areaRadius = value; }
+    protected internal override int AreaRadius { get => _areaRadiusFindEnemy; set => _areaRadiusFindEnemy = value; }
     protected internal override bool HasTargetPoint => true;
     private ArcaneBall _arcaneBall;
 
     private void Awake()
     {
         _thisRb = Get<Rigidbody>();
+    }
+    protected override void OnEnabled()
+    {
+        base.OnEnabled();
+        AudioManager.Instance.PlaySFX(Sound.SoundEnum.ArcaneBall);
     }
 
     private void Start()

@@ -41,8 +41,6 @@ public class ParticleSystemPool : MonoBehaviour
 
     private void OnDisable()
     {
-        ParticleEventManager.Instance.OnDeathParticleSetActive -= DeathParticleInvoke;
-        ParticleEventManager.Instance.OnHealParticleSetActive -= HealParticleInvoke;
         _particleDictionary.Clear();
     }
 

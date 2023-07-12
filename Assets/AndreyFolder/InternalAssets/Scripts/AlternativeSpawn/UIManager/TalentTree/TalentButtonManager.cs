@@ -21,7 +21,13 @@ public class TalentButtonManager : MonoBehaviour
         speedBoostButton.interactable = false;
         damageBoostButton.interactable = false;
         _talentSystem.PropertyChanged += HandlePropertyChanged;
-        levelUpSystem.PropertyChanged += HandlePropertyChanged;
+        levelUpSystem.PropertyChanged += HandlePropertyChanged; 
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
+    }
+
+    private void UnsubscribeEvents()
+    {
+        levelUpSystem.PropertyChanged -= HandlePropertyChanged;
     }
 
     private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -59,8 +65,16 @@ public class TalentButtonManager : MonoBehaviour
         if (!damageButtonActive)
         {
             bool damageButtonActivated = talentPoints.TryGetValue(TalentStatType.MaxHealth, out int hpPoints3) && hpPoints3 % 2 == 0 &&
-            talentPoints.TryGetValue(TalentStatType.Speed, out int speedPoints) && speedPoints >= 1 && speedBoostButton.interactable == false;
-            damageBoostButton.interactable = damageButtonActivated;
+            talentPoints.TryGetValue(TalentStatType.Speed, out int speedPoints) && speedPoints >= 1 && !speedBoostButton.interactable;
+            if(talentPoints.TryGetValue(TalentStatType.MagicPower, out int magicPoints) && magicPoints == 5)
+            {
+                damageBoostButton.interactable = false;
+            }
+            else
+            {
+                damageBoostButton.interactable = damageButtonActivated;
+            }
+            damageBoostButton.onClick.AddListener(InvestDamagePoint);
         }
         speedButtonActive = false;
         damageButtonActive = false;
@@ -78,9 +92,4 @@ public class TalentButtonManager : MonoBehaviour
         damageBoostButton.interactable = false;
     }
 
-    private void OnDestroy()
-    {
-        // Unsubscribe from talent system events
-        levelUpSystem.PropertyChanged -= HandlePropertyChanged;
-    }
 }

@@ -21,7 +21,6 @@ public class PoolObject<T> where T : Component
     private Transform _parentObject;
     private string _containerName;
     private Queue<T> _objectPool;
-    private Dictionary<T, int> _objectWaves = new Dictionary<T, int>();
 
     private static GameObject _poolContainerPrefab;
     private static GameObject _poolContainerInstance;
@@ -67,7 +66,6 @@ public class PoolObject<T> where T : Component
         }
 
         _objectPool.Clear();
-        _objectWaves.Clear();
 
         if (_poolContainerInstance != null)
         {
@@ -105,7 +103,7 @@ public class PoolObject<T> where T : Component
                 // try to get an inactive object from the pool
                 foreach (T item in _objectPool)
                 {
-                    if (!item.gameObject.activeSelf && item.GetType() == prefab.GetType() && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
+                    if (!item.gameObject.activeSelf && item.GetType() == prefab.GetType())
                     {
                         result = item;
                         break;
@@ -127,8 +125,7 @@ public class PoolObject<T> where T : Component
                 // try to get an inactive object from the pool
                 foreach (T item in _objectPool)
                 {
-                    //if (!item.gameObject.activeSelf && item.gameObject.CompareTag(prefab.gameObject.tag) && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
-                    if (!item.gameObject.activeSelf && item.GetType() == prefab.GetType() && (!_objectWaves.ContainsKey(item) || _objectWaves[item] == wave))
+                    if (!item.gameObject.activeSelf && item.GetType() == prefab.GetType())
                     {
                         result = item;
                         break;
@@ -149,9 +146,6 @@ public class PoolObject<T> where T : Component
         {
             result.transform.position = position;
             result.gameObject.SetActive(true);
-
-            // add the object and the wave to the dictionary
-            _objectWaves[result] = wave;
         }
 
         return result;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4770008030729008655}
   - component: {fileID: -4579191367014842424}
   - component: {fileID: 5636807899924053811}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FireBall
   m_TagString: FireBall
   m_Icon: {fileID: 0}
@@ -195,9 +195,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8224926, guid: 07f89bdb820892e49bcd5c32bf299006, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 1
+    - target: {fileID: 5225887451273158279, guid: 07f89bdb820892e49bcd5c32bf299006, type: 3}
+      propertyPath: m_Size.z
+      value: 1.22
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07f89bdb820892e49bcd5c32bf299006, type: 3}

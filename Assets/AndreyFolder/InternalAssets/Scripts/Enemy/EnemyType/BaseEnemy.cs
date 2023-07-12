@@ -25,14 +25,14 @@ public abstract class BaseEnemy : MonoCache
     [SerializeField] protected internal Renderer _renderer;
     [SerializeField]
     protected internal MeshAnimator meshAnimator;
+    protected float _currentSpeed;
+
 
     protected void Awake()
     {
         _rigidbody = Get<Rigidbody>();
         _healthBarController = Get<HealthBarController>();
         _navMeshAgent = Get<NavMeshAgent>();
-
-        NavMeshParams();
     }
 
     protected override void OnEnabled()
@@ -40,6 +40,7 @@ public abstract class BaseEnemy : MonoCache
         if (EnemyType != null)
         {
             _navMeshAgent.enabled = true;
+            NavMeshParams();
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
@@ -200,19 +201,21 @@ public abstract class BaseEnemy : MonoCache
         _shouldIncrementHPTimer = shouldIncrement;
     }
 
-    public void Die()
+    protected void Die()
     {
         _navMeshAgent.enabled = false;
+        AudioManager.Instance.PlaySFX(Sound.SoundEnum.EnemyDie);
 
         Action<GameObject> deathParticleInvoke = ParticleEventManager.Instance.DeathParticle;
         deathParticleInvoke?.Invoke(gameObject);
 
         ReturnToPool();
         DropEventManager.Instance.DropsCreated(gameObject);
+        EnemyEventManager.Instance.DieObject(gameObject);
         LevelUpSystem.Instance.AddExperience(EnemyType._type, EnemyType);
     }
 
-    private void ReturnToPool()
+    protected void ReturnToPool()
     {
         Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
         setObjectActive?.Invoke(gameObject, false);
@@ -221,9 +224,40 @@ public abstract class BaseEnemy : MonoCache
         objectReturnToPool?.Invoke(gameObject);
     }
 
-    private void NavMeshParams()
+    protected void NavMeshParams()
     {
         _navMeshAgent.speed = EnemyType.Speed;
         _navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+    }
+
+    public void ReduceMovementSpeed(float amount, float duration)
+    {
+        if (_navMeshAgent == null)
+            return;
+
+        // Calculate the reduced speed
+        _currentSpeed = EnemyType.Speed * amount;
+
+        // Ensure the new speed is above the threshold (e.g., 1f) and not lower than half of the initial speed
+        _currentSpeed = Mathf.Max(_currentSpeed, 1f);
+
+        // Apply the reduced speed
+        _navMeshAgent.speed = _currentSpeed;
+
+        // Start a coroutine to restore the speed after the specified duration
+        if(isActiveAndEnabled)
+        {
+            StartCoroutine(RestoreMovementSpeed(duration));
+        }
+    }
+
+    protected IEnumerator RestoreMovementSpeed(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        if (_navMeshAgent != null)
+        {
+            _navMeshAgent.speed = EnemyType.Speed;
+        }
     }
 }

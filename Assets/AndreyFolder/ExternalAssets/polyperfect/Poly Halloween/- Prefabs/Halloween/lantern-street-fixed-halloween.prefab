@@ -52,8 +52,8 @@ MonoBehaviour:
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.74}
-  m_Size: {x: 4.61, y: 4.61, z: 0.89}
+  m_Offset: {x: 0, y: 0, z: 0.6817978}
+  m_Size: {x: 4.61, y: 4.61, z: 0.82}
   m_FadeFactor: 0.046
 --- !u!1 &2902895537488659391
 GameObject:
@@ -100,7 +100,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.9914961, b: 0, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.27
   m_Range: 4
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -145,10 +145,10 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.05e-43, y: -7.441495e+24, z: 7.31e-43, w: 4.19e-43}
+  m_BoundingSphereOverride: {x: 1.05e-43, y: -7.4378886e+24, z: 7.31e-43, w: -7.4378886e+24}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 2
+  m_ShadowRadius: 1
   m_ShadowAngle: 0
 --- !u!114 &6462408883463333450
 MonoBehaviour:
@@ -251,7 +251,7 @@ MeshRenderer:
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
+  m_AutoUVMaxAngle: 0
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0

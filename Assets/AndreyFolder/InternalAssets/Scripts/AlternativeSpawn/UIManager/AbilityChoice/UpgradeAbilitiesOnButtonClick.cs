@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UpgradeAbilitiesOnButtonClick : MonoCache, INotifyPropertyChanged
 {
     [SerializeField] private AbilityData _abilities;
-    //[SerializeField] private float _fireIntervalDecrease;
+    [SerializeField] private string _ability;
     [SerializeField] private int _damageIncrease;
     [SerializeField] private TextMeshProUGUI _descriptionText;
     public int Index;
@@ -26,7 +26,7 @@ public class UpgradeAbilitiesOnButtonClick : MonoCache, INotifyPropertyChanged
             {
                 _damageIncrease = value;
                 OnPropertyChanged(nameof(DamageIncrease));
-                _descriptionText.SetText(/*"Decrease " + _fireIntervalDecrease + " sec" + */"\n Increase " + DamageIncrease.ToString() + " damage");
+                _descriptionText.SetText(_ability + "\nIncrease " + DamageIncrease.ToString() + " damage");
             }
         }
     }
@@ -36,7 +36,7 @@ public class UpgradeAbilitiesOnButtonClick : MonoCache, INotifyPropertyChanged
     {
         if (_abilityViewModel == null)
         {
-            _abilityViewModel = new AbilityViewModel(_abilities, /*_fireIntervalDecrease,*/ DamageIncrease);
+            _abilityViewModel = new AbilityViewModel(_abilities, DamageIncrease);
         }
         _button = Get<Button>();
         _button.onClick.AddListener(OnButtonClick);
@@ -44,7 +44,7 @@ public class UpgradeAbilitiesOnButtonClick : MonoCache, INotifyPropertyChanged
 
     protected override void OnEnabled()
     {
-        _descriptionText.SetText(/*"Decrease " + _fireIntervalDecrease + " sec" + */"\n Increase " + DamageIncrease.ToString() + " damage");
+        _descriptionText.SetText(_ability + "\nIncrease " + DamageIncrease.ToString() + " damage");
     }
 
     private void OnButtonClick()

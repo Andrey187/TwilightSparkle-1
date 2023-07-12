@@ -6,7 +6,6 @@ public class Meteor : BaseDrop
     [SerializeField] private ParticleSystem _explosion;
 
     private ExplosionAbility _explosionAbility;
-    private AudioSource _audioSourceExplosion;
     private MeshRenderer render;
     private SphereCollider _collider;
     private Rigidbody _rb;
@@ -18,7 +17,6 @@ public class Meteor : BaseDrop
         render = Get<MeshRenderer>();
         _collider = Get<SphereCollider>();
         _rb = Get<Rigidbody>();
-        _audioSourceExplosion = ChildrenGet<AudioSource>();
     }
 
     protected override void OnEnabled()
@@ -39,7 +37,7 @@ public class Meteor : BaseDrop
             _collider.enabled = false;
             _particleFlame.Stop();
             _explosion.Play();
-            _audioSourceExplosion.Play();
+            AudioManager.Instance.PlaySFX(Sound.SoundEnum.MeteorHit);
             hasHitGround = true;
             Invoke("ReturnToPool", 2);
             _explosionAbility.Explode(hasHitGround);

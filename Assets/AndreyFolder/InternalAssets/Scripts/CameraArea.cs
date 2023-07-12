@@ -19,19 +19,25 @@ public class CameraArea : MonoCache
 
         // Subscribe to the events for adding/removing objects to/from the pools
         _enemyEventManager.ObjectCreated += AddEnemyObject;
-        _enemyEventManager.ObjectDestroyed += RemoveEnemyObject;
+        _enemyEventManager.ObjectDestroyedOutCameraArea += RemoveEnemyObject;
 
         _uiEventManager.HealthBarCreated += AddHealthBar;
         _uiEventManager.HealthBarDestroyed += RemoveHealthBar;
     }
 
-    private void OnDestroy()
+    protected override void OnDisabled()
     {
-        _enemyEventManager.ObjectCreated -= AddEnemyObject;
-        _enemyEventManager.ObjectDestroyed -= RemoveEnemyObject;
+        if(_enemyEventManager != null)
+        {
+            _enemyEventManager.ObjectCreated -= AddEnemyObject;
+            _enemyEventManager.ObjectDestroyedOutCameraArea -= RemoveEnemyObject;
+        }
 
-        _uiEventManager.HealthBarCreated -= AddHealthBar;
-        _uiEventManager.HealthBarDestroyed -= RemoveHealthBar;
+        if (_uiEventManager != null)
+        {
+            _uiEventManager.HealthBarCreated -= AddHealthBar;
+            _uiEventManager.HealthBarDestroyed -= RemoveHealthBar;
+        }
     }
 
     private void AddEnemyObject(GameObject enemyObject)

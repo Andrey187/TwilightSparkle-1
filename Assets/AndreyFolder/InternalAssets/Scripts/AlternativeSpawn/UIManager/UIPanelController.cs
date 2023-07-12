@@ -1,12 +1,13 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIPanelController : MonoBehaviour
 {
-    [SerializeField] private GameObject restartGamePanel;
-    [SerializeField] private GameObject abilitySelectionPanel;
-    [SerializeField] private AbilityChoicePool abilityChoicePool;
+    [SerializeField] private GameObject _restartGamePanel;
+    [SerializeField] private GameObject _abilitySelectionPanel;
+    [SerializeField] private GameObject _talentTreePanel;
+    [SerializeField] private GameObject _joystickPanel;
+    [SerializeField] private AbilityChoicePool _abilityChoicePool;
     private UIEventManager _uIEventManager;
     private PlayerEventManager _playerEventManager;
     private void Start()
@@ -17,28 +18,31 @@ public class UIPanelController : MonoBehaviour
         _uIEventManager.AbilityChoice += HandleLevelIncreased;
 
         // Subscribe to the ButtonObtainedFromPool event
-        abilityChoicePool.ButtonObtainedFromPool += HandleButtonObtainedFromPool;
+        _abilityChoicePool.ButtonObtainedFromPool += HandleButtonObtainedFromPool;
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
-    private void OnDisable()
+    private void UnsubscribeEvents()
     {
         _playerEventManager.PlayerDeath -= HandlePlayerDeath;
         _uIEventManager.AbilityChoice -= HandleLevelIncreased;
-        abilityChoicePool.ButtonObtainedFromPool -= HandleButtonObtainedFromPool;
+        _abilityChoicePool.ButtonObtainedFromPool -= HandleButtonObtainedFromPool;
     }
 
     private void HandlePlayerDeath()
     {
         // Activate the restart game panel
         Time.timeScale = 0f; // Pause the game
-        restartGamePanel.SetActive(true);
+        _restartGamePanel.SetActive(true);
     }
 
     private void HandleLevelIncreased()
     {
         // Activate the ability selection panel
         Time.timeScale = 0f; // Pause the game
-        abilitySelectionPanel.SetActive(true);
+        _abilitySelectionPanel.SetActive(true);
+        _talentTreePanel.SetActive(true);
+        _joystickPanel.SetActive(false);
     }
 
     private void HandleButtonObtainedFromPool(Button button)
@@ -50,18 +54,10 @@ public class UIPanelController : MonoBehaviour
     private void HandleAbilityButtonClicked()
     {
         // Hide the ability selection panel
-        abilitySelectionPanel.SetActive(false);
-
+        _abilitySelectionPanel.SetActive(false);
+        _talentTreePanel.SetActive(false);
+        _joystickPanel.SetActive(true);
         // Remove the pause by resuming the game
         Time.timeScale = 1f;
-    }
-
-    public void RestartGame()
-    {
-        // Reset any necessary game state, variables, or managers
-        // Load the initial scene or restart the current scene
-        Time.timeScale = 1f;
-        ObjectPoolManager.Instance.ClearAllPools();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -20,29 +20,8 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
 
     protected void FindCameraBoundries()
     {
-        // Check if the camera dimensions are already saved in PlayerPrefs
-        if (PlayerPrefs.HasKey("CameraWidth") && PlayerPrefs.HasKey("CameraHeight"))
-        {
-            // Load the camera dimensions from PlayerPrefs
-            _cameraWidth = PlayerPrefs.GetFloat("CameraWidth");
-            _cameraHeight = PlayerPrefs.GetFloat("CameraHeight");
-        }
-        else
-        {
-            // Calculate the camera dimensions and save them to PlayerPrefs
-
-            CameraState state = _virtualCamera.State;
-
-            // Calculate the camera's display size based on the orthographic size and aspect ratio
-            float orthographicSize = state.Lens.OrthographicSize;
-            float aspectRatio = state.Lens.Aspect;
-            _cameraHeight = 2f * orthographicSize;
-            _cameraWidth = _cameraHeight * aspectRatio;
-
-            // Save the camera dimensions to PlayerPrefs
-            PlayerPrefs.SetFloat("CameraWidth", _cameraWidth);
-            PlayerPrefs.SetFloat("CameraHeight", _cameraHeight);
-        }
+        _cameraHeight = CacheCamera.Instance._cameraHeight;
+        _cameraWidth = CacheCamera.Instance._cameraWidth;
 
         float sqrX = _cameraWidth * _cameraWidth;
         float sqrZ = _cameraHeight * _cameraHeight;

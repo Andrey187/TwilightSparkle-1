@@ -22,9 +22,10 @@ public class ScenarioManager : MonoCache
         {
             Debug.Log("null");
         }
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
-    protected override void OnDisabled()
+    private void UnsubscribeEvents()
     {
         _playerEvent.PlayerLevelUp -= UpdateScenario;
     }
@@ -66,7 +67,7 @@ public class ScenarioManager : MonoCache
             }
         }
 
-        if(newLevel % 5 == 0)
+        if(newLevel % 4 == 0)
         {
             _waveSpawner.BossSpawn(_waveSpawner.Waves[0]);
         }

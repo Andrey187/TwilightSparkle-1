@@ -13,40 +13,30 @@ namespace AbilitySystem
 
         private void Start()
         {
-            InitPool();
-            _attackSystem.SetCreatePrefabAbility(CreatePrefabAbility);
-            InitializationComplete?.Invoke();
+            Invoke("StartInitAbility", 3f);
         }
 
-        protected override void OnDisabled()
+        private void StartInitAbility()
         {
-            _attackSystem.NewInitializationComplete -= CreateCloneAbility;
+            InitPool();
+            _attackSystem.SetCreatePrefabAbility(CreatePrefabAbility);
+            InitializationComplete?.Invoke(); //вызов подписанного метода FirstAbilitySpawnStart
         }
 
         private void InitPool()
         {
-            _attackSystem.NewInitializationComplete += CreateCloneAbility;
-            foreach (var ability in _attackSystem.AttackScriptsList)
+            foreach (var ability in _attackSystem.AttackAbilitiesList)
             {
                 _objectFactory = new ObjectsFactory(ability.GetComponent<BaseAbilities>().transform);
                 BaseAbilities baseAbilities = _objectFactory.CreateObject(_attackSystem.StartAttackPoint.position).GetComponent<BaseAbilities>();
                 PoolObject<BaseAbilities>.CreateInstance(baseAbilities, 0, gameObject.transform, baseAbilities.name + "_Ability");
                 _abilityPool = PoolObject<BaseAbilities>.Instance;
-                CreateCloneAbility(baseAbilities);
             }
-        }
-
-        private void CreateCloneAbility(BaseAbilities ability)
-        {
-            BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-            prefabAbility.gameObject.SetActive(false);
-            _attackSystem.InstantiateCloneAbilities.Add(prefabAbility);
         }
 
         private void CreatePrefabAbility(BaseAbilities ability, Vector3 targetPoint)
         {
             BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-            _attackSystem.InstantiateCloneAbilities.Add(prefabAbility);
             if (ability.HasTargetPoint)
             {
                 prefabAbility.TargetPoint = targetPoint;

@@ -4,13 +4,7 @@ public class CharacterLookAtMouse : MonoBehaviour
 {
     [SerializeField] private LayerMask groundMask;
 
-    private Camera mainCamera;
-
-    private void Start()
-    {
-        // Cache the camera, Camera.main is an expensive operation.
-        mainCamera = Camera.main;
-    }
+    [SerializeField] private Camera mainCamera;
 
     private void Update()
     {

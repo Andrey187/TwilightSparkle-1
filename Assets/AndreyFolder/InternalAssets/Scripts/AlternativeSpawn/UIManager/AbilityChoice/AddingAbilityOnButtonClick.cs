@@ -13,7 +13,6 @@ public class AddingAbilityOnButtonClick : MonoCache
         _button = Get<Button>();
         _attackSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<AttackSystem>();
         _button.onClick.AddListener(OnButtonClick);
-
     }
 
     private void OnButtonClick()

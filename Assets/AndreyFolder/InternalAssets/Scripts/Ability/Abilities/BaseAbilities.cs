@@ -33,17 +33,17 @@ public abstract class BaseAbilities : MonoCache
         SetLifeTime();
     }
 
-    protected internal void SetLifeTime()
+    protected void SetLifeTime()
     {
-        _lifeTime = _baseLifeTime;
+        LifeTime = _baseLifeTime;
     }
 
-    protected internal IEnumerator DecreaseLifeTime()
+    protected IEnumerator DecreaseLifeTime()
     {
-        while (_lifeTime > 0)
+        while (LifeTime > 0)
         {
             yield return new WaitForSeconds(1f);
-            _lifeTime -= 1;
+            LifeTime -= 1;
         }
     }
 
