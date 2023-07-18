@@ -62,7 +62,7 @@ public class ScenarioManager : MonoCache
         {
             foreach (EnemyData enemyData in DataLoader.Instance._enemyDataBase.EnemyDataList)
             {
-                enemyData.MaxHealth += 500;
+                enemyData.MaxHealth += 250;
                 enemyData.Damage += 1;
             }
         }

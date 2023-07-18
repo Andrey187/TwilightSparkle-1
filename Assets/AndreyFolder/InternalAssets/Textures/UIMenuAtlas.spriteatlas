@@ -15,7 +15,7 @@ SpriteAtlas:
       compressionQuality: 50
       maxTextureSize: 2048
       textureCompression: 0
-      filterMode: 1
+      filterMode: 0
       generateMipMaps: 0
       readable: 0
       crunchedCompression: 0
@@ -35,7 +35,7 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
-      padding: 2
+      padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 0
@@ -73,6 +73,13 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 1d29a82fe9bf7114ebdcc52aed7161bd, type: 3}
     - {fileID: 2800000, guid: 5f22298017a4a2740bd91ed40f7adf00, type: 3}
     - {fileID: 2800000, guid: f09ebcff70c2f754f99f89f56cf177fb, type: 3}
+    - {fileID: 2800000, guid: 5b56d9fa0e8bd6e409ed188db38a692c, type: 3}
+    - {fileID: 2800000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
+    - {fileID: 2800000, guid: de93bb8f3c977d24b9d97f8d6eed5096, type: 3}
+    - {fileID: 2800000, guid: 46fbcf19d3d72fd469146c7d0aee5225, type: 3}
+    - {fileID: 2800000, guid: 19bb4fe4d3f7dc640907e64ce8d1865c, type: 3}
+    - {fileID: 2800000, guid: a8fccef2c0e4aad4a8ec27c19cb4f4ac, type: 3}
+    - {fileID: 2800000, guid: 075c8ccdbd7d9f34f86c9ccfbfc83c09, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -82,12 +89,15 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 73699641836af9d4b9c2e78235d14440, type: 3}
   - {fileID: 21300000, guid: 24dcf8e1f0f6cbc41945aed1e8c67383, type: 3}
   - {fileID: 21300000, guid: 8409f0c28c76a6b44bce906f71428654, type: 3}
+  - {fileID: 21300000, guid: a8fccef2c0e4aad4a8ec27c19cb4f4ac, type: 3}
+  - {fileID: 21300000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
   - {fileID: 21300000, guid: caacd763c97b4f34dafd12208751ffa1, type: 3}
   - {fileID: 21300000, guid: 6a5198b340c870342ac6956df34d92c9, type: 3}
   - {fileID: 21300000, guid: bd9d8bf353deb3a43b7232ff539aa51c, type: 3}
   - {fileID: 21300000, guid: 7c61d6443f4f61b43a13a29320c4c6e7, type: 3}
   - {fileID: 21300000, guid: 59348194e79b097478064ca3f2101731, type: 3}
   - {fileID: 21300000, guid: 205f7a941fe01874ab41522b49107daa, type: 3}
+  - {fileID: 21300000, guid: 19bb4fe4d3f7dc640907e64ce8d1865c, type: 3}
   - {fileID: 21300000, guid: 8bc6ed8592ed3ce4793830f41e0deeb5, type: 3}
   - {fileID: 21300000, guid: fb08c1470bde4704f8880c892820ad8f, type: 3}
   - {fileID: 21300000, guid: 3a4529974b5f1bf4cac3e49bf2c6689c, type: 3}
@@ -95,16 +105,20 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4bef68d8ecfe1bb4ea1756bcec61707e, type: 3}
   - {fileID: 21300000, guid: 6d611dd85dc15d248bb1aaac8a778ae9, type: 3}
   - {fileID: 21300000, guid: 8b811e0990efd3f49b83f15f5e4ee105, type: 3}
+  - {fileID: 21300000, guid: 46fbcf19d3d72fd469146c7d0aee5225, type: 3}
   - {fileID: 21300000, guid: 96be51b9b30baac4e8e50d363a68849e, type: 3}
   - {fileID: 21300000, guid: e1de668a9d1fd084dba65fd48d280bbb, type: 3}
   - {fileID: 21300000, guid: c32884bae4dafae4a9b502da5b7f0ea5, type: 3}
   - {fileID: 21300000, guid: a9d317fa4a504db4f903451265b28e01, type: 3}
+  - {fileID: 21300000, guid: 5b56d9fa0e8bd6e409ed188db38a692c, type: 3}
   - {fileID: 21300000, guid: b9c082bba269ec947865b95c0a5bbf5b, type: 3}
   - {fileID: 21300000, guid: 20e2fefb2718e4742bb6e41ed2d21d60, type: 3}
   - {fileID: 21300000, guid: 86cc090d9c48c0548a2fea325a3419a1, type: 3}
   - {fileID: 21300000, guid: f24e742de9e776c44b877dfaf5faea1c, type: 3}
+  - {fileID: 21300000, guid: 075c8ccdbd7d9f34f86c9ccfbfc83c09, type: 3}
   - {fileID: 21300000, guid: fabd1dae47f52c843b46cec5c411c040, type: 3}
   - {fileID: 21300000, guid: 1d29a82fe9bf7114ebdcc52aed7161bd, type: 3}
+  - {fileID: 21300000, guid: de93bb8f3c977d24b9d97f8d6eed5096, type: 3}
   - {fileID: 21300000, guid: 316c47af9131a9d469ee3352c2461c1d, type: 3}
   - {fileID: 21300000, guid: f09ebcff70c2f754f99f89f56cf177fb, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -112,12 +126,15 @@ SpriteAtlas:
   - Star2
   - StartUpgrade
   - ChatBar_botpart
+  - Hero_Ring
+  - Handle_Plain
   - pop-up_menu
   - G_Icon_button_ready
   - Stand_medium
   - Button_plus_orange
   - Bar_Button_mid
   - Button_off
+  - PolyartDefaultTex
   - tracery_01
   - StandartBar_01
   - FrostUpgrade
@@ -125,16 +142,20 @@ SpriteAtlas:
   - FireUpgrade
   - frostBall2
   - Statue_2
+  - Bar
   - Button_plus_red
   - Button_medium3_0
   - 'GainExp '
   - Menu
+  - AllAxis_Outline
   - Button_medium2
   - Little_Button
   - G_Line_Dark
   - ImageFireBall
+  - Hero_Ring_Grey
   - skill_bar_lil
   - Death_bar
+  - white1x1
   - DescriptionBar_2
   - Hp_ampul_Texture
   m_RenderDataMap: {}

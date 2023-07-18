@@ -62,7 +62,7 @@ MonoBehaviour:
   _targetLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  _restorHp: 25
+  _restorHp: 35
 --- !u!1001 &1812607576229056650
 PrefabInstance:
   m_ObjectHideFlags: 0

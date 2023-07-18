@@ -5,11 +5,12 @@ using UnityEngine.UI;
 public class CameraArea : MonoCache
 {
     [SerializeField] private LayerMask _targetLayerMask;
-    public List<Renderer> enemyObjectsRenderer;
+    [SerializeField] private List<Renderer> enemyObjectsRenderer = new List<Renderer>();
     private Dictionary<Image, Renderer> _healthBarFillToEnemyMap;
     private Dictionary<Image, Renderer> _healthBarBorderToEnemyMap;
     private EnemyEventManager _enemyEventManager;
     private UIEventManager _uiEventManager;
+
     private void Start()
     {
         _healthBarFillToEnemyMap = new Dictionary<Image, Renderer>();
@@ -96,8 +97,8 @@ public class CameraArea : MonoCache
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
             BaseEnemy enemy = other.GetComponent<BaseEnemy>();
-            
-            if(enemy._renderer != null && enemyObjectsRenderer.Contains(enemy._renderer))
+
+            if (enemy._renderer != null && enemyObjectsRenderer.Contains(enemy._renderer))
             {
                 enemy._renderer.enabled = true;
 

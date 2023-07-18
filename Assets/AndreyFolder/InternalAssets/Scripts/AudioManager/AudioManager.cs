@@ -11,12 +11,8 @@ public class AudioManager : MonoBehaviour
     private float _soundCooldown = 0.01f;
     private float _lastSoundTime = 0f;
 
-    private float startVolume;
-
     private void Awake()
     {
-        startVolume = MusicSource.volume;
-
         if (Instance == null)
         {
             Instance = this;
@@ -72,13 +68,6 @@ public class AudioManager : MonoBehaviour
 
     public void FadeOutMusic(float fadeProgress)
     {
-        Debug.Log(startVolume);
-        MusicSource.volume = startVolume * fadeProgress;
-    }
-
-    public void RestoreMusicVolume()
-    {
-        Debug.Log(startVolume);
-        MusicSource.volume = startVolume;
+        MusicSource.volume *= fadeProgress;
     }
 }

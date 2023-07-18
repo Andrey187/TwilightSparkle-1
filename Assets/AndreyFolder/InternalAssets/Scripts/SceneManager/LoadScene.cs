@@ -31,7 +31,7 @@ public static class LoadScene
 
         if(AudioManager.Instance != null)
         {
-            AudioManager.Instance.RestoreMusicVolume();
+            AudioSettingsData.Instanñe.LoadSettings();
             AudioManager.Instance.PlayMusic(sound);
         }
     }

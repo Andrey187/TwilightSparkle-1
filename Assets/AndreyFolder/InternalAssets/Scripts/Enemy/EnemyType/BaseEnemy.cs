@@ -27,7 +27,6 @@ public abstract class BaseEnemy : MonoCache
     protected internal MeshAnimator meshAnimator;
     protected float _currentSpeed;
 
-
     protected void Awake()
     {
         _rigidbody = Get<Rigidbody>();

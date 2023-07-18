@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8463331567148834370}
   - component: {fileID: 4817744038646944231}
   - component: {fileID: 7293834565387183405}
-  - component: {fileID: 7987154793844074941}
-  m_Layer: 0
+  - component: {fileID: 3385146975408014789}
+  m_Layer: 8
   m_Name: Wooden Coffin B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,17 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7987154793844074941
-MeshCollider:
+--- !u!208 &3385146975408014789
+NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9095049772744688888}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7787997383133495928, guid: e7ee2a043e83c894f981a76160f4fa2d, type: 3}
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 0.289, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.33, y: 0.28, z: 0.0050000004}
+  m_TimeToStationary: 0.5
