@@ -1,10 +1,9 @@
-using Cinemachine;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
 {
-    [SerializeField] private CinemachineVirtualCamera _virtualCamera;
     [SerializeField] protected float _spawnRadius = 1.5f;
     [SerializeField] protected float _colliderHitRadius = 0.3f;
     [SerializeField] protected float _groupSpawnCircleRadius = 20f;
@@ -14,7 +13,6 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
 
     protected virtual void Start()
     {
-        _virtualCamera = Find<CinemachineVirtualCamera>();
         FindCameraBoundries();
     }
 
@@ -31,13 +29,35 @@ public abstract class EnemySpawnMethod : ParamsForCalculateSpawnPositions
     }
     protected internal Vector2 NewUnitCircle()
     {
-        _randomInsideUnitCircle = Random.insideUnitCircle;
+        _randomInsideUnitCircle = UnityEngine.Random.insideUnitCircle;
         _randomInsideUnitCircle.Normalize();
         _randomInsideUnitCircle *= _circleOutsideTheCameraField;
         return _randomInsideUnitCircle;
     }
 
     protected virtual internal void GroundCheck()
+    {
+        // Check the center of the spawn area
+        Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);
+        bool hasHit = Physics.Raycast(centerRay, out hit, distanceToCheckGround);
+
+        // Check the corners of the spawn area
+        float angleStep = 360f / 16f;
+        for (int i = 0; i < 16; i++)
+        {
+            Vector3 corner = _botsSpawnInRandomPointOnCircle + Quaternion.AngleAxis(i * angleStep, Vector3.up) * Vector3.forward * _groupSpawnCircleRadius;
+            Ray cornerRay = new Ray(corner, Vector3.down);
+
+            if (!Physics.Raycast(cornerRay, out hit, distanceToCheckGround))
+            {
+                hasHit = false;
+                break; // no need to check other corners if one fails
+            }
+        }
+        isGround = hasHit;
+    }
+
+    protected virtual internal void GroundCheck(Vector3 _botsSpawnInRandomPointOnCircle)
     {
         // Check the center of the spawn area
         Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);

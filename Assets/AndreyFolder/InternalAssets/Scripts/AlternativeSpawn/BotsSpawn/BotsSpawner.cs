@@ -12,7 +12,6 @@ public class BotsSpawner : MonoCache
 
     public Dictionary<WaveSpawner.Wave, List<BaseEnemy>> SpawnedBotsForWave;
 
-   
     // Start is called before the first frame update
     private void Start()
     {

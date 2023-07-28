@@ -9,19 +9,19 @@ namespace DamageNumber
     public abstract class DamageNumberPoolBase<T, U> : MonoCache where T : Component, IDamageNumber where U : IList<T>, new()
     {
         [SerializeField] protected Transform CanvasTransform;
-        [SerializeField] protected TextMeshPro TextMeshPrefab;
+        [SerializeField] protected TextMeshProUGUI TextMeshPrefab;
         [SerializeField] protected string _containerName;
 
         protected Dictionary<object, U> _damageNumbersDictionary;
         protected int _poolObjectCount = 1;
         protected PoolObject<T> _textPool;
-        protected TextMeshPro _textPrefab;
+        protected TextMeshProUGUI _textPrefab;
         protected IObjectFactory objectFactory;
         
 
         protected virtual void Start()
         {
-            _textPrefab = TextMeshPrefab.GetComponent<TextMeshPro>();
+            _textPrefab = TextMeshPrefab.GetComponent<TextMeshProUGUI>();
             objectFactory = new ObjectsFactory(_textPrefab.transform);
 
             _damageNumbersDictionary = new Dictionary<object, U>();
@@ -41,7 +41,7 @@ namespace DamageNumber
 
         protected internal virtual void Initialize(int damageAmount, Transform target, object ability)
         {
-            TextMeshPro text = GetTextForAbility(target, ability);
+            TextMeshProUGUI text = GetTextForAbility(target, ability);
             text.SetText(damageAmount.ToString());
 
             T damageNumberType = text.GetComponent<T>();
@@ -62,7 +62,7 @@ namespace DamageNumber
             
         }
 
-        protected TextMeshPro GetTextForAbility(Transform target, object ability)
+        protected TextMeshProUGUI GetTextForAbility(Transform target, object ability)
         {
             if (!_damageNumbersDictionary.TryGetValue(ability, out U _damageNumberList))
             {
@@ -74,10 +74,10 @@ namespace DamageNumber
                 }
                 _damageNumbersDictionary.Add(ability, _damageNumberList);
             }
-            return GetCachedComponent<TextMeshPro>(_textPool.GetObjects(target.position, _damageNumberList.ToArray()));
+            return GetCachedComponent<TextMeshProUGUI>(_textPool.GetObjects(target.position, _damageNumberList.ToArray()));
         }
 
-        protected IEnumerator Duration(TextMeshPro text, T prefab)
+        protected IEnumerator Duration(TextMeshProUGUI text, T prefab)
         {
             yield return new WaitForSeconds(prefab.LifeTime);
             _textPool.ReturnObject(GetCachedComponent<T>(text));

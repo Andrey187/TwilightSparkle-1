@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class BlockRotation : MonoCache
 {
@@ -6,7 +7,7 @@ public class BlockRotation : MonoCache
     public Vector3 offset; // Offset from the character's position
 
     protected override void Run()
-    {
+    { 
         // Check if the target and offset are set
         if (target != null)
         {

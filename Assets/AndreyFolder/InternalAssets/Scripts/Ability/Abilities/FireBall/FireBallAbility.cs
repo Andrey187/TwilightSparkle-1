@@ -34,7 +34,7 @@ public class FireBallAbility: BaseAbilities
         if (enemy != null)
         {
             // If so, damage the enemy and destroy the fireball
-            _setDamage?.Invoke(enemy,_fireBall.Damage, _fireBall.CurrentAbility, _fireBall.DoTEffect);
+            _setDamage?.Invoke(enemy, _fireBall.Damage, _fireBall.CurrentAbility, _fireBall.DoTEffect);
         }
 
         // Check if the collided object has the specified mask layer

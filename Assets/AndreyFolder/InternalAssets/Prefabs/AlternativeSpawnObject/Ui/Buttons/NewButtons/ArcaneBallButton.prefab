@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackSystem: {fileID: 0}
-  _abilities: {fileID: 7639272813227651316, guid: f018ffaf53e793347bc7213a55531b07, type: 3}
+  _abilities: {fileID: 3403289103192765779, guid: 485a6ffc672afcf4990f4899bc615e0a, type: 3}
 --- !u!1 &3462299681298943804
 GameObject:
   m_ObjectHideFlags: 0

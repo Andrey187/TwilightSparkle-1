@@ -480,4 +480,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackSystem: {fileID: 0}
-  _abilities: {fileID: 4770008030729008654, guid: cc37bbe68a139c74caa3890242696404, type: 3}
+  _abilities: {fileID: 7692043691229481501, guid: c0e46df2fe3835f4c9577ca9024b2bf2, type: 3}

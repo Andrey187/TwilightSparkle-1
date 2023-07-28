@@ -216,11 +216,11 @@ public abstract class BaseEnemy : MonoCache
 
     protected void ReturnToPool()
     {
-        Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
-        setObjectActive?.Invoke(gameObject, false);
-
         Action<GameObject> objectReturnToPool = EnemyEventManager.Instance.DestroyedObject;
         objectReturnToPool?.Invoke(gameObject);
+
+        Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
+        setObjectActive?.Invoke(gameObject, false);
     }
 
     protected void NavMeshParams()
