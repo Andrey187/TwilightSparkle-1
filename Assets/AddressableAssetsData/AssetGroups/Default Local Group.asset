@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 83a2bea796b045b448cf310eb114866d
+  m_SerializeEntries:
+  - m_GUID: 77238a74be702fc43af971c1a4819a61
+    m_Address: LoadScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 973c8c37f0c5ab444aa077eb7e2ac6bb
+    m_Address: MenuScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 7b4b2d89af5063842b9111bad3ca25f6
+    m_Address: AndreyTestScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: f47fd6111f8f3db41aee042427a788c6
+    m_Address: MainScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 7b17d34aa4cce7249bfa69c8670aa182
+    m_Address: UP_Fence_Zone_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fences
+  - m_GUID: 77bcb8844988010469ac8f5e46e59d5f
+    m_Address: Right_Fence_Zone_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fences
+  - m_GUID: e236d0539284dad49ae1bc009e303cb5
+    m_Address: Down_Fence_Zone_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fences
+  - m_GUID: b5bad9335b785264b892ddf292c2ee1d
+    m_Address: CandleBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 2d4bb4a302289504886fa86fe2d5f113
+    m_Address: Left_Fence_Zone_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fences
+  - m_GUID: c0682f9ecce8ce44c88565a30340dc93
+    m_Address: Objects
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BakeObjects
+  - m_GUID: e16e567c0c959b3429a23d57612a2178
+    m_Address: GrassBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: f1ac41a2ee252c242bf73fc4e58c02c6
+    m_Address: Lamp
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 02c201660c57a4144b6d9d2d4c95eb12
+    m_Address: MushroomsBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 3b01bae10e699dd4ebdcbbe74c24c48d
+    m_Address: OtherBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: d09a08fa62ebf0242958f7a403813b01
+    m_Address: SimpleTreesBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: f278013ed14db5b4cb3f4545315c8d6e
+    m_Address: SkeletonsBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 73b83801ccb5f2f42af7227c711e6b28
+    m_Address: Stone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: c165913eec209884491c414f6cd1c4cc
+    m_Address: TombstonesBake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 49ad49643265e7845877711380ae5467
+    m_Address: Wall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: d62b0ddc7d92fd6449fc733f2efd87f4
+    m_Address: PostProccess
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PostProcces
+  - m_GUID: 18245ba0066455a4db1437eb4ed1a59f
+    m_Address: TestForAddressables
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Feat
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ce9626b6aa96c1648a23b992ec1f3739, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 44ab86b492ddb6f468893c4d082899da, type: 2}
+    - {fileID: 11400000, guid: 80c0a3ca7a8157a44a8bad70054145c4, type: 2}

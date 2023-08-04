@@ -28,6 +28,11 @@ public class WaveSpawner : MonoCache
             wave._objMaterial = Instantiate(wave.Bot.GetComponentInChildren<MeshRenderer>().sharedMaterial);
         }
 
+        Invoke("StartSpawn",2f);
+    }
+
+    private void StartSpawn()
+    {
         StartCoroutine(SpawnFirstWave()); // Start the first wave immediately
 
         for (int i = _startWaveIndex; i < Waves.Length; i++) // Start from index 1 for subsequent waves

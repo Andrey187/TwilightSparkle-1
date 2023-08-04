@@ -15,6 +15,17 @@ public class ParticleSystemPool : MonoBehaviour
         ParticleEventManager.Instance.OnDeathParticleSetActive += DeathParticleInvoke;
         ParticleEventManager.Instance.OnHealParticleSetActive += HealParticleInvoke;
 
+
+        Invoke("InitPool", 3f);
+    }
+
+    private void OnDisable()
+    {
+        _particleDictionary.Clear();
+    }
+
+    private void InitPool()
+    {
         for (int i = 0; i < _baseParcticle.Count; i++)
         {
             _objectFactory = new ObjectsFactory(_baseParcticle[i].gameObject.transform);
@@ -36,12 +47,6 @@ public class ParticleSystemPool : MonoBehaviour
         List<BaseParcticle> allObjects = _particleDictionary.SelectMany(pair => pair.Value).ToList();
         PoolObject<BaseParcticle>.CreateInstance(allObjects, 0, gameObject.transform, "Particle");
         _particlePool = PoolObject<BaseParcticle>.Instance;
-
-    }
-
-    private void OnDisable()
-    {
-        _particleDictionary.Clear();
     }
 
     public void DeathParticleInvoke(GameObject obj)

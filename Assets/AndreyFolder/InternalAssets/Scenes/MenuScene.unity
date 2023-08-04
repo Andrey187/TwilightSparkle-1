@@ -313,6 +313,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19963000, guid: d4d6a29c9156ee948a0a44b98b1f1da8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19963000, guid: d4d6a29c9156ee948a0a44b98b1f1da8, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d6a29c9156ee948a0a44b98b1f1da8, type: 3}
 --- !u!4 &62115427 stripped
@@ -754,6 +762,7 @@ GameObject:
   - component: {fileID: 289193297}
   - component: {fileID: 289193296}
   - component: {fileID: 289193295}
+  - component: {fileID: 289193298}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -825,19 +834,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 289193296}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4139014449342853389, guid: 37b94906603ffb041bae96db090a6a28, type: 3}
-        m_TargetAssemblyTypeName: SceneLoadManager, Assembly-CSharp
-        m_MethodName: ResumeInMainScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &289193296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -876,6 +873,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289193293}
   m_CullTransparentMesh: 0
+--- !u!114 &289193298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289193293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c060b8baf5f00094f90522e86e789e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &352085976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1837,7 +1846,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 1832303693
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &751879178
 RectTransform:
@@ -2658,6 +2667,7 @@ GameObject:
   - component: {fileID: 1495656049}
   - component: {fileID: 1495656048}
   - component: {fileID: 1495656047}
+  - component: {fileID: 1495656050}
   m_Layer: 5
   m_Name: ExitSettingsButton
   m_TagString: Untagged
@@ -2729,19 +2739,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1495656048}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4139014449342853389, guid: 37b94906603ffb041bae96db090a6a28, type: 3}
-        m_TargetAssemblyTypeName: SceneLoadManager, Assembly-CSharp
-        m_MethodName: ExitGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1495656048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2780,6 +2778,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495656045}
   m_CullTransparentMesh: 0
+--- !u!114 &1495656050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495656045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a62216d32a27da2458a28fec9740c2a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1531756683
 GameObject:
   m_ObjectHideFlags: 0

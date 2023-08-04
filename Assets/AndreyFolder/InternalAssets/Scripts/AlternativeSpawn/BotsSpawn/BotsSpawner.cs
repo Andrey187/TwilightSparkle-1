@@ -16,7 +16,8 @@ public class BotsSpawner : MonoCache
     private void Start()
     {
         SpawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
-        InitCreatePool(); SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
+        Invoke("InitCreatePool", 1.5f);
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
     private void UnsubscribeEvents()
@@ -60,6 +61,7 @@ public class BotsSpawner : MonoCache
         PoolObject<BaseEnemy>.CreateInstance(allBots, 0, gameObject.transform, "Bots");
         _botPool = PoolObject<BaseEnemy>.Instance;
     }
+
 
     public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
     {

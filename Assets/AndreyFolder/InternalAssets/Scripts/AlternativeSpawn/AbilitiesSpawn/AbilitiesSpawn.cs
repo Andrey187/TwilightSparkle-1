@@ -13,7 +13,7 @@ namespace AbilitySystem
 
         private void Start()
         {
-            Invoke("StartInitAbility", 3f);
+            Invoke("StartInitAbility", 2f);
         }
 
         private void StartInitAbility()

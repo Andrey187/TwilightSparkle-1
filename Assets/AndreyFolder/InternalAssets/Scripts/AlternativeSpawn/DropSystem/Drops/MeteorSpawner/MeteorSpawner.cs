@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +14,23 @@ public class MeteorSpawner : MonoBehaviour
 
     private void Start()
     {
+        Invoke("InitPool", 15f);
+    }
+
+    private void OnDestroy()
+    {
         _meteors.Clear();
+    }
+
+    private void InitPool()
+    {
         for (int i = 0; i < _meteorCount; i++)
         {
             _objectFactory = new ObjectsFactory(_meteorPrefab.transform);
             Meteor meteor = _objectFactory.CreateObject(_meteorPrefab.transform.position).GetComponent<Meteor>();
             _meteors.Add(meteor);
         }
-        
+
         PoolObject<Meteor>.CreateInstance(_meteors, _meteors.Count, gameObject.transform, _meteors.First().name + "_Container");
         _objectsPool = PoolObject<Meteor>.Instance;
     }

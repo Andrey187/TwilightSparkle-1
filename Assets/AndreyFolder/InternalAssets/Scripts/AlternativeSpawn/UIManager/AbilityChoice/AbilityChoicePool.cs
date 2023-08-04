@@ -19,11 +19,19 @@ public class AbilityChoicePool : MonoBehaviour
     private void Start()
     {
         _buttonInPool = new Dictionary<Button, UpgradeAbilitiesOnButtonClick>();
+
+        Invoke("InintPool", 5f);
+        _abilityAddWindow.GetObjectFromPool += GetObjectFromPool;
+        _abilityAddWindow.ReturnObjectInPool += ReturnObjectInPool;
+    }
+
+    private void InintPool()
+    {
         foreach (var button in _abilityAddWindow.AbilityButtons)
         {
             _objectFactory = new ObjectsFactory(button.GetComponent<Button>().transform);
             Button buttons = _objectFactory.CreateObject(button.transform.position).GetComponent<Button>();
-            PoolObject<Button>.CreateInstance(buttons, 3, buttonContainer,  "Buttons_Container");
+            PoolObject<Button>.CreateInstance(buttons, 3, buttonContainer, "Buttons_Container");
 
             _buttonPool = PoolObject<Button>.Instance;
 
@@ -36,9 +44,6 @@ public class AbilityChoicePool : MonoBehaviour
             }
             _abilityAddWindow.ShuffleButtons = _shiffleButtons;
         }
-
-        _abilityAddWindow.GetObjectFromPool += GetObjectFromPool;
-        _abilityAddWindow.ReturnObjectInPool += ReturnObjectInPool;
     }
 
     private void GetObjectFromPool(Button button)

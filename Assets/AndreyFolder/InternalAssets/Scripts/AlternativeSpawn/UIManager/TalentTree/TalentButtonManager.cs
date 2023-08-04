@@ -15,8 +15,6 @@ public class TalentButtonManager : MonoBehaviour
 
     private void Start()
     {
-        _talentSystem = FindObjectOfType<TalentSystem>();
-        levelUpSystem = FindObjectOfType<LevelUpSystem>();
         // Subscribe to talent system events
         speedBoostButton.interactable = false;
         damageBoostButton.interactable = false;

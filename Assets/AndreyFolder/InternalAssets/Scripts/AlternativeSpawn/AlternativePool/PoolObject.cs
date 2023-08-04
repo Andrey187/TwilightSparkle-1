@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PoolObject<T> where T : Component
@@ -21,17 +22,19 @@ public class PoolObject<T> where T : Component
     private Transform _parentObject;
     private string _containerName;
     private Queue<T> _objectPool;
+    private int _currentPrefabIndex = 0;
 
     private static GameObject _poolContainerPrefab;
     private static GameObject _poolContainerInstance;
 
     public PoolObject(List<T> objectPrefab, int poolLimit, Transform parentObject, string containerName)
     {
+        _objectPool = new Queue<T>();
         _objectPrefab = objectPrefab;
         _poolLimit = poolLimit;
         _parentObject = parentObject;
         _containerName = containerName;
-        InitializeObjectPool();
+        InitializeNextObjectDelayed();
     }
 
     public static void CreateInstance(T prefab, int poolLimit, Transform parentObject, string containerName)
@@ -166,25 +169,20 @@ public class PoolObject<T> where T : Component
         }
     }
 
-    private void InitializeObjectPool()
+    private async void InitializeNextObjectDelayed()
     {
-        _objectPool = new Queue<T>();
-
-        for (int i = 0; i < _objectPrefab.Count; i++)
+        while (_currentPrefabIndex < _objectPrefab.Count)
         {
-            T prefab = _objectPrefab[i];
+            T prefab = _objectPrefab[_currentPrefabIndex];
             T obj = Object.Instantiate(prefab, _poolContainerInstance.transform);
             obj.gameObject.SetActive(false);
             obj.transform.SetParent(_poolContainerInstance.transform, false);
             _objectPool.Enqueue(obj);
+
+            _currentPrefabIndex++;
+
+            // Wait for the specified delay before initializing the next object
+            await Task.Delay(20);
         }
     }
 }
-
-//Using CompareTag is generally not considered resource-intensive because it only compares the tag of the game object,
-//which is a string, and the string comparison is fast. In addition, 
-//using CompareTag can be more efficient than using gameObject.name because Unity internally caches tags for faster comparisons,
-//whereas the name of the game object can be changed at runtime.
-//That being said, it's always a good practice to measure the performance of your code and optimize it if needed. 
-//If you're experiencing performance issues with using CompareTag, 
-//you can consider using other approaches such as storing the game object reference or ID instead of the tag.

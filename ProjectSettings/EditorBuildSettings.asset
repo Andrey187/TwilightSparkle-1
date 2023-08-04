@@ -8,16 +8,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/AndreyFolder/InternalAssets/Scenes/FirstScene.unity
     guid: ab6cbe0cb13fe6a479d3b927a801d7c2
-  - enabled: 1
+  - enabled: 0
     path: Assets/AndreyFolder/InternalAssets/Scenes/MainScene.unity
     guid: f47fd6111f8f3db41aee042427a788c6
-  - enabled: 1
+  - enabled: 0
     path: Assets/AndreyFolder/InternalAssets/Scenes/AndreyTestScene.unity
     guid: 7b4b2d89af5063842b9111bad3ca25f6
-  - enabled: 1
+  - enabled: 0
     path: Assets/AndreyFolder/InternalAssets/Scenes/MenuScene.unity
     guid: 973c8c37f0c5ab444aa077eb7e2ac6bb
-  - enabled: 1
+  - enabled: 0
     path: Assets/AndreyFolder/InternalAssets/Scenes/LoadScene.unity
     guid: 77238a74be702fc43af971c1a4819a61
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 811326ec1d085194f99e5a455a049afe, type: 2}

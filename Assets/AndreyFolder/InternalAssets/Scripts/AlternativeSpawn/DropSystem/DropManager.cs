@@ -20,6 +20,21 @@ public class DropManager : MonoCache
     {
         _cachePrefab.Clear();
         enemiesKilledCount = 0;
+
+        Invoke("InitPool", 7f);
+
+        _eventManager = DropEventManager.Instance;
+        _eventManager.DropCreated += EnemyKilled;
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
+    }
+
+    private void UnsubscribeEvents()
+    {
+        _eventManager.DropCreated -= EnemyKilled;
+    }
+
+    private void InitPool()
+    {
         for (int i = 0; i < _dropPrefab.Count; i++)
         {
             _objectFactory = new ObjectsFactory(_dropPrefab[i].GetComponent<BaseDrop>().transform);
@@ -43,15 +58,6 @@ public class DropManager : MonoCache
         List<BaseDrop> allObjects = _cachePrefab.SelectMany(pair => pair.Value).ToList();
         PoolObject<BaseDrop>.CreateInstance(allObjects, 10, gameObject.transform, "_Drops");
         _objectsToPool = PoolObject<BaseDrop>.Instance;
-
-        _eventManager = DropEventManager.Instance;
-        _eventManager.DropCreated += EnemyKilled;
-        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
-    }
-
-    private void UnsubscribeEvents()
-    {
-        _eventManager.DropCreated -= EnemyKilled;
     }
 
     private void EnemyKilled(GameObject obj)
