@@ -62,10 +62,10 @@ public static class LoadScene
         {
             Debug.LogError($"An error occurred in SceneVariable: {ex}");
         }
-        finally
-        {
-            Time.timeScale = 1f;
-        }
+        //finally
+        //{
+        //    Time.timeScale = 1f;
+        //}
     }
 
     private static async Task LoadAnimation(float delay)

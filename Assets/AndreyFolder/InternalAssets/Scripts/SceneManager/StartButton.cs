@@ -8,6 +8,7 @@ public class StartButton : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1f;
         _button = gameObject.GetComponent<Button>();
         _button.interactable = false;
     }
