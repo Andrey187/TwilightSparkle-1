@@ -17,7 +17,8 @@ namespace DamageNumber
         protected PoolObject<T> _textPool;
         protected TextMeshProUGUI _textPrefab;
         protected IObjectFactory objectFactory;
-        
+
+        protected Dictionary<TextMeshProUGUI, Coroutine> _coroutineDictionary = new Dictionary<TextMeshProUGUI, Coroutine>();
 
         protected virtual void Start()
         {
@@ -53,7 +54,8 @@ namespace DamageNumber
                     text.color = Color(ability);
                 }
 
-                StartCoroutine(Duration(text, damageNumberType));
+                Coroutine coroutine = StartCoroutine(Duration(text, damageNumberType));
+                _coroutineDictionary[text] = coroutine;
             }
             else
             {
@@ -81,6 +83,11 @@ namespace DamageNumber
         {
             yield return new WaitForSeconds(prefab.LifeTime);
             _textPool.ReturnObject(GetCachedComponent<T>(text));
+            if (_coroutineDictionary.TryGetValue(text, out Coroutine coroutine))
+            {
+                StopCoroutine(coroutine);
+                _coroutineDictionary.Remove(text);
+            }
         }
 
         protected TComponent GetCachedComponent<TComponent>(Component component) where TComponent : Component

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using TMPro;
 using UnityEngine;
 
@@ -8,13 +9,28 @@ public class Counters : MonoCache
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private CameraArea _cameraArea;
 
-    public int _killedEnemy = 0;
+    public int _totalKilledEnemy = 0;
+    private int _killedEnemy = 0;
     private float elapsedTime;
     private bool isTimerRunning;
 
-    private void Start()
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public int KilledEnemy 
+    {   get => _killedEnemy; 
+        set
+        {
+            if (_killedEnemy != value)
+            {
+                _killedEnemy = value;
+            }
+        }
+    }
+
+
+    private void Awake()
     {
-        EnemyEventManager.Instance.ObjectDie += KillEnemy;
+        EnemyEventManager.Instance.ObjectDie += EnemyDie;
         Application.targetFrameRate = 60;
         ResetTimer();
     }
@@ -69,11 +85,17 @@ public class Counters : MonoCache
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    private void KillEnemy(GameObject obj)
+    private void EnemyDie(GameObject obj)
     {
         if (!obj.activeSelf) 
         {
-            _killedEnemy++;
+            _killedEnemy++; _totalKilledEnemy++;
+            OnPropertyChanged(nameof(KilledEnemy));
         }
+    }
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

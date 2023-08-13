@@ -6,7 +6,6 @@ public class FirstScene : MonoBehaviour
 {
     private async void Awake()
     {
-        //LoadScene.LoadSceneStart(1, Sound.SoundEnum.BackgroundMusicFirstScene);
         LoadScene.LoadSceneStart("LoadScene",
             "MainScene", Sound.SoundEnum.BackgroundMusicFirstScene, 0.05f);
 

@@ -38,7 +38,7 @@ public class FrostBallAbility : BaseAbilities
         }
 
         // Check if the collided object has the specified mask layer
-        if ((_layerMask.value & (1 << other.transform.gameObject.layer)) > 0)
+        if ((_layerMaskForDie.value & (1 << other.transform.gameObject.layer)) > 0)
         {
             // If the collided object has the specified layer, invoke SetDie
             SetDie?.Invoke(this);

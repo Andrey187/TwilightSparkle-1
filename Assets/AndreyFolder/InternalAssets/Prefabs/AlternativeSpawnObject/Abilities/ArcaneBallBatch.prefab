@@ -9789,7 +9789,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14444,9 +14444,10 @@ MonoBehaviour:
   _fireInterval: 2
   _baseLifeTime: 2
   _lifeTime: 2
-  _layerMask:
+  _layerMaskForDie:
     serializedVersion: 2
     m_Bits: 4416
+  damageRadius: 0.5
   _rotationSpeed: 2
   _targetPoint: {x: 0, y: 0, z: 0}
   _areaRadiusFindEnemy: 10

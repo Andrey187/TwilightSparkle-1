@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be36b2ede2173b409b31b1cd0b9e19c, type: 3}
   m_Name: SpeedIncrease
   m_EditorClassIdentifier: 
+  StatType: 1
   Name: SpeedTalent
   Description: Increase player speed
-  Cost: 1
   CurrentTalentPoint: 0
-  StatType: 1
-  StartingTalentPoint: 0
+  _maxTalentPoints: 5
+  _defaultCurrentTalentPoint: 0
+  _defaultMaxTalentPoint: 5

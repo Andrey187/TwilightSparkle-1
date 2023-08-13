@@ -19,5 +19,6 @@ public class AddingAbilityOnButtonClick : MonoCache
     {
         // Trigger the AddAttackScript method of the AttackScript class
         _attackSystem.AddAttackScript(_abilities);
+        _abilities.RaiseSetCreateEvent();
     }
 }

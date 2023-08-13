@@ -9,6 +9,6 @@ public class GameOverPanel : MonoBehaviour
     private void Start()
     {
         _counters = FindObjectOfType<Counters>();
-        _textKillEnemy.SetText(_counters._killedEnemy.ToString());
+        _textKillEnemy.SetText(_counters._totalKilledEnemy.ToString());
     }
 }

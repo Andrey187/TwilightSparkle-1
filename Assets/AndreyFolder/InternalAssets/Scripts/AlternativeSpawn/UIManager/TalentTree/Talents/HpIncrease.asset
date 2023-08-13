@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be36b2ede2173b409b31b1cd0b9e19c, type: 3}
   m_Name: HpIncrease
   m_EditorClassIdentifier: 
+  StatType: 0
   Name: HpTalent
   Description: Increase player max hp
-  Cost: 1
-  CurrentTalentPoint: 0
-  StatType: 0
-  StartingTalentPoint: 0
+  _currentTalentPoints: 0
+  _maxTalentPoints: 10
+  _defaultCurrentTalentPoint: 0
+  _defaultMaxTalentPoint: 10

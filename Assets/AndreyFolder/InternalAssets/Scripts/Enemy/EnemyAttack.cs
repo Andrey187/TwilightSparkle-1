@@ -10,6 +10,7 @@ public class EnemyAttack : MonoCache
     private BaseEnemy _baseEnemy;
     private GameObject _player;
     private PlayerStats _playerStats;
+    private MagicShield _magicShield;
     private Collider _playerCollider;
 
     private void Start()
@@ -18,6 +19,7 @@ public class EnemyAttack : MonoCache
         _damageAmount = _baseEnemy.EnemyType.Damage;
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerStats = _player.GetComponent<PlayerStats>();
+        _magicShield = _player.GetComponent<MagicShield>();
         _playerCollider = _player.GetComponentInChildren<Collider>();
     }
 
@@ -25,9 +27,6 @@ public class EnemyAttack : MonoCache
     {
         if (collider == _playerCollider)
         {
-            // Reset timer
-            _timeColliding = 0f;
-            // Take damage on impact?
             AttackPlayer();
         }
     }
@@ -44,17 +43,24 @@ public class EnemyAttack : MonoCache
             }
             else
             {
-                // Time is over theshold, player takes damage
                 AttackPlayer();
-                // Reset timer
-                _timeColliding = 0f;
             }
         }
     }
 
     private void AttackPlayer()
     {
-        _playerStats.CurrentHealth -= _damageAmount;
-        _baseEnemy.ChangeState(new AttackingState());
+        if (_magicShield != null && _magicShield.IsShieldActive)
+        {
+            // Shield is active, no damage to the player
+        }
+        else
+        {
+            // Reset timer
+            _timeColliding = 0f;
+            // Take damage on impact?
+            _playerStats.CurrentHealth -= _damageAmount;
+            _baseEnemy.ChangeState(new AttackingState());
+        }
     }
 }

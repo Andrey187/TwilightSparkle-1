@@ -49,7 +49,7 @@ public class ArcaneBallAbility : BaseAbilities
             _setDamage?.Invoke(enemy, _arcaneBall.Damage, _arcaneBall.CurrentAbility, _arcaneBall.DoTEffect);
             
         }
-        if ((_layerMask.value & (1 << other.transform.gameObject.layer)) > 0)
+        if ((_layerMaskForDie.value & (1 << other.transform.gameObject.layer)) > 0)
         {   
             SetDie?.Invoke(this);
         }

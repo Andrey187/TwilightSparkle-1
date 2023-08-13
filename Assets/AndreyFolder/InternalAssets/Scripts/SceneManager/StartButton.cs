@@ -27,7 +27,6 @@ public class StartButton : MonoBehaviour
 
     public void OnStartButtonClicked()
     {
-        //LoadScene.LoadSceneStart(2, Sound.SoundEnum.BackgroundMusic);
         LoadScene.LoadSceneStart("LoadScene",
             "AndreyTestScene", Sound.SoundEnum.BackgroundMusic, 0.01f);
     }

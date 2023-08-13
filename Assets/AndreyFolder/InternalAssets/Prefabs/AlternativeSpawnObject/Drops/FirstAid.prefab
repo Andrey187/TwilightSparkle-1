@@ -1331,8 +1331,8 @@ ParticleSystem:
         m_NumAlphaKeys: 3
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
@@ -1450,7 +1450,7 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: -133200146, guid: 87b9ce805350bf1439de9c445c6ace17, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4741,7 +4741,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bfe15c5c7817ef444ab6b80888ec22ea, type: 2}
+  - {fileID: 2100000, guid: df1e56086513d64438a9aa0b92b9cfd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6249,8 +6249,8 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
@@ -6368,7 +6368,7 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: 333371097, guid: 87b9ce805350bf1439de9c445c6ace17, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -9659,7 +9659,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a976a44ca501e564bb2adee42f573b4d, type: 2}
+  - {fileID: 2100000, guid: df1e56086513d64438a9aa0b92b9cfd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

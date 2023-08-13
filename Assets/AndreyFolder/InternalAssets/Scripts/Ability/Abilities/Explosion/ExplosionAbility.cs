@@ -30,7 +30,7 @@ public class ExplosionAbility : BaseAbilities
             Collider[] colliders = Physics.OverlapSphere(transform.position, _damageRadius);
             foreach (Collider collider in colliders)
             {
-                if(_layerMask == (_layerMask | (1 << collider.gameObject.layer)))
+                if(_layerMaskForDie == (_layerMaskForDie | (1 << collider.gameObject.layer)))
                 {
                     BaseEnemy enemy = collider.GetComponent<BaseEnemy>();
                     if (enemy != null)

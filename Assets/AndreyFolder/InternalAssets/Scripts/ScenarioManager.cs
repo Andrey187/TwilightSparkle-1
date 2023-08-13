@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ScenarioManager : MonoCache
@@ -6,6 +7,7 @@ public class ScenarioManager : MonoCache
     [SerializeField] private float _durationTime;
     [SerializeField] private int _countLevelForIncreaseEnemyHp;
     [SerializeField] private int _increaseMaxHpEnemy;
+    [SerializeField] private List<TalentSO> _talents;
     private PlayerEventManager _playerEvent;
     private WaveSpawner _waveSpawner;
 
@@ -42,7 +44,7 @@ public class ScenarioManager : MonoCache
                 float waveDuration = _waveSpawner.Waves[i].WaveDuration;
                 float newWaveDuration = waveDuration - decreaseAmount;// Decrease by _durationTime seconds
 
-                float minWaveDuration = _waveSpawner.Waves[i].BaseDuration / 2f;
+                float minWaveDuration = _waveSpawner.Waves[i].BaseDuration / 3f;
                 newWaveDuration = Mathf.Max(newWaveDuration, minWaveDuration);
 
                 // Apply the updated values to the wave spawner and enemy prefab
@@ -54,8 +56,9 @@ public class ScenarioManager : MonoCache
         {
             foreach (EnemyData enemyData in DataLoader.Instance._enemyDataBase.EnemyDataList)
             {
-                enemyData.MaxHealth += enemyData.MaxHealth/2;
-                enemyData.GainExp += enemyData.GainExp / 2;
+                enemyData.MaxHealth += enemyData.MaxHealth/3;
+                enemyData.GainExp += enemyData.GainExp / 4;
+                enemyData.Speed += 0.1f;
             }
         }
 
@@ -63,12 +66,20 @@ public class ScenarioManager : MonoCache
         {
             foreach (EnemyData enemyData in DataLoader.Instance._enemyDataBase.EnemyDataList)
             {
-                enemyData.MaxHealth += 250;
-                enemyData.Damage += 1;
+                enemyData.MaxHealth += 500;
+                enemyData.Damage += 5;
             }
         }
 
-        if(newLevel % 4 == 0)
+        if (newLevel % 15 == 0)
+        {
+            foreach (var talent in _talents)
+            {
+                talent.ChangeMaxTalentPoints(2);
+            }
+        }
+
+        if (newLevel % 4 == 0)
         {
             _waveSpawner.BossSpawn(_waveSpawner.Waves[0]);
         }

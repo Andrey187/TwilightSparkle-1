@@ -61,6 +61,13 @@ public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
+    public void AddExperienceForChallenge(int gainExp)
+    {
+        _playerStats.CurrentExp += gainExp;
+        OnPropertyChanged(nameof(CurrentExp));
+        CheckLevelUp();
+    }
+
     private void CheckLevelUp()
     {
         while (_playerStats.CurrentExp >= NextLevelExp)

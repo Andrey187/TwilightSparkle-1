@@ -5,21 +5,45 @@ using UnityEngine;
 
 public class DropManager : MonoCache
 {
-    [SerializeField] private List<BaseDrop> _dropPrefab;
-    [SerializeField] private int _countForFirstAid;
-    [SerializeField] private int _countForBomb;
+    [SerializeField] public List<BaseDrop> _dropPrefab;
+    [SerializeField] public int _countForFirstAid;
+    [SerializeField] public int _countForBomb;
 
     [SerializeField] private int enemiesKilledCount = 0;
 
+    private int _originalCountForFirstAid;
+    private int _originalCountForBomb;
     private PoolObject<BaseDrop> _objectsToPool;
     private IObjectFactory _objectFactory;
     private DropEventManager _eventManager;
     private Dictionary<Type, List<BaseDrop>> _cachePrefab = new Dictionary<Type, List<BaseDrop>>();
 
+    public int ÑountForFirstAid
+    {
+        get => _countForFirstAid;
+        set
+        {
+            // Ensure the new value is not below half of the original value
+            _countForFirstAid = Mathf.Max(value, _originalCountForFirstAid / 2);
+        }
+    }
+
+    public int CountForBomb
+    {
+        get => _countForBomb;
+        set
+        {
+            // Ensure the new value is not below half of the original value
+            _countForBomb = Mathf.Max(value, _originalCountForBomb / 2);
+        }
+    }
+
     private void Start()
     {
-        _cachePrefab.Clear();
         enemiesKilledCount = 0;
+        // Store the original values at the beginning
+        _originalCountForFirstAid = _countForFirstAid;
+        _originalCountForBomb = _countForBomb;
 
         Invoke("InitPool", 7f);
 
@@ -30,6 +54,7 @@ public class DropManager : MonoCache
 
     private void UnsubscribeEvents()
     {
+        _cachePrefab.Clear();
         _eventManager.DropCreated -= EnemyKilled;
     }
 
@@ -66,7 +91,7 @@ public class DropManager : MonoCache
 
         Vector3 position = new Vector3(obj.transform.position.x, 0f, obj.transform.position.z);
 
-        if (enemiesKilledCount % _countForFirstAid == 0)
+        if (enemiesKilledCount % ÑountForFirstAid == 0)
         {
             DropFirstAidKit(position);
         }

@@ -4,6 +4,8 @@ using UnityEngine;
 public class DropEventManager : MonoBehaviour
 {
     private Action<GameObject> _dropCreated;
+    private Action _dropPickUpFirstAid;
+    private Action _dropPickUpMeteor;
 
     private static DropEventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -36,8 +38,30 @@ public class DropEventManager : MonoBehaviour
         remove { _dropCreated -= value; }
     }
 
+    public event Action FirstAidPickUpDrop
+    {
+        add { _dropPickUpFirstAid += value; }
+        remove { _dropPickUpFirstAid -= value; }
+    }
+
+    public event Action MeteorPickUpDrop
+    {
+        add { _dropPickUpMeteor += value; }
+        remove { _dropPickUpMeteor -= value; }
+    }
+
     public void DropsCreated(GameObject obj)
     {
         _dropCreated?.Invoke(obj);
+    }
+
+    public void FirstAidPickUp()
+    {
+        _dropPickUpFirstAid?.Invoke();
+    }
+
+    public void MeteorPickUp()
+    {
+        _dropPickUpMeteor?.Invoke();
     }
 }

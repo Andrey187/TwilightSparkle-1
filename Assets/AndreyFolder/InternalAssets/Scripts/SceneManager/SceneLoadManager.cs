@@ -55,16 +55,6 @@ public class SceneLoadManager : MonoBehaviour
         Debug.Log(_loadScene);
     }
 
-    public void RestartGame()
-    {
-        // Reset any necessary game state, variables, or managers
-        // Load the initial scene or restart the current scene
-        Time.timeScale = 1f;
-        SceneReloadEvent.Instance.OnUnsubscribeEvents();
-        ObjectPoolManager.Instance.ClearAllPools();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
     public async Task RestartGameAddressablesMethod()
     {
         Time.timeScale = 1f;

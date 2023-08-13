@@ -21,28 +21,24 @@ public class TalentViewModel : INotifyPropertyChanged
         }
     }
 
+    public Dictionary<TalentStatType, int> MaxTalentPoints
+    {
+        get { return _talentSystem.MaxTalentPoints; }
+        set { _talentSystem.MaxTalentPoints = value; }
+    }
+
+    public Dictionary<TalentStatType, int> CurrentTalentPointsValue
+    {
+        get { return _talentSystem.CurrentTalentPointsValue; }
+        set { _talentSystem.CurrentTalentPointsValue = value; }
+    }
+
     public TalentViewModel(TalentSystem talentSystem)
     {
         _talentSystem = talentSystem;
         _talentPointsBinding = TalentPointsBinding.Instance;
         _talentPointsBinding.RegisterTalentViewModel(this);
         _talentSystem.PropertyChanged += HandlePropertyChanged;
-    }
-
-    public void SetCurrentTalentPoints(Dictionary<TalentStatType, int> currentTalentValue)
-    {
-        foreach (var talent in currentTalentValue)
-        {
-            _talentSystem.CurrentTalentPointsValue.Add(talent.Key, talent.Value);
-        }
-    }
-
-    public void SetMaxTalentPoints(Dictionary<TalentStatType, int> maxTalent)
-    {
-        foreach (var talent in maxTalent)
-        {
-            _talentSystem.MaxTalentPoints.Add(talent.Key, talent.Value);
-        }
     }
 
     public void OnButtonClick(TalentStatType statType, int buttonValue)
@@ -62,6 +58,12 @@ public class TalentViewModel : INotifyPropertyChanged
             case nameof(_talentSystem.TalentPoints):
                 OnPropertyChanged(nameof(TalentPoints));
                 _talentPointsBinding.OnTalentPointsChanged(TalentPoints);
+                break;
+            case nameof(_talentSystem.MaxTalentPoints):
+                OnPropertyChanged(nameof(MaxTalentPoints));
+                break;
+            case nameof(_talentSystem.CurrentTalentPointsValue):
+                OnPropertyChanged(nameof(CurrentTalentPointsValue));
                 break;
         }
     }

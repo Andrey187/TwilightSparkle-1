@@ -13,6 +13,7 @@ namespace AbilitySystem
         [SerializeField] private Transform _endPoint; // конечная позиция
 
         private event Action<BaseAbilities, Vector3> _createPrefabAbility; //событие для передачи метода из AbilitiesSpawn
+        private event Action<BaseAbilities> _createAlternativeAbility;
         private AbilitiesSpawn _abilitiesSpawn;
 
         public Vector3 _nearestEnemyPosition;
@@ -56,6 +57,11 @@ namespace AbilitySystem
             StartCoroutine(SpawnAbilitiesCoroutine(ability));
         }
 
+        private void SetUpInvokeRepeatingForAlternativeAbility(BaseAbilities ability) //3.
+        {
+            StartCoroutine(SpawnAlternativeAbilitiesCoroutine(ability));
+        }
+
         private void FirstAbilitySpawnStart() // 2. для каждой способности из списка InstantiateCloneAbilities запускается корутина, в которую передаются способности
         {
             SetUpInvokeRepeatingForAbility(AttackAbilitiesList[0]);
@@ -71,9 +77,23 @@ namespace AbilitySystem
             }
         }
 
+        private IEnumerator SpawnAlternativeAbilitiesCoroutine(BaseAbilities ability) //4.
+        {
+            while (true)
+            {
+                InvokeCreateAlternativePrefabAbility(ability);
+                yield return new WaitForSeconds(ability.FireInterval);
+            }
+        }
+
         public void SetCreatePrefabAbility(Action<BaseAbilities, Vector3> createPrefabAbility) //1. вызывается на старте в AbilitiesSpawn и передается метод CreatePrefabAbility
         {
             _createPrefabAbility = createPrefabAbility;
+        }
+
+        public void SetCreateAlternativeAbility(Action<BaseAbilities> createAlternativePrefabAbility)
+        {
+            _createAlternativeAbility = createAlternativePrefabAbility;
         }
 
         private void InvokeCreatePrefabAbility(BaseAbilities ability, Vector3 targetPoint) //6.вызывается метод CreatePrefabAbility из AbilitiesSpawn и передается ability и targetPoint
@@ -81,10 +101,21 @@ namespace AbilitySystem
             _createPrefabAbility?.Invoke(ability, targetPoint);
         }
 
+        private void InvokeCreateAlternativePrefabAbility(BaseAbilities ability)
+        {
+            _createAlternativeAbility?.Invoke(ability);
+        }
+
         public void AddAttackScript(BaseAbilities ability) //Метод вызывается по нажатию на кнопку, добавляет новую способность в список, вызывает метод спавна
         {
             _attackAbilities.Add(ability);
             SetUpInvokeRepeatingForAbility(ability);
+        }
+
+        public void AddAlternativeAbility(BaseAbilities ability)
+        {
+            _attackAbilities.Add(ability);
+            SetUpInvokeRepeatingForAlternativeAbility(ability);
         }
     }
 }

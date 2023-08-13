@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +6,6 @@ using UnityEngine;
 public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    public event Action<TalentStatType, int> OnCurrentTalentPoint;
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private List<TalentSO> _talents;
     private Dictionary<TalentStatType, int> _maxTalentPoints = new Dictionary<TalentStatType, int>();
@@ -37,7 +35,21 @@ public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
         foreach(var talent in _talents)
         {
             talent.ResetOnExitPlay();
+            talent.PropertyChanged += HandlePropertyChanged;
+            _maxTalentPoints.Add(talent.StatType, talent.MaxTalentPoints);
+            _currentTalentPointsValue.Add(talent.StatType, talent.CurrentTalentPoint);
         }
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
+    }
+
+    private void UnsubscribeEvents()
+    {
+        foreach (var talents in _talents)
+        {
+            talents.PropertyChanged -= HandlePropertyChanged;
+        }
+        _maxTalentPoints.Clear();
+        _currentTalentPointsValue.Clear();
     }
 
     public void Upgrade(TalentStatType talentStatType, int buttonValue, int pointsInvested)
@@ -51,10 +63,23 @@ public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
                 talent.UpdateTalent(_playerStats, buttonValue);
                 TalentPoints -= pointsInvested;
                 talent.CurrentTalentPoint++;
-                OnCurrentTalentPoint?.Invoke(talentStatType, talent.CurrentTalentPoint);
-                _currentTalentPointsValue[talentStatType]++;
             }
             OnPropertyChanged(nameof(TalentPoints));
+        }
+    }
+
+    private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (sender is TalentSO talentSO)
+        {
+            // Check if the changed property is MaxCountValue or CurrentCountValue
+            if (e.PropertyName == nameof(TalentSO.MaxTalentPoints) || e.PropertyName == nameof(TalentSO.CurrentTalentPoint))
+            {
+                _maxTalentPoints[talentSO.StatType] = talentSO.MaxTalentPoints;
+                _currentTalentPointsValue[talentSO.StatType] = talentSO.CurrentTalentPoint;
+                OnPropertyChanged(nameof(MaxTalentPoints));
+                OnPropertyChanged(nameof(CurrentTalentPointsValue));
+            }
         }
     }
 

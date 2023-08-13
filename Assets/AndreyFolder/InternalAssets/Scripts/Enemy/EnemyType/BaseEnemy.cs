@@ -12,20 +12,19 @@ public abstract class BaseEnemy : MonoCache
     [SerializeField] protected int _maxHealth;
     [SerializeField] protected float _pushbackDistance = 0.2f;
     [SerializeField] protected float _pushbackDuration = 0.5f;
+    [SerializeField] protected internal Renderer _renderer;
+    [SerializeField] protected internal MeshAnimator meshAnimator;
     protected HealthBarController _healthBarController;
-    protected internal EnemyState CurrentState;
-    protected internal float HpChangeTimer = 0f;
-    protected bool _shouldIncrementHPTimer = true;
-    protected bool _isBeingPushed = false;
-    protected Vector3 _pushbackDirection;
     protected Coroutine _pushbackCoroutine;
     protected Rigidbody _rigidbody;
     protected NavMeshAgent _navMeshAgent;
     protected internal SkinnedMeshRenderer _skinnedMesh;
-    [SerializeField] protected internal Renderer _renderer;
-    [SerializeField]
-    protected internal MeshAnimator meshAnimator;
+    protected internal EnemyState CurrentState;
+    protected internal float HpChangeTimer = 0f;
     protected float _currentSpeed;
+    protected bool _shouldIncrementHPTimer = true;
+    protected bool _isBeingPushed = false;
+    protected Vector3 _pushbackDirection;
 
     protected void Awake()
     {
@@ -122,39 +121,14 @@ public abstract class BaseEnemy : MonoCache
 
                 if (ability.HasDoT)
                 {
-                    StartCoroutine(PeriodicDamageCoroutine(
-                        doTEffect,
-                        enemy.transform,
-                        doTEffect.Duration,
-                        doTEffect.TickInterval,
-                        damageAmount));
+                    DoTManager.Instance.RegisterDoT(doTEffect, enemy, damageAmount);
                 }
+               
             }
             if (_currentHealth <= 0)
             {
                 Die();
             }
-        }
-    }
-
-    protected IEnumerator PeriodicDamageCoroutine(IDoTEffect doTEffect,
-        Transform target, float duration, float interval, int amount)
-    {
-        float timeLeft = duration;
-        int periodicDamageAmount = doTEffect.ApplyDoT(CurrentHealth, amount);
-
-        while (timeLeft > 0)
-        {
-            yield return new WaitForSeconds(interval);
-            CurrentHealth -= periodicDamageAmount;
-            if (CurrentHealth <= 0)
-            {
-                Die();
-                yield break; // exit the coroutine if the enemy is dead
-            }
-
-            DamageDoTNumberPool.Instance.Initialize(periodicDamageAmount, target.transform, doTEffect);
-            timeLeft -= interval;
         }
     }
 
@@ -200,7 +174,7 @@ public abstract class BaseEnemy : MonoCache
         _shouldIncrementHPTimer = shouldIncrement;
     }
 
-    protected void Die()
+    protected internal void Die()
     {
         _navMeshAgent.enabled = false;
         AudioManager.Instance.PlaySFX(Sound.SoundEnum.EnemyDie);

@@ -5,6 +5,6 @@ public class SpeedTalentView : BaseTalentView
         base.Start();
         _nameText.SetText("Increase Speed");
         _buttonText.SetText("+ " + _buttonTextValue.ToString());
-        _maxTalentPointsText.SetText(_maxTalentsPointCount.ToString());
+        _maxTalentPointsText.SetText(_maxTalent[_statType].ToString());
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AbilitySystem
@@ -7,9 +8,12 @@ namespace AbilitySystem
     public class AbilitiesSpawn : MonoCache
     {
         [SerializeField] private AttackSystem _attackSystem;
+        public event Action InitializationComplete;
         private PoolObject<BaseAbilities> _abilityPool;
         private IObjectFactory _objectFactory;
-        public event Action InitializationComplete;
+        private List<BaseAbilities> activeAbilities = new List<BaseAbilities>();
+        private List<BaseAbilities> expiredAbilities = new List<BaseAbilities>();
+        private float _lastExecutionTime;
 
         private void Start()
         {
@@ -20,6 +24,7 @@ namespace AbilitySystem
         {
             InitPool();
             _attackSystem.SetCreatePrefabAbility(CreatePrefabAbility);
+            _attackSystem.SetCreateAlternativeAbility(CreateAlternativeAbility);
             InitializationComplete?.Invoke(); //вызов подписанного метода FirstAbilitySpawnStart
         }
 
@@ -46,20 +51,65 @@ namespace AbilitySystem
             {
                 prefabAbility.MoveWithPhysics(_attackSystem.EndAttackPoint, _attackSystem.StartAttackPoint);
             }
+           
             prefabAbility.SetDie += ReturnObjectToPool;
-            StartCoroutine(Duration(prefabAbility));
+            activeAbilities.Add(prefabAbility); // Add to the list
         }
 
-        private IEnumerator Duration(BaseAbilities expiredAbility)
+        private void CreateAlternativeAbility(BaseAbilities ability)
         {
-            while (true)
+            BaseAbilities[] prefabAbilities = new BaseAbilities[ability.AlternativeCountAbilities];
+
+            for (int i = 0; i < ability.AlternativeCountAbilities; i++)
             {
-                if (expiredAbility.LifeTime <= 0)
+                prefabAbilities[i] = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
+                prefabAbilities[i].CalculateAlternativeMovePosition();
+                prefabAbilities[i].AlternativeMove();
+                prefabAbilities[i].SetDie += ReturnObjectToPool;
+
+                activeAbilities.Add(prefabAbilities[i]); // Add to the list
+
+                prefabAbilities[i].CalculateAndIncrementAngle(ability.AlternativeCountAbilities);
+            }
+        }
+
+        protected override void Run()
+        {
+            UnityEngine.Profiling.Profiler.BeginSample("AbilitySpawn");
+            float currentTime = Time.time;
+            if (currentTime - _lastExecutionTime >= 0.5f)
+            {
+                _lastExecutionTime = currentTime;
+                CheckExpiredAbilities();
+            }
+            UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        private void CheckExpiredAbilities()
+        {
+            for (int i = activeAbilities.Count - 1; i >= 0; i--)
+            {
+                BaseAbilities ability = activeAbilities[i];
+                if (ability.LifeTime <= 0)
                 {
-                    ReturnObjectToPool(expiredAbility);
-                    yield break; // Exit the coroutine
+                    expiredAbilities.Add(ability);
+                    activeAbilities.RemoveAt(i);
                 }
-                yield return null;
+            }
+
+            ProcessExpiredAbilities();
+        }
+
+        private void ProcessExpiredAbilities()
+        {
+            if (expiredAbilities.Count > 0)
+            {
+                for (int i = 0; i < expiredAbilities.Count; i++)
+                {
+                    BaseAbilities expiredAbility = expiredAbilities[i];
+                    ReturnObjectToPool(expiredAbility);
+                }
+                expiredAbilities.Clear();
             }
         }
 

@@ -5,8 +5,15 @@ public class FireBallAbility: BaseAbilities
 {
     private FireBall _fireBall;
     private FireDoTEffect _fireDotEffect;
+    private Collider[] _hitColliders;
+    [SerializeField] private LayerMask _enemyLayer;
     protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected internal override event Action<BaseAbilities> SetDie;
+
+    protected override internal event Action SetCreate;
+
+    private float _lastExecutionTime;
+    protected override float LastExecutionTime { get=> _lastExecutionTime; set=> _lastExecutionTime = value; }
 
     private void Awake()
     {
@@ -27,21 +34,54 @@ public class FireBallAbility: BaseAbilities
         _fireBall.CurrentAbility = _fireBall;
         _fireBall.DoTEffect = _fireDotEffect;
     }
-    private void OnTriggerEnter(Collider other)
+
+    protected internal override void RaiseSetCreateEvent()
     {
-        // Check if the object that collided with the fireball is an enemy
-        BaseEnemy enemy = other.GetComponentInParent<BaseEnemy>();
-        if (enemy != null)
+        SetCreate?.Invoke();
+    }
+
+    protected override void Run()
+    {
+        UnityEngine.Profiling.Profiler.BeginSample("FireBall");
+        float currentTime = Time.time;
+        if (currentTime - _lastExecutionTime >= 0.5f)
         {
-            // If so, damage the enemy and destroy the fireball
-            _setDamage?.Invoke(enemy, _fireBall.Damage, _fireBall.CurrentAbility, _fireBall.DoTEffect);
+            _lastExecutionTime = currentTime;
+            PerformDamageCheck();
+        }
+        UnityEngine.Profiling.Profiler.EndSample();
+    }
+
+    protected override void PerformDamageCheck()
+    {
+        if (LifeTime <= 0)
+        {
+            // Clear the hitColliders array
+            _hitColliders = new Collider[0];
+            return; // Exit the method early without processing collisions
         }
 
-        // Check if the collided object has the specified mask layer
-        if ((_layerMask.value & (1 << other.transform.gameObject.layer)) > 0)
+        Vector3 currentPosition = transform.position;
+
+        // Cast a sphere to detect enemies within the damage radius
+        _hitColliders = Physics.OverlapSphere(currentPosition, damageRadius, _enemyLayer);
+
+        foreach (Collider hitCollider in _hitColliders)
         {
-            // If the collided object has the specified layer, invoke SetDie
-            SetDie?.Invoke(this);
+            // Assuming enemies have a BaseEnemy component
+            BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
+
+            if (enemy != null)
+            {
+                // Apply damage to the enemy
+                _setDamage?.Invoke(enemy, _fireBall.Damage, _fireBall.CurrentAbility, _fireBall.DoTEffect);
+            }
+
+            if ((_layerMaskForDie.value & (1 << hitCollider.transform.gameObject.layer)) > 0)
+            {
+                // If the collided object has the specified layer, invoke SetDie
+                SetDie?.Invoke(this);
+            }
         }
     }
 }

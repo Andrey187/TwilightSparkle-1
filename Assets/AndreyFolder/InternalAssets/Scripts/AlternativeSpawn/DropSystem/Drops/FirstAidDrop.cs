@@ -4,6 +4,7 @@ using UnityEngine;
 public class FirstAidDrop : BaseDrop
 {
     [SerializeField] private int _restorHp = 50;
+
     protected override void Start()
     {
         base.Start();
@@ -17,6 +18,9 @@ public class FirstAidDrop : BaseDrop
             {
                 Action<GameObject> healParticleInvoke = ParticleEventManager.Instance.HealParticle;
                 healParticleInvoke?.Invoke(_player.gameObject);
+
+                Action pickUpInvoke = DropEventManager.Instance.FirstAidPickUp;
+                pickUpInvoke?.Invoke();
 
                 _playerStats.CurrentHealth += _restorHp;
                 _playerStats.CurrentHealth = Mathf.Min(_playerStats.CurrentHealth, _playerStats.MaxHealth);

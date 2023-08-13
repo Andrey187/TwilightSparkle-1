@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +14,6 @@ public abstract class BaseTalentView: MonoBehaviour
     [SerializeField] protected TextMeshProUGUI _maxTalentPointsText;
     [SerializeField] protected Button _button;
     [SerializeField] protected int _buttonTextValue;
-    [SerializeField] protected int _currentTalentPointsValue;
-    [SerializeField] protected int _maxTalentsPointCount;
     protected TalentViewModel _talentViewModel;
     protected Dictionary<TalentStatType, Button> _buttons = new Dictionary<TalentStatType, Button>();
     protected Dictionary<TalentStatType, int> _currentTalent = new Dictionary<TalentStatType, int>();
@@ -23,28 +22,65 @@ public abstract class BaseTalentView: MonoBehaviour
     protected virtual void Start()
     {
         _talentViewModel = new TalentViewModel(_talentSystem);
-        _currentTalent.Add(_statType, _currentTalentPointsValue);
-        _maxTalent.Add(_statType, _maxTalentsPointCount);
-        _talentViewModel.SetMaxTalentPoints(_maxTalent);
-        _talentViewModel.SetCurrentTalentPoints(_currentTalent);
 
+        foreach (var value in _talentViewModel.MaxTalentPoints)
+        {
+            _maxTalent.Add(value.Key, value.Value);
+        }
+
+        foreach (var value in _talentViewModel.CurrentTalentPointsValue)
+        {
+            _currentTalent.Add(value.Key, value.Value);
+        }
+
+        _talentViewModel.PropertyChanged += HandlePropertyChanged;
 
         _buttons.Add(_statType, _button);
         _buttons[_statType].onClick.AddListener(() => _talentViewModel.OnButtonClick(_statType, _buttonTextValue));
-        _talentSystem.OnCurrentTalentPoint += SetCurrentTalentPoint;
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
+    }
+    protected void UnsubscribeEvents()
+    {
+        _talentSystem.PropertyChanged -= HandlePropertyChanged;
+        _currentTalent.Clear();
+        _maxTalent.Clear();
+        _buttons.Clear();
     }
 
-    protected void SetCurrentTalentPoint(TalentStatType statType, int value)
+    protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (sender is TalentViewModel talentViewModel)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(talentViewModel.CurrentTalentPointsValue):
+                    if (talentViewModel.CurrentTalentPointsValue.TryGetValue(_statType, out int currentCountValue))
+                    {
+                        _currentTalent[_statType] = currentCountValue;
+                        _currentTalentPointText.SetText(currentCountValue.ToString());
+                        SetCurrentTalentPoint(_statType);
+                    }
+                    break;
+                case nameof(talentViewModel.MaxTalentPoints):
+                    if (talentViewModel.MaxTalentPoints.TryGetValue(_statType, out int maxCountValue))
+                    {
+                        _maxTalent[_statType] = maxCountValue;
+                        _maxTalentPointsText.SetText(_maxTalent[_statType].ToString());
+                    }
+                    break;
+            }
+        }
+    }
+
+    protected void SetCurrentTalentPoint(TalentStatType statType)
     {
         if (_statType == statType)
         {
-            _currentTalent[_statType] = value;
-            _currentTalentPointText.SetText(value.ToString());
-            _currentTalentPointsValue++;
             if (_currentTalent[_statType] >= _maxTalent[_statType])
             {
-                _buttons[_statType].enabled = false;
+                _buttons[_statType].interactable = false;
             }
+            else { _buttons[_statType].interactable = true; }
         }
     }
 }

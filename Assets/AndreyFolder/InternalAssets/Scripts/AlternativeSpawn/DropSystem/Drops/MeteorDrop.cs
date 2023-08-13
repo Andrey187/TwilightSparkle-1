@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MeteorDrop : BaseDrop
@@ -16,6 +17,10 @@ public class MeteorDrop : BaseDrop
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))
         {
             _particleSystem.Stop();
+
+            Action pickUpInvoke = DropEventManager.Instance.MeteorPickUp;
+            pickUpInvoke?.Invoke();
+
             StartCoroutine(_meteorSpawner.SpawnMeteor());
             Invoke("ReturnToPool", 2);
         }

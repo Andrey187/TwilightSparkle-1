@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,7 +22,7 @@ public class BaseBotsMoveable : MonoCache
         if (gameObject.activeSelf && _navMeshAgent.isOnNavMesh)
         {
             float currentTime = Time.time;
-            if (currentTime - _lastExecutionTime >= 0.5f)
+            if (currentTime - _lastExecutionTime >= 0.6f)
             {
                 _lastExecutionTime = currentTime;
                 _navMeshAgent.destination = _targetPosition.Value;
