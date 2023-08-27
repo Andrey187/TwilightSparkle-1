@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class TalentSystem : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    [SerializeField] private PlayerStats _playerStats;
+    [Inject] private IPlayerStats _playerStats;
     [SerializeField] private List<TalentSO> _talents;
     private Dictionary<TalentStatType, int> _maxTalentPoints = new Dictionary<TalentStatType, int>();
     private Dictionary<TalentStatType, int> _currentTalentPointsValue = new Dictionary<TalentStatType, int>();

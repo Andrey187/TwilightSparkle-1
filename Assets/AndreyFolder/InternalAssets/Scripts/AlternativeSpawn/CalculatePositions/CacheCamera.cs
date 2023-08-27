@@ -34,7 +34,7 @@ public class CacheCamera : MonoBehaviour
 
     private void Start()
     {
-        Invoke("CacheCameraParams", 3f);
+        Invoke("CacheCameraParams", 1.5f);
     }
 
     public void CacheCameraParams()

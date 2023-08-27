@@ -389,7 +389,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 1
+      minMaxState: 0
       scalar: 3.1415927
       minScalar: 6.283185
       maxCurve:
@@ -424,7 +424,7 @@ ParticleSystem:
         m_RotationOrder: 0
     startRotationY:
       serializedVersion: 2
-      minMaxState: 1
+      minMaxState: 0
       scalar: 3.1415927
       minScalar: 6.283185
       maxCurve:
@@ -459,8 +459,8 @@ ParticleSystem:
         m_RotationOrder: 0
     startRotation:
       serializedVersion: 2
-      minMaxState: 1
-      scalar: 6.283185
+      minMaxState: 0
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -19034,6 +19034,7 @@ GameObject:
   - component: {fileID: 5984653717919124926}
   - component: {fileID: 5984653717919124923}
   - component: {fileID: 5858279761945412732}
+  - component: {fileID: 7735093436227219751}
   m_Layer: 14
   m_Name: FireBallBatch
   m_TagString: FireBall
@@ -19049,7 +19050,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5984653717919124865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.8, y: 0.78718495, z: -30.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19099,14 +19100,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityData: {fileID: 11400000, guid: 8b6871a006dfa6841bcb5574c49984eb, type: 2}
-  _speed: 5
   _fireInterval: 1
   _baseLifeTime: 2
   _lifeTime: 2
   _layerMaskForDie:
     serializedVersion: 2
     m_Bits: 256
-  damageRadius: 0.5
+  damageRadius: 0.65
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 4416
+--- !u!114 &7735093436227219751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984653717919124865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6882ee4cceb39934986629cfa8e1408f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 5
+  _startPosition: {fileID: 0}
+  _endPosition: {fileID: 0}

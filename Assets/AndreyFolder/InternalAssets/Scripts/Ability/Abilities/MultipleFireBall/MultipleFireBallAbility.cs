@@ -3,25 +3,17 @@ using UnityEngine;
 
 public class MultipleFireBallAbility : BaseAbilities
 {
-    [SerializeField] protected int _alternativeCountAbilities;
     [SerializeField] protected LayerMask _enemyLayer;
-    private static float _currentAngle = 0f;
+    [SerializeField] private int _countProjectile;
     private MultipleFireBall _multipleFireBall;
     private FireDoTEffect _fireDotEffect;
-    private Vector3 _projectileMoveDirection;
-    private float _lastExecutionTime;
     private Collider[] _hitColliders;
+    
+    private float _lastExecutionTime;
     protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected internal override event Action<BaseAbilities> SetDie;
-
-    protected internal override int AlternativeCountAbilities { get => _alternativeCountAbilities; set => _alternativeCountAbilities = value; }
-
     protected override float LastExecutionTime { get => _lastExecutionTime; set => _lastExecutionTime = value; }
-
-    private void Awake()
-    {
-        _thisRb = Get<Rigidbody>();
-    }
+    public override int AlternativeCountAbilities { get => _countProjectile; set => _countProjectile = value; }
 
     protected override void OnEnabled()
     {
@@ -36,24 +28,6 @@ public class MultipleFireBallAbility : BaseAbilities
         _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _multipleFireBall.CurrentAbility = _multipleFireBall;
         _multipleFireBall.DoTEffect = _fireDotEffect;
-    }
-
-    protected internal override void CalculateAndIncrementAngle(float countOfProjectiles)
-    {
-        float angleStep = 360f / countOfProjectiles;
-        _currentAngle += angleStep;
-    }
-
-    protected internal override void CalculateAlternativeMovePosition()
-    {
-        float dirX = Mathf.Sin(_currentAngle * Mathf.Deg2Rad);
-        float dirZ = Mathf.Cos(_currentAngle * Mathf.Deg2Rad);
-        _projectileMoveDirection = new Vector3(dirX, 0, dirZ);
-    }
-
-    protected internal override void AlternativeMove()
-    {
-        _thisRb.velocity = _projectileMoveDirection * _speed;
     }
 
     protected override void Run()

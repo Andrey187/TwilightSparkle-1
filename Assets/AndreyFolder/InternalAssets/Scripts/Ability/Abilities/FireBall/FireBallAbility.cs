@@ -3,22 +3,17 @@ using UnityEngine;
 
 public class FireBallAbility: BaseAbilities
 {
+    [SerializeField] private LayerMask _enemyLayer;
     private FireBall _fireBall;
     private FireDoTEffect _fireDotEffect;
     private Collider[] _hitColliders;
-    [SerializeField] private LayerMask _enemyLayer;
-    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
+    private float _lastExecutionTime;
     protected internal override event Action<BaseAbilities> SetDie;
 
-    protected override internal event Action SetCreate;
+    protected internal event Action SetCreate;
 
-    private float _lastExecutionTime;
+    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected override float LastExecutionTime { get=> _lastExecutionTime; set=> _lastExecutionTime = value; }
-
-    private void Awake()
-    {
-        _thisRb = Get<Rigidbody>();
-    }
 
     protected override void OnEnabled()
     {

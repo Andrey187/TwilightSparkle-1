@@ -6,7 +6,7 @@ public class FireBallCollectChallenge : BaseChallenge
 {
     protected internal override event PropertyChangedEventHandler PropertyChanged;
     [SerializeField] private AttackSystem _attackSystem;
-    [SerializeField] private BaseAbilities _fireBall;
+    [SerializeField] private FireBallAbility _fireBall;
     [SerializeField] private BaseAbilities _multipleFireBall;
     [SerializeField] private int _gainFireBall;
     private int _currentValue = 0;
@@ -41,7 +41,7 @@ public class FireBallCollectChallenge : BaseChallenge
     protected internal override void ChallengeReward()
     {
         CurrentCountValue = 0;
-        _attackSystem.AddAlternativeAbility(_multipleFireBall);
+        _attackSystem.AddAttack(_multipleFireBall);
         OnPropertyChanged(nameof(CurrentCountValue));
     }
 }

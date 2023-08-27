@@ -1,15 +1,14 @@
-using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class GainExpMyltiply : MonoCache
 {
-    [SerializeField] private LevelUpSystem _levelUpSystem;
+    [Inject] private ILevelUpSystem _levelUpSystem;
     private Button _button;
 
     private void Start()
     {
         _button = Get<Button>();
-        _levelUpSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<LevelUpSystem>();
         _button.onClick.AddListener(OnButtonClick);
     }
 

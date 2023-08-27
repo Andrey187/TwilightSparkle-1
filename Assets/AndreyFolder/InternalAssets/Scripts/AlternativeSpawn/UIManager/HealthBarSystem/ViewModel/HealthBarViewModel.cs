@@ -37,11 +37,11 @@ public class HealthBarViewModel : INotifyPropertyChanged
 
     private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(HealthBarModel.CurrentHealth))
+        if (e.PropertyName == nameof(_model.CurrentHealth))
         {
             OnPropertyChanged(nameof(CurrentHealth));
         }
-        if (e.PropertyName == nameof(HealthBarModel.MaxHealth))
+        if (e.PropertyName == nameof(_model.MaxHealth))
         {
             OnPropertyChanged(nameof(MaxHealth));
             OnPropertyChanged(nameof(CurrentHealth));

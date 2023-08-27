@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class BotsSpawner : MonoCache
 {
@@ -12,6 +13,7 @@ public class BotsSpawner : MonoCache
 
     public Dictionary<WaveSpawner.Wave, List<BaseEnemy>> SpawnedBotsForWave;
 
+    [Inject] private DiContainer _diContainer;
     // Start is called before the first frame update
     private void Start()
     {
@@ -58,7 +60,7 @@ public class BotsSpawner : MonoCache
             }
         }
         List<BaseEnemy> allBots = SpawnedBotsForWave.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseEnemy>.CreateInstance(allBots, 0, gameObject.transform, "Bots");
+        PoolObject<BaseEnemy>.CreateInstance(allBots, 0, gameObject.transform, "Bots", _diContainer);
         _botPool = PoolObject<BaseEnemy>.Instance;
     }
 
@@ -72,7 +74,7 @@ public class BotsSpawner : MonoCache
         {
             // Check if there are any inactive bot objects in the pool that match the current wave and prefab
             wave.SpawnMethod.NewUnitCircle();
-            wave.SpawnMethod.SpawnEnemies();
+            wave.SpawnMethod.SpawnPrefabs();
             wave.SpawnMethod.GroundCheck();
 
             BaseEnemy inactiveBot = GetInactiveBot(wave);

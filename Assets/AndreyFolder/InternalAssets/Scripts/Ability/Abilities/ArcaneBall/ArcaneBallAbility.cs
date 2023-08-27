@@ -3,20 +3,10 @@ using UnityEngine;
 
 public class ArcaneBallAbility : BaseAbilities
 {
-    [SerializeField] private int _rotationSpeed;
-    [SerializeField] private Vector3 _targetPoint;
-    [SerializeField] private int _areaRadiusFindEnemy = 10;
     protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected internal override event Action<BaseAbilities> SetDie;
-    protected internal override Vector3 TargetPoint { get => _targetPoint; set => _targetPoint = value; }
-    protected internal override int AreaRadius { get => _areaRadiusFindEnemy; set => _areaRadiusFindEnemy = value; }
-    protected internal override bool HasTargetPoint => true;
     private ArcaneBall _arcaneBall;
 
-    private void Awake()
-    {
-        _thisRb = Get<Rigidbody>();
-    }
     protected override void OnEnabled()
     {
         base.OnEnabled();
@@ -28,15 +18,6 @@ public class ArcaneBallAbility : BaseAbilities
         _arcaneBall = new ArcaneBall();
         _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _arcaneBall.CurrentAbility = _arcaneBall;
-    }
-
-    protected internal override void MoveWithPhysics(Transform endPoint, Transform startPoint)
-    {
-        Vector3 direction = (_targetPoint - startPoint.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-
-        _thisRb.velocity = direction * _speed;
     }
 
     private void OnTriggerEnter(Collider other)

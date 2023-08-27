@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class ParticleSystemPool : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class ParticleSystemPool : MonoBehaviour
     private IObjectFactory _objectFactory;
     private Dictionary<ParticleData.ParticleType, List<BaseParcticle>> _particleDictionary = new Dictionary<ParticleData.ParticleType, List<BaseParcticle>>();
 
+    [Inject] private DiContainer _diContainer;
     private void Start()
     {
         ParticleEventManager.Instance.OnDeathParticleSetActive += DeathParticleInvoke;
@@ -45,7 +47,7 @@ public class ParticleSystemPool : MonoBehaviour
             }
         }
         List<BaseParcticle> allObjects = _particleDictionary.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseParcticle>.CreateInstance(allObjects, 0, gameObject.transform, "Particle");
+        PoolObject<BaseParcticle>.CreateInstance(allObjects, 0, gameObject.transform, "Particle", _diContainer);
         _particlePool = PoolObject<BaseParcticle>.Instance;
     }
 

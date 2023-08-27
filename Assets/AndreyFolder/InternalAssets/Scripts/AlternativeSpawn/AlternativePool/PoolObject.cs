@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 public class PoolObject<T> where T : Component
 {
@@ -17,6 +18,7 @@ public class PoolObject<T> where T : Component
         }
     }
 
+    [Inject] private DiContainer _diContainer;
     private List<T> _objectPrefab;
     private int _poolLimit;
     private Transform _parentObject;
@@ -27,27 +29,28 @@ public class PoolObject<T> where T : Component
     private static GameObject _poolContainerPrefab;
     private static GameObject _poolContainerInstance;
 
-    public PoolObject(List<T> objectPrefab, int poolLimit, Transform parentObject, string containerName)
+    public PoolObject(List<T> objectPrefab, int poolLimit, Transform parentObject, string containerName,  DiContainer diContainer)
     {
         _objectPool = new Queue<T>();
         _objectPrefab = objectPrefab;
         _poolLimit = poolLimit;
         _parentObject = parentObject;
         _containerName = containerName;
+        _diContainer = diContainer;
         InitializeNextObjectDelayed();
     }
 
-    public static void CreateInstance(T prefab, int poolLimit, Transform parentObject, string containerName)
+    public static void CreateInstance(T prefab, int poolLimit, Transform parentObject, string containerName, DiContainer diContainer)
     {
-        CreateInstance(new List<T> { prefab }, poolLimit, parentObject, containerName);
+        CreateInstance(new List<T> { prefab }, poolLimit, parentObject, containerName, diContainer);
     }
 
-    public static void CreateInstance(List<T> prefabs, int poolLimit, Transform parentObject, string containerName)
+    public static void CreateInstance(List<T> prefabs, int poolLimit, Transform parentObject, string containerName, DiContainer diContainer)
     {
         if (_instance == null)
         {
             CreatePoolContainer(parentObject, containerName);
-            _instance = new PoolObject<T>(prefabs, poolLimit, parentObject, containerName);
+            _instance = new PoolObject<T>(prefabs, poolLimit, parentObject, containerName, diContainer);
             ObjectPoolManager.Instance.RegisterPool(_instance);
         }
     }
@@ -78,11 +81,6 @@ public class PoolObject<T> where T : Component
     }
 
     public T GetObjects(Vector3 position, object obj)
-    {
-        return GetObjects(position, obj, 0);
-    }
-
-    public T GetObjects(Vector3 position, object obj, int wave)
     {
         T result = null;
 
@@ -116,7 +114,7 @@ public class PoolObject<T> where T : Component
                 // if no inactive object is found, create a new one
                 if (result == null)
                 {
-                    result = Object.Instantiate(prefab, _poolContainerInstance.transform);
+                    result = _diContainer.InstantiatePrefab(prefab, _poolContainerInstance.transform).GetComponent<T>();
                     result.transform.SetParent(_poolContainerInstance.transform, false);
                     _objectPool.Enqueue(result);
                 }
@@ -138,7 +136,7 @@ public class PoolObject<T> where T : Component
                 // if no inactive object is found, create a new one
                 if (result == null)
                 {
-                    result = Object.Instantiate(prefab, _poolContainerInstance.transform);
+                    result = _diContainer.InstantiatePrefab(prefab, _poolContainerInstance.transform).GetComponent<T>();
                     result.transform.SetParent(_poolContainerInstance.transform, false);
                     _objectPool.Enqueue(result);
                 }
@@ -174,7 +172,7 @@ public class PoolObject<T> where T : Component
         while (_currentPrefabIndex < _objectPrefab.Count)
         {
             T prefab = _objectPrefab[_currentPrefabIndex];
-            T obj = Object.Instantiate(prefab, _poolContainerInstance.transform);
+            T obj = _diContainer.InstantiatePrefab(prefab, _poolContainerInstance.transform).GetComponent<T>();
             obj.gameObject.SetActive(false);
             obj.transform.SetParent(_poolContainerInstance.transform, false);
             _objectPool.Enqueue(obj);
@@ -186,3 +184,4 @@ public class PoolObject<T> where T : Component
         }
     }
 }
+

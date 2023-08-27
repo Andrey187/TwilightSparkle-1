@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ public abstract class BaseChallenge : MonoBehaviour, IResetOnExitPlay
     protected internal abstract int Reward { get; set; }
     protected internal abstract int CurrentCountValue { get; set; }
     protected internal abstract int MaxCountValue { get; set; }
-    protected internal virtual event PropertyChangedEventHandler PropertyChanged;
+    protected internal abstract event PropertyChangedEventHandler PropertyChanged;
     protected int StartingCurrentCountValue = 0; // Add a new property to store the initial value
 
     protected virtual void Awake()

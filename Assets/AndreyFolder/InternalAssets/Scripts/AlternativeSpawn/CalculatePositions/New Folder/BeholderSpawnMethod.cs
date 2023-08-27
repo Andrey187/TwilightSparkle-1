@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BeholderSpawnMethod : EnemySpawnMethod
+public class BeholderSpawnMethod : SpawnMethod
 {
     private Transform _startPointBeholderSpawn;
 
@@ -11,7 +11,7 @@ public class BeholderSpawnMethod : EnemySpawnMethod
         _startPointBeholderSpawn = targetObject.transform;
     }
 
-    protected internal override void SpawnEnemies()
+    protected internal override void SpawnPrefabs()
     {
         // Implement the logic for spawning enemies in a circle
         Vector2 randomPoint = Random.insideUnitCircle * _spawnRadius;

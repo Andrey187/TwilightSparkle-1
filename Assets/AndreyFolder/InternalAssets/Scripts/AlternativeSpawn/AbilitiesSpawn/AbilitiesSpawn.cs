@@ -1,13 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace AbilitySystem
 {
     public class AbilitiesSpawn : MonoCache
     {
-        [SerializeField] private AttackSystem _attackSystem;
+        [Inject] private IAttackSystem _attackSystem;
+        [Inject] private DiContainer _diContainer;
         public event Action InitializationComplete;
         private PoolObject<BaseAbilities> _abilityPool;
         private IObjectFactory _objectFactory;
@@ -17,14 +18,8 @@ namespace AbilitySystem
 
         private void Start()
         {
-            Invoke("StartInitAbility", 2f);
-        }
+            Invoke("InitPool", 2f);
 
-        private void StartInitAbility()
-        {
-            InitPool();
-            _attackSystem.SetCreatePrefabAbility(CreatePrefabAbility);
-            _attackSystem.SetCreateAlternativeAbility(CreateAlternativeAbility);
             InitializationComplete?.Invoke(); //вызов подписанного метода FirstAbilitySpawnStart
         }
 
@@ -34,42 +29,32 @@ namespace AbilitySystem
             {
                 _objectFactory = new ObjectsFactory(ability.GetComponent<BaseAbilities>().transform);
                 BaseAbilities baseAbilities = _objectFactory.CreateObject(_attackSystem.StartAttackPoint.position).GetComponent<BaseAbilities>();
-                PoolObject<BaseAbilities>.CreateInstance(baseAbilities, 0, gameObject.transform, baseAbilities.name + "_Ability");
+                PoolObject<BaseAbilities>.CreateInstance(baseAbilities, 10, gameObject.transform, baseAbilities.name + "_Ability", _diContainer);
                 _abilityPool = PoolObject<BaseAbilities>.Instance;
             }
+            _attackSystem.SetCreatePrefabAbility(CreatePrefabAbility);
         }
 
-        private void CreatePrefabAbility(BaseAbilities ability, Vector3 targetPoint)
+        private void CreatePrefabAbility(BaseAbilities ability)
         {
-            BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-            if (ability.HasTargetPoint)
+            if (ability.IsMultiple)
             {
-                prefabAbility.TargetPoint = targetPoint;
-                prefabAbility.MoveWithPhysics(_attackSystem.EndAttackPoint, _attackSystem.StartAttackPoint);
+                BaseAbilities[] prefabAbilities = new BaseAbilities[ability.AlternativeCountAbilities];
+                for (int i = 0; i < ability.AlternativeCountAbilities; i++)
+                {
+                    prefabAbilities[i] = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
+
+                    prefabAbilities[i].SetDie += ReturnObjectToPool;
+
+                    activeAbilities.Add(prefabAbilities[i]); // Add to the list
+                }
             }
             else
             {
-                prefabAbility.MoveWithPhysics(_attackSystem.EndAttackPoint, _attackSystem.StartAttackPoint);
-            }
-           
-            prefabAbility.SetDie += ReturnObjectToPool;
-            activeAbilities.Add(prefabAbility); // Add to the list
-        }
+                BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
 
-        private void CreateAlternativeAbility(BaseAbilities ability)
-        {
-            BaseAbilities[] prefabAbilities = new BaseAbilities[ability.AlternativeCountAbilities];
-
-            for (int i = 0; i < ability.AlternativeCountAbilities; i++)
-            {
-                prefabAbilities[i] = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-                prefabAbilities[i].CalculateAlternativeMovePosition();
-                prefabAbilities[i].AlternativeMove();
-                prefabAbilities[i].SetDie += ReturnObjectToPool;
-
-                activeAbilities.Add(prefabAbilities[i]); // Add to the list
-
-                prefabAbilities[i].CalculateAndIncrementAngle(ability.AlternativeCountAbilities);
+                prefabAbility.SetDie += ReturnObjectToPool;
+                activeAbilities.Add(prefabAbility); // Add to the list
             }
         }
 

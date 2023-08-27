@@ -1,27 +1,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using Zenject;
 
-public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged
+public class LevelUpSystem : MonoBehaviour, INotifyPropertyChanged, ILevelUpSystem
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    [SerializeField] private PlayerStats _playerStats;
+    [Inject] private IPlayerStats _playerStats;
     [SerializeField] private int _gainExpMyltiply = 1;
     [SerializeField] private float expFactor = 1.3f;
     [SerializeField] private float levelFactor = 0.3f;
-    private static LevelUpSystem _instance;
     private Dictionary<EnemyData.ObjectType, EnemyData> _expTable = new Dictionary<EnemyData.ObjectType, EnemyData>();
     private int _talentPoints;
-
-    public static LevelUpSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = FindObjectOfType<LevelUpSystem>();
-            return _instance;
-        }
-    }
 
     public int TalentPoint
     {

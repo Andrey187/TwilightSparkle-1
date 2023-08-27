@@ -949,6 +949,8 @@ GameObject:
   - component: {fileID: -8885478356226638233}
   - component: {fileID: 8276711137440594829}
   - component: {fileID: 7883951609435614008}
+  - component: {fileID: -5367478615105883664}
+  - component: {fileID: -3482421099877191172}
   m_Layer: 6
   m_Name: BeholderPolyartBake
   m_TagString: Enemy
@@ -1050,6 +1052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBarView: {fileID: 0}
+  _healthBarModel: {fileID: 0}
 --- !u!114 &-8885478356226638233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,10 +1095,35 @@ MonoBehaviour:
   EnemyType: {fileID: 11400000, guid: 7c41f4b76001e3f46ad2a82ef164f38c, type: 2}
   _currentHealth: 0
   _maxHealth: 0
-  _pushbackDistance: 0.2
-  _pushbackDuration: 0.5
   _renderer: {fileID: 463478310487472598}
   meshAnimator: {fileID: 413995866814006717}
+--- !u!114 &-5367478615105883664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011648103021171507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcad54b2c0528934a94400b5facd4d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pushbackDistance: 0.1
+  _pushbackDuration: 0.3
+--- !u!114 &-3482421099877191172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011648103021171507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71ae8ed382c07344bb9c1c89862f4c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timerDuration: 8
 --- !u!1 &9011648103021171509
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class AbilityChoicePool : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class AbilityChoicePool : MonoBehaviour
     private IObjectFactory _objectFactory;
     private Dictionary<Button, UpgradeAbilitiesOnButtonClick> _buttonInPool;
 
+    [Inject] private DiContainer _diContainer;
     private void Start()
     {
         _buttonInPool = new Dictionary<Button, UpgradeAbilitiesOnButtonClick>();
@@ -31,7 +33,7 @@ public class AbilityChoicePool : MonoBehaviour
         {
             _objectFactory = new ObjectsFactory(button.GetComponent<Button>().transform);
             Button buttons = _objectFactory.CreateObject(button.transform.position).GetComponent<Button>();
-            PoolObject<Button>.CreateInstance(buttons, 3, buttonContainer, "Buttons_Container");
+            PoolObject<Button>.CreateInstance(buttons, 3, buttonContainer, "Buttons_Container", _diContainer);
 
             _buttonPool = PoolObject<Button>.Instance;
 

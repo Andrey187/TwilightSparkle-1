@@ -3,11 +3,17 @@ using UnityEngine;
 public class HealthBarController : MonoCache
 {
     [SerializeField] public HealthBarView _healthBarView;
+    [SerializeField] private HealthBarModel _healthBarModel;
     private HealthBarViewModel _viewModel;
+
+    private void Awake()
+    {
+        _healthBarModel = Get<HealthBarModel>();
+    }
 
     public void Initialize(int maxHealth)
     {
-        var model = Get<HealthBarModel>();
+        var model = _healthBarModel;
         model.MaxHealth = maxHealth;
         model.CurrentHealth = maxHealth;
         _viewModel = new HealthBarViewModel(model);

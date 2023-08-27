@@ -14367,6 +14367,7 @@ GameObject:
   - component: {fileID: 3135293330895869779}
   - component: {fileID: 3135293330895869782}
   - component: {fileID: 3403289103192765779}
+  - component: {fileID: 1128593751591469869}
   m_Layer: 14
   m_Name: ArcaneBallBatch
   m_TagString: FrostBall
@@ -14440,7 +14441,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityData: {fileID: 11400000, guid: b8932a5f8cfef194690cdab995a689c4, type: 2}
-  _speed: 5
   _fireInterval: 2
   _baseLifeTime: 2
   _lifeTime: 2
@@ -14448,6 +14448,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4416
   damageRadius: 0.5
-  _rotationSpeed: 2
-  _targetPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &1128593751591469869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135293330895869804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83bfb10e68ec3f04d82ec28e2ff16d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 7
+  _startPosition: {fileID: 0}
+  _endPosition: {fileID: 0}
+  _rotationSpeed: 0
   _areaRadiusFindEnemy: 10

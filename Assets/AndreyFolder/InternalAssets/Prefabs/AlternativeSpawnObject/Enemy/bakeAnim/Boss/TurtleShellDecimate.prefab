@@ -852,6 +852,8 @@ GameObject:
   - component: {fileID: -5137111674845201516}
   - component: {fileID: -8587660866373434600}
   - component: {fileID: 2322713716500476429}
+  - component: {fileID: -4782508779196470470}
+  - component: {fileID: -6243616968608783067}
   m_Layer: 12
   m_Name: TurtleShellDecimate
   m_TagString: Enemy
@@ -953,6 +955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBarView: {fileID: 0}
+  _healthBarModel: {fileID: 0}
 --- !u!114 &-5137111674845201516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -995,10 +998,36 @@ MonoBehaviour:
   EnemyType: {fileID: 11400000, guid: 415c343bfaf303f429402d1894b2be8b, type: 2}
   _currentHealth: 0
   _maxHealth: 0
-  _pushbackDistance: 0
-  _pushbackDuration: 0
   _renderer: {fileID: 6715005881342553978}
   meshAnimator: {fileID: 1116205220668908458}
+--- !u!114 &-4782508779196470470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837317425425208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcad54b2c0528934a94400b5facd4d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pushbackDistance: 0
+  _pushbackDuration: 0
+--- !u!114 &-6243616968608783067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837317425425208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71ae8ed382c07344bb9c1c89862f4c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timerDuration: 8
+  _isEnabled: 0
 --- !u!1 &1914324128724412
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,9 +38,9 @@ public class TalentSO : ScriptableObject, IResetOnExitPlay
         OnPropertyChanged(nameof(MaxTalentPoints));
     }
 
-    public void UpdateTalent(PlayerStats playerStats, int buttonValue)
+    public void UpdateTalent(IPlayerStats playerStats, int buttonValue)
     {
-        PropertyInfo prop = typeof(PlayerStats).GetProperty(StatType.ToString());
+        PropertyInfo prop = typeof(IPlayerStats).GetProperty(StatType.ToString());
         int currentValue = (int)prop.GetValue(playerStats);
         prop.SetValue(playerStats, currentValue + buttonValue);
     }

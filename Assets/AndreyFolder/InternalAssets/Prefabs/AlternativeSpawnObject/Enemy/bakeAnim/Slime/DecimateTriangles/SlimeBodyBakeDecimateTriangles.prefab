@@ -336,6 +336,8 @@ GameObject:
   - component: {fileID: -930462952201792546}
   - component: {fileID: 3187052796002727308}
   - component: {fileID: 4498844488802701196}
+  - component: {fileID: -267659685933869593}
+  - component: {fileID: 3566607324555895645}
   m_Layer: 6
   m_Name: SlimeBodyBakeDecimateTriangles
   m_TagString: Enemy
@@ -437,6 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBarView: {fileID: 0}
+  _healthBarModel: {fileID: 0}
 --- !u!114 &-930462952201792546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,10 +482,35 @@ MonoBehaviour:
   EnemyType: {fileID: 11400000, guid: d84e5077a9bb08b488f78e1e562e421a, type: 2}
   _currentHealth: 0
   _maxHealth: 0
-  _pushbackDistance: 0.1
-  _pushbackDuration: 0.3
   _renderer: {fileID: 507371043603540007}
   meshAnimator: {fileID: 366925036783796333}
+--- !u!114 &-267659685933869593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479706203655699462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcad54b2c0528934a94400b5facd4d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pushbackDistance: 0.1
+  _pushbackDuration: 0.3
+--- !u!114 &3566607324555895645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479706203655699462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71ae8ed382c07344bb9c1c89862f4c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timerDuration: 8
 --- !u!1001 &8788231208849337423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -493,10 +521,6 @@ PrefabInstance:
     - target: {fileID: 231184647449824174, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
       propertyPath: m_Name
       value: SlimeBody 1_AnimatedMesh (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 231184647449824174, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6206285333473097035, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
       propertyPath: m_RootOrder
@@ -541,18 +565,6 @@ PrefabInstance:
     - target: {fileID: 6206285333473097035, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150358959834104936, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
-      propertyPath: m_ReceiveGI
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150358959834104936, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150358959834104936, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
-      propertyPath: m_LightProbeUsage
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}

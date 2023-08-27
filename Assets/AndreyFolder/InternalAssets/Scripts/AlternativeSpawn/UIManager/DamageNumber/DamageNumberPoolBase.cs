@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace DamageNumber
 {
@@ -19,6 +20,7 @@ namespace DamageNumber
         protected IObjectFactory objectFactory;
 
         protected Dictionary<TextMeshProUGUI, Coroutine> _coroutineDictionary = new Dictionary<TextMeshProUGUI, Coroutine>();
+        [Inject] private DiContainer _diContainer;
 
         protected virtual void Start()
         {
@@ -34,7 +36,7 @@ namespace DamageNumber
             U _damageNumberList = new U();
 
             PoolObject<T>.CreateInstance(_damageNumberList.ToList(), _poolObjectCount,
-               CanvasTransform, _containerName);
+               CanvasTransform, _containerName, _diContainer);
             _textPool = PoolObject<T>.Instance;
         }
 

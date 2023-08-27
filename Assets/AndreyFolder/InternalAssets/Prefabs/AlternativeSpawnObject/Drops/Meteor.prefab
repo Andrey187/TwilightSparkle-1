@@ -139,9 +139,6 @@ MonoBehaviour:
   _layerMaskForDie:
     serializedVersion: 2
     m_Bits: 4288
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 4160
   damageRadius: 2
   _damageRadius: 3
 --- !u!114 &3172208368999389946
@@ -439,7 +436,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8039216, b: 0, a: 1}
+      maxColor: {r: 0.4339623, g: 0.35730043, b: 0.04298683, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -501,8 +498,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 15
-      minScalar: 10
+      scalar: 0.5
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1588,8 +1585,8 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
@@ -1707,7 +1704,10 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: -1295330622, guid: 87b9ce805350bf1439de9c445c6ace17, type: 3}
+    - sprite: {fileID: 47773195, guid: 87b9ce805350bf1439de9c445c6ace17, type: 3}
+    - sprite: {fileID: 905947396, guid: 87b9ce805350bf1439de9c445c6ace17, type: 3}
+    - sprite: {fileID: 2024893704, guid: 87b9ce805350bf1439de9c445c6ace17, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4986,7 +4986,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 93396959b8f30f04fb379c1031446ce0, type: 2}
+  - {fileID: 2100000, guid: df1e56086513d64438a9aa0b92b9cfd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5007,7 +5007,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 4
+  m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -5018,7 +5018,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 1
+  m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_UseCustomVertexStreams: 1

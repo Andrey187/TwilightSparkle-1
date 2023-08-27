@@ -73,24 +73,3 @@ public class SceneLoadManager : MonoBehaviour
 #endif
     }
 }
-
-
-//AssetReference prefabReference = EnvironmentLoader.Instanñe.EnvironmentPrefabReferences[0];
-
-//// Check if the prefab is already loaded
-//if (prefabReference.RuntimeKeyIsValid())
-//{
-//    Debug.Log("Loading prefab: " + prefabReference.RuntimeKey);
-//    AsyncOperationHandle<GameObject> prefabHandle = Addressables.LoadAssetAsync<GameObject>(prefabReference);
-
-//    await prefabHandle.Task;
-
-//    if (prefabHandle.Status == AsyncOperationStatus.Succeeded)
-//    {
-//        Debug.Log("Prefab loaded successfully.");
-
-//        GameObject prefabObject = prefabHandle.Result;
-//        // Move the instantiated prefab to the active scene.
-//        Instantiate(prefabObject);
-//    }
-//}

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class HealthBarManagerMvvm : MonoCache
 {
@@ -14,6 +15,7 @@ public class HealthBarManagerMvvm : MonoCache
     private HealthBarView _prefab;
     private HealthBarController _enemyHealthBarController;
 
+    [Inject] private DiContainer _diContainer;
     private void Start()
     {
         Invoke("InitCamera", 0.5f);
@@ -30,7 +32,7 @@ public class HealthBarManagerMvvm : MonoCache
     private void InitPool()
     {
         PoolObject<HealthBarView>.CreateInstance(_prefab, 15,
-            _canvasTransform, "HealthBarsContainer");
+            _canvasTransform, "HealthBarsContainer", _diContainer);
         _healthBarPool = PoolObject<HealthBarView>.Instance;
     }
 

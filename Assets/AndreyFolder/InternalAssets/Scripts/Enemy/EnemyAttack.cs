@@ -1,16 +1,16 @@
 using UnityEngine;
+using Zenject;
 
 public class EnemyAttack : MonoCache
 {
     [SerializeField] private int _damageAmount;
-    // Timer to track collision time
-    private float _timeColliding;
-    // Time before damage is taken, 3 second default
-    private float timeThreshold = 3f;
+    
+    private float _timeColliding; // Timer to track collision time
+    private float timeThreshold = 3f; // Time before damage is taken, 3 second default
     private BaseEnemy _baseEnemy;
     private GameObject _player;
-    private PlayerStats _playerStats;
-    private MagicShield _magicShield;
+    [Inject] private IPlayerStats _playerStats;
+    [Inject] private MagicShield _magicShield;
     private Collider _playerCollider;
 
     private void Start()
@@ -18,8 +18,6 @@ public class EnemyAttack : MonoCache
         _baseEnemy = ParentGet<BaseEnemy>();
         _damageAmount = _baseEnemy.EnemyType.Damage;
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerStats = _player.GetComponent<PlayerStats>();
-        _magicShield = _player.GetComponent<MagicShield>();
         _playerCollider = _player.GetComponentInChildren<Collider>();
     }
 
@@ -27,7 +25,7 @@ public class EnemyAttack : MonoCache
     {
         if (collider == _playerCollider)
         {
-            AttackPlayer();
+            Attack();
         }
     }
 
@@ -43,12 +41,12 @@ public class EnemyAttack : MonoCache
             }
             else
             {
-                AttackPlayer();
+                Attack();
             }
         }
     }
 
-    private void AttackPlayer()
+    private void Attack()
     {
         if (_magicShield != null && _magicShield.IsShieldActive)
         {

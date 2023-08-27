@@ -6,6 +6,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using Zenject;
 
 public class BotsSpawnerJob : MonoCache
 {
@@ -31,7 +32,7 @@ public class BotsSpawnerJob : MonoCache
 
     public Dictionary<WaveSpawnerJob.WaveJob, List<BaseEnemy>> SpawnedBotsForWave;
 
-
+    [Inject] private DiContainer _diContainer;
     // Start is called before the first frame update
     private void Start()
     {
@@ -77,7 +78,7 @@ public class BotsSpawnerJob : MonoCache
             }
         }
         List<BaseEnemy> allBots = SpawnedBotsForWave.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseEnemy>.CreateInstance(allBots, 0, gameObject.transform, "Bots");
+        PoolObject<BaseEnemy>.CreateInstance(allBots, 0, gameObject.transform, "Bots", _diContainer);
         _botPool = PoolObject<BaseEnemy>.Instance;
     }
 

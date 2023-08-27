@@ -1,17 +1,17 @@
 using System.ComponentModel;
 using UnityEngine;
+using Zenject;
 
 public class EnemiesKillChallenge : BaseChallenge
 {
     [SerializeField] private Counters _counters;
-    [SerializeField] private LevelUpSystem _levelUpSystem;
     [SerializeField] private int _gainExpReward = 5000;
+    [Inject] private ILevelUpSystem _levelUpSystem;
 
     protected internal override event PropertyChangedEventHandler PropertyChanged;
     protected override void Awake()
     {
         base.Awake();
-        _levelUpSystem = FindObjectOfType<LevelUpSystem>();
         _counters.PropertyChanged += HandlePropertyChanged;
     }
 

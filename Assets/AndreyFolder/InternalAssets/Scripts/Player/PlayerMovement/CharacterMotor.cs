@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class CharacterMotor : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _playerStats;
+    [Inject] private IPlayerStats _playerStats;
     private Rigidbody _rigidbody;
     private int _runSpeed = 0;
 

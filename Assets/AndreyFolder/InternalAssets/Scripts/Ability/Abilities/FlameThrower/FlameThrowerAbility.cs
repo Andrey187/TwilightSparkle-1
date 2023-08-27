@@ -9,14 +9,9 @@ public class FlameThrowerAbility : BaseAbilities
     private FlameThrower _flameThrower;
     private FireDoTEffect _fireDotEffect;
     private float _fireTimer;
-    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
-    protected internal override event Action<BaseAbilities> SetDie;
     private List<BaseEnemy> enemiesInRange = new List<BaseEnemy>();
-
-    private void Awake()
-    {
-        _thisRb = Get<Rigidbody>();
-    }
+    private List<BaseEnemy> enemiesToRemove = new List<BaseEnemy>();
+    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
 
     protected override void OnEnabled()
     {
@@ -28,9 +23,15 @@ public class FlameThrowerAbility : BaseAbilities
     {
         _flameThrower = FlameThrower.Instance;
         _fireDotEffect = new FireDoTEffect();
+        EnemyEventManager.Instance.ObjectDie += HandleEnemyDied;
         _setDamage = AbilityEventManager.Instance.AbillityDamage;
         _flameThrower.CurrentAbility = _flameThrower;
         _flameThrower.DoTEffect = _fireDotEffect;
+    }
+
+    protected override void OnDisabled()
+    {
+        EnemyEventManager.Instance.ObjectDie -= HandleEnemyDied;
     }
 
     protected override void Run()
@@ -41,11 +42,22 @@ public class FlameThrowerAbility : BaseAbilities
         {
             foreach (BaseEnemy enemy in enemiesInRange)
             {
-                _setDamage?.Invoke(enemy, _flameThrower.Damage, _flameThrower.CurrentAbility, _flameThrower.DoTEffect);
+                // Проверьте, что враг все еще активен и находится на сцене
+                if (enemy != null && enemy.isActiveAndEnabled)
+                {
+                    _setDamage?.Invoke(enemy, _flameThrower.Damage, _flameThrower.CurrentAbility, _flameThrower.DoTEffect);
+                }
             }
 
             _fireTimer = 0f;
         }
+
+        // Удаление умерших врагов из списка
+        foreach (BaseEnemy enemyToRemove in enemiesToRemove)
+        {
+            enemiesInRange.Remove(enemyToRemove);
+        }
+        enemiesToRemove.Clear(); // Очистщение временного списка после удаления
     }
 
     private void OnTriggerEnter(Collider other)
@@ -66,19 +78,12 @@ public class FlameThrowerAbility : BaseAbilities
         }
     }
 
-
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    // Assuming enemies have a BaseEnemy component
-    //    BaseEnemy enemy = other.GetComponent<BaseEnemy>();
-
-    //    if (enemy != null && _fireTimer >= _fireInterval)
-    //    {
-    //        // Apply damage to the enemy
-    //        _setDamage?.Invoke(enemy, _flameThrower.Damage, _flameThrower.CurrentAbility, _flameThrower.DoTEffect);
-    //        _fireTimer = 0f;
-    //        Debug.Log("Damage");
-    //    }
-    //}
+    private void HandleEnemyDied(GameObject enemy)
+    {
+        BaseEnemy _enemy = enemy.GetComponent<BaseEnemy>();
+        if (enemiesInRange.Contains(_enemy))
+        {
+            enemiesToRemove.Add(_enemy);
+        }
+    }
 }

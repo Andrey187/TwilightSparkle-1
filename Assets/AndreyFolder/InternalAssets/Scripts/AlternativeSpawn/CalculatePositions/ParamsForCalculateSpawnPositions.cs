@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class ParamsForCalculateSpawnPositions : MonoCache
 {
@@ -6,7 +7,7 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     
     //For Bots
     protected Transform _player;
-    protected PositionWritter _positionWritter;
+    [Inject]protected PositionWritter _positionWritter;
     protected float _cameraWidth;
     protected float _cameraHeight;
 
@@ -23,8 +24,7 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     private void Awake()
     {
         _ground = GameObject.FindGameObjectWithTag("Plane");
-        GameObject targetObject = GameObject.Find("PolyArtWizardStandardMat");
-        _positionWritter = targetObject.transform.GetComponent<PositionWritter>();
+
         _player = _positionWritter.transform;
     }
 }

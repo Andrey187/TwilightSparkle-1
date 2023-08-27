@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerStats : MonoCache
+public class PlayerStats : MonoCache, IPlayerStats
 {
     [SerializeField] private int _currentHealth = 0;
     [SerializeField] private int _maxHealth = 100;
@@ -107,6 +107,6 @@ public class PlayerStats : MonoCache
 
     private void OnMagicPowerChanged()
     {
-        MagicPowerChanged?.Invoke(_magicPower);
+        MagicPowerChanged?.Invoke(MagicPower);
     }
 }

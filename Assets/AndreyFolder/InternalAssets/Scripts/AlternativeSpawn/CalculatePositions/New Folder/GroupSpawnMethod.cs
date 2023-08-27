@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class GroupSpawnMethod : EnemySpawnMethod
+public class GroupSpawnMethod : SpawnMethod
 {
-    protected internal override void SpawnEnemies()
+    protected internal override void SpawnPrefabs()
     {
         // Implement the logic for spawning enemies in a circle
 

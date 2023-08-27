@@ -12,7 +12,7 @@ public class WaveSpawner : MonoCache
         public int SpawnLimit;
         public float WaveDuration;
         public float BaseDuration;
-        public EnemySpawnMethod SpawnMethod;
+        public SpawnMethod SpawnMethod;
         public Material _objMaterial;
     }
 

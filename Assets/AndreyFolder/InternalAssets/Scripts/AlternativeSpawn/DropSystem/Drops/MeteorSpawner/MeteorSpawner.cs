@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class MeteorSpawner : MonoBehaviour
 {
-    [SerializeField] private EnemySpawnMethod spawnMethod;
+    [SerializeField] private SpawnMethod spawnMethod;
     [SerializeField] private Meteor _meteorPrefab;
     [SerializeField] private int _meteorCount;
     private PoolObject<Meteor> _objectsPool;
     private IObjectFactory _objectFactory;
     private List<Meteor> _meteors = new List<Meteor>();
 
+    [Inject] private DiContainer _diContainer;
     private void Start()
     {
         Invoke("InitPool", 15f);
@@ -31,7 +33,7 @@ public class MeteorSpawner : MonoBehaviour
             _meteors.Add(meteor);
         }
 
-        PoolObject<Meteor>.CreateInstance(_meteors, _meteors.Count, gameObject.transform, _meteors.First().name + "_Container");
+        PoolObject<Meteor>.CreateInstance(_meteors, _meteors.Count, gameObject.transform, _meteors.First().name + "_Container", _diContainer);
         _objectsPool = PoolObject<Meteor>.Instance;
     }
 
@@ -43,7 +45,7 @@ public class MeteorSpawner : MonoBehaviour
         {
             Meteor activeMeteor = _objectsPool.GetObjects(_meteors[i].transform.position, _meteors[i]);
             spawnMethod.NewUnitCircle();
-            spawnMethod.SpawnEnemies();
+            spawnMethod.SpawnPrefabs();
             spawnMethod.GroundCheck();
 
             if (spawnMethod.ColliderCheck(activeMeteor))

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class DropManager : MonoCache
 {
@@ -17,6 +18,7 @@ public class DropManager : MonoCache
     private IObjectFactory _objectFactory;
     private DropEventManager _eventManager;
     private Dictionary<Type, List<BaseDrop>> _cachePrefab = new Dictionary<Type, List<BaseDrop>>();
+    [Inject] private DiContainer _diContainer;
 
     public int ÑountForFirstAid
     {
@@ -81,7 +83,7 @@ public class DropManager : MonoCache
             }
         }
         List<BaseDrop> allObjects = _cachePrefab.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseDrop>.CreateInstance(allObjects, 10, gameObject.transform, "_Drops");
+        PoolObject<BaseDrop>.CreateInstance(allObjects, 10, gameObject.transform, "_Drops", _diContainer);
         _objectsToPool = PoolObject<BaseDrop>.Instance;
     }
 

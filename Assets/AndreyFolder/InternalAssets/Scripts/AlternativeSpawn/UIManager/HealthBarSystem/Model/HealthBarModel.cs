@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using UnityEngine;
 
-public class HealthBarModel : MonoBehaviour, INotifyPropertyChanged
+public class HealthBarModel : MonoBehaviour,  IHealthBarModelParameters, INotifyPropertyChanged
 {
     private int _currentHealth;
     private int _maxHealth;

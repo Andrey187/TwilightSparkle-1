@@ -9,11 +9,6 @@ public class ExplosionAbility : BaseAbilities
     private FireDoTEffect _fireDotEffect;
     protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
    
-    private void Awake()
-    {
-        _thisRb = Get<Rigidbody>();
-    }
-
     private void Start()
     {
         _explosion = new Explosion();
@@ -41,11 +36,5 @@ public class ExplosionAbility : BaseAbilities
                 }
             }
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _damageRadius);
     }
 }
