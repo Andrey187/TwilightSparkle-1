@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 2745151347317709955}
   - component: {fileID: 7627629269672015528}
   - component: {fileID: 6260620146790506585}
-  - component: {fileID: 8903472374503656616}
   m_Layer: 6
   m_Name: SlimeBody 1
   m_TagString: Enemy
@@ -139,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBarView: {fileID: 0}
+  _healthBarModel: {fileID: 0}
 --- !u!114 &7627629269672015528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,26 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetPosition: {fileID: 0}
   _navMeshAgent: {fileID: 0}
-  _baseEnemy: {fileID: 8903472374503656616}
---- !u!114 &8903472374503656616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 714862928920231714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cafa36949860ae84d8c7044663f8866f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyType: {fileID: 11400000, guid: d84e5077a9bb08b488f78e1e562e421a, type: 2}
-  _currentHealth: 0
-  _maxHealth: 0
-  _pushbackDistance: 0.1
-  _pushbackDuration: 0.3
-  _renderer: {fileID: 0}
-  meshAnimator: {fileID: 0}
+  _baseEnemy: {fileID: 0}
 --- !u!1 &6810015620813176514
 GameObject:
   m_ObjectHideFlags: 0

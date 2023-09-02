@@ -951,6 +951,7 @@ GameObject:
   - component: {fileID: 7883951609435614008}
   - component: {fileID: -5367478615105883664}
   - component: {fileID: -3482421099877191172}
+  - component: {fileID: 5338955128451944528}
   m_Layer: 6
   m_Name: BeholderPolyartBake
   m_TagString: Enemy
@@ -1095,7 +1096,6 @@ MonoBehaviour:
   EnemyType: {fileID: 11400000, guid: 7c41f4b76001e3f46ad2a82ef164f38c, type: 2}
   _currentHealth: 0
   _maxHealth: 0
-  _renderer: {fileID: 463478310487472598}
   meshAnimator: {fileID: 413995866814006717}
 --- !u!114 &-5367478615105883664
 MonoBehaviour:
@@ -1124,6 +1124,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerDuration: 8
+  _isEnabled: 1
+--- !u!114 &5338955128451944528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011648103021171507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92578ac6e33558c4f9257f26b394e55b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 463478310487472598}
+  distanceThreshold: 1
 --- !u!1 &9011648103021171509
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,7 +18,6 @@ public class MultipleFireBallAbility : BaseAbilities
     protected override void OnEnabled()
     {
         base.OnEnabled();
-        AudioManager.Instance.PlaySFX(Sound.SoundEnum.FireBall);
     }
 
     private void Start()
@@ -30,49 +29,69 @@ public class MultipleFireBallAbility : BaseAbilities
         _multipleFireBall.DoTEffect = _fireDotEffect;
     }
 
-    protected override void Run()
+    //protected override void Run()
+    //{
+    //    UnityEngine.Profiling.Profiler.BeginSample("MyltipleBall");
+    //    float currentTime = Time.time;
+    //    if (currentTime - _lastExecutionTime >= 0.5f)
+    //    {
+    //        _lastExecutionTime = currentTime;
+    //        PerformDamageCheck();
+    //    }
+    //    UnityEngine.Profiling.Profiler.EndSample();
+    //}
+
+    //protected override void PerformDamageCheck()
+    //{
+    //    if (LifeTime <= 0)
+    //    {
+    //        // Clear the hitColliders array
+    //        _hitColliders = new Collider[0];
+    //        return; // Exit the method early without processing collisions
+    //    }
+
+    //    Vector3 currentPosition = transform.position;
+
+    //    // Cast a sphere to detect enemies within the damage radius
+    //    _hitColliders = Physics.OverlapSphere(currentPosition, damageRadius, _enemyLayer);
+
+
+    //    foreach (Collider hitCollider in _hitColliders)
+    //    {
+    //        // Assuming enemies have a BaseEnemy component
+    //        BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
+
+    //        if (enemy != null)
+    //        {
+    //            // Apply damage to the enemy
+    //            _setDamage?.Invoke(enemy, _multipleFireBall.Damage, _multipleFireBall.CurrentAbility, _multipleFireBall.DoTEffect);
+    //        }
+
+    //        if ((_layerMaskForDie.value & (1 << hitCollider.transform.gameObject.layer)) > 0)
+    //        {
+    //            // If the collided object has the specified layer, invoke SetDie
+    //            SetDie?.Invoke(this);
+    //        }
+    //    }
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
         UnityEngine.Profiling.Profiler.BeginSample("MyltipleBall");
-        float currentTime = Time.time;
-        if (currentTime - _lastExecutionTime >= 0.5f)
+
+        int otherLayer = other.gameObject.layer;
+
+        if ((_enemyLayer.value & (1 << otherLayer)) > 0) // enemyLayer is the layer of your enemies
         {
-            _lastExecutionTime = currentTime;
-            PerformDamageCheck();
+            // Apply damage to the enemy
+            _setDamage?.Invoke(other.GetComponent<BaseEnemy>(), _multipleFireBall.Damage, _multipleFireBall.CurrentAbility, _multipleFireBall.DoTEffect);
+        }
+
+        if ((_layerMaskForDie.value & (1 << other.gameObject.layer)) > 0)
+        {
+            // If the collided object has the specified layer, invoke SetDie
+            SetDie?.Invoke(this);
         }
         UnityEngine.Profiling.Profiler.EndSample();
-    }
-
-    protected override void PerformDamageCheck()
-    {
-        if (LifeTime <= 0)
-        {
-            // Clear the hitColliders array
-            _hitColliders = new Collider[0];
-            return; // Exit the method early without processing collisions
-        }
-
-        Vector3 currentPosition = transform.position;
-
-        // Cast a sphere to detect enemies within the damage radius
-        _hitColliders = Physics.OverlapSphere(currentPosition, damageRadius, _enemyLayer);
-
-
-        foreach (Collider hitCollider in _hitColliders)
-        {
-            // Assuming enemies have a BaseEnemy component
-            BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
-
-            if (enemy != null)
-            {
-                // Apply damage to the enemy
-                _setDamage?.Invoke(enemy, _multipleFireBall.Damage, _multipleFireBall.CurrentAbility, _multipleFireBall.DoTEffect);
-            }
-
-            if ((_layerMaskForDie.value & (1 << hitCollider.transform.gameObject.layer)) > 0)
-            {
-                // If the collided object has the specified layer, invoke SetDie
-                SetDie?.Invoke(this);
-            }
-        }
     }
 }

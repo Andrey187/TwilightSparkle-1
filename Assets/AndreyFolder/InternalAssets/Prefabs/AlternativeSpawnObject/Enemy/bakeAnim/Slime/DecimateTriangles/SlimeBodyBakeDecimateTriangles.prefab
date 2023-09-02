@@ -335,9 +335,10 @@ GameObject:
   - component: {fileID: 7203748752107691943}
   - component: {fileID: -930462952201792546}
   - component: {fileID: 3187052796002727308}
-  - component: {fileID: 4498844488802701196}
   - component: {fileID: -267659685933869593}
   - component: {fileID: 3566607324555895645}
+  - component: {fileID: 467584389959166203}
+  - component: {fileID: 3589487473603204951}
   m_Layer: 6
   m_Name: SlimeBodyBakeDecimateTriangles
   m_TagString: Enemy
@@ -454,7 +455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetPosition: {fileID: 0}
   _navMeshAgent: {fileID: 7999691449308391659}
-  _baseEnemy: {fileID: 4498844488802701196}
+  _baseEnemy: {fileID: 3589487473603204951}
 --- !u!114 &3187052796002727308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,23 +468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c070a82870ebb0488bd39d05fe47da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4498844488802701196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5479706203655699462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cafa36949860ae84d8c7044663f8866f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyType: {fileID: 11400000, guid: d84e5077a9bb08b488f78e1e562e421a, type: 2}
-  _currentHealth: 0
-  _maxHealth: 0
-  _renderer: {fileID: 507371043603540007}
-  meshAnimator: {fileID: 366925036783796333}
 --- !u!114 &-267659685933869593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,6 +495,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerDuration: 8
+  _isEnabled: 1
+--- !u!114 &467584389959166203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479706203655699462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92578ac6e33558c4f9257f26b394e55b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 507371043603540007}
+  _timedDisabler: {fileID: 3566607324555895645}
+--- !u!114 &3589487473603204951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479706203655699462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f6214043a1ef54093a87f7da8b3375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyType: {fileID: 11400000, guid: d84e5077a9bb08b488f78e1e562e421a, type: 2}
+  _currentHealth: 35
+  _maxHealth: 35
+  meshAnimator: {fileID: 366925036783796333}
 --- !u!1001 &8788231208849337423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -522,6 +537,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlimeBody 1_AnimatedMesh (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5608125116805458491, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 7113620311128232067, guid: a380cf403ceed7d46b37b3f2b417271a, type: 3}
     - target: {fileID: 6206285333473097035, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
       propertyPath: m_RootOrder
       value: 1

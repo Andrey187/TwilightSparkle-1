@@ -20,6 +20,7 @@ namespace DamageNumber
         protected override void Start()
         {
             base.Start();
+            TextDamageEvent.Instance.ReturnToPoolEventDamageText += InitializeReturnToPool;
         }
 
         protected override Color Color(object ability)
@@ -27,9 +28,19 @@ namespace DamageNumber
             return ((IAbility)ability).Color;
         }
 
-        protected internal override void Initialize(int damageAmount, Transform target, object ability)
+        protected internal override void InitializeGetObjectFromPool(int damageAmount, Transform target, object ability)
         {
-            base.Initialize(damageAmount, target, ability);
+            GetObjectFromPool(damageAmount, target, ability);
+        }
+
+        protected override void InitializeReturnToPool(DamageAbilityNumbers component)
+        {
+            ReturnToPool(component);
+        }
+
+        protected override void UnsubscribeEvents()
+        {
+            TextDamageEvent.Instance.ReturnToPoolEventDamageText -= InitializeReturnToPool;
         }
     }
 }

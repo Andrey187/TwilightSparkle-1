@@ -10,15 +10,14 @@ public abstract class BaseEnemy : MonoCache
     [SerializeField] protected internal EnemyData EnemyType;
     [SerializeField] protected int _currentHealth;
     [SerializeField] protected int _maxHealth;
-    [SerializeField] protected internal Renderer _renderer;
     [SerializeField] protected internal MeshAnimator meshAnimator;
     [Inject] protected ILevelUpSystem _ilevelUpSystem;
     protected IKnockback _iknockback;
-    protected internal ITimedDisabler ItimedDisabler;
+    protected ITimedDisabler ItimedDisabler;
     protected HealthBarController _healthBarController;
    
     protected Rigidbody _rigidbody;
-    protected internal NavMeshAgent NavMeshAgent;
+    protected internal NavMeshAgent _navMeshAgent;
     protected internal EnemyState CurrentState;
     protected float _currentSpeed;
     
@@ -27,30 +26,26 @@ public abstract class BaseEnemy : MonoCache
     {
         _rigidbody = Get<Rigidbody>();
         _healthBarController = Get<HealthBarController>();
-        NavMeshAgent = Get<NavMeshAgent>();
+        _navMeshAgent = Get<NavMeshAgent>();
         _iknockback = Get<IKnockback>();
-
         ItimedDisabler = Get<ITimedDisabler>();
-       
         ItimedDisabler.OnTimerElapsed += ReturnToPool;
-        
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
     protected override void OnEnabled()
     {
         if (EnemyType != null)
         {
-            NavMeshAgent.enabled = true;
+            _navMeshAgent.enabled = true;
             NavMeshParams();
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
-            _renderer.enabled = false;
             transform.rotation = Quaternion.identity;
         }
     }
-
-    protected void OnDestroy()
+    private void UnsubscribeEvents()
     {
         ItimedDisabler.OnTimerElapsed -= ReturnToPool;
     }
@@ -80,7 +75,7 @@ public abstract class BaseEnemy : MonoCache
         }
     }
 
-    protected virtual void TakeDamage(BaseEnemy enemy,int damageAmount, IAbility ability, IDoTEffect doTEffect)
+    protected virtual void TakeDamage(BaseEnemy enemy, int damageAmount, IAbility ability, IDoTEffect doTEffect)
     {
         if (!gameObject.activeSelf)
         {
@@ -89,22 +84,26 @@ public abstract class BaseEnemy : MonoCache
 
         if (enemy == this)
         {
-            CurrentHealth = ability.ApplyDamage(CurrentHealth, damageAmount);
+            CurrentHealth = ability.ApplyDamage(CurrentHealth, damageAmount); //наносим урон
+
             ItimedDisabler.Timer = 0f;
+
             if (enemy != null && damageAmount > 0 && CurrentHealth > 0)
             {
                 if (CurrentHealth != 0)
                 {
-                    ChangeState(new TakingDamageState());
+                    ChangeState(new TakingDamageState()); //смена анимации при получении урона
                 }
-                _iknockback.KnockBack(gameObject, transform);
-                DamageNumberPool.Instance.Initialize(damageAmount, enemy.transform, ability);
+
+                _iknockback.KnockBack(gameObject, transform); //отталкивание при получении урона
+
+                DamageNumberPool.Instance.InitializeGetObjectFromPool(damageAmount, gameObject.transform, ability); //вызов текста урона
 
                 if (ability.HasDoT)
                 {
-                    DoTManager.Instance.RegisterDoT(doTEffect, enemy, damageAmount);
+                    DoTManager.Instance.RegisterDoT(doTEffect, this, damageAmount); //если абилка имеет HasDoT, то вызывается текст дот урона
                 }
-               
+
             }
             if (_currentHealth <= 0)
             {
@@ -116,7 +115,7 @@ public abstract class BaseEnemy : MonoCache
 
     protected internal void Die()
     {
-        NavMeshAgent.enabled = false;
+        _navMeshAgent.enabled = false;
         AudioManager.Instance.PlaySFX(Sound.SoundEnum.EnemyDie);
 
         Action<GameObject> deathParticleInvoke = ParticleEventManager.Instance.DeathParticle;
@@ -139,7 +138,7 @@ public abstract class BaseEnemy : MonoCache
 
     protected void NavMeshParams()
     {
-        NavMeshAgent.speed = EnemyType.Speed;
-        NavMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+        _navMeshAgent.speed = EnemyType.Speed;
+        _navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
     }
 }

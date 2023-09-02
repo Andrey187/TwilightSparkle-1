@@ -5,11 +5,15 @@ using Zenject;
 
 namespace AbilitySystem
 {
-    public class AbilitiesSpawn : MonoCache
+    public class AbilitiesSpawn : MonoCache, IAbilitySpawn
     {
+        [SerializeField] private List<BaseAbilities> _abilityListPool;
+        [SerializeField] private int _countObjectsInPool = 50;
         [Inject] private IAttackSystem _attackSystem;
         [Inject] private DiContainer _diContainer;
         public event Action InitializationComplete;
+        public event Action<Sound.SoundEnum> PlaySound;
+
         private PoolObject<BaseAbilities> _abilityPool;
         private IObjectFactory _objectFactory;
         private List<BaseAbilities> activeAbilities = new List<BaseAbilities>();
@@ -25,13 +29,22 @@ namespace AbilitySystem
 
         private void InitPool()
         {
-            foreach (var ability in _attackSystem.AttackAbilitiesList)
+            List<BaseAbilities> newCachedAbility = new List<BaseAbilities>();
+            for (int i = 0; i < _abilityListPool.Count; i++)
             {
-                _objectFactory = new ObjectsFactory(ability.GetComponent<BaseAbilities>().transform);
-                BaseAbilities baseAbilities = _objectFactory.CreateObject(_attackSystem.StartAttackPoint.position).GetComponent<BaseAbilities>();
-                PoolObject<BaseAbilities>.CreateInstance(baseAbilities, 10, gameObject.transform, baseAbilities.name + "_Ability", _diContainer);
-                _abilityPool = PoolObject<BaseAbilities>.Instance;
+                _objectFactory = new ObjectsFactory(_abilityListPool[i].GetComponent<BaseAbilities>().transform);
+               
+                // Add the bots to the List
+                for (int j = 0; j < _countObjectsInPool; j++)
+                {
+                    BaseAbilities baseAbilities = _objectFactory.CreateObject(_attackSystem.StartAttackPoint.position).GetComponent<BaseAbilities>();
+                    newCachedAbility.Add(baseAbilities);
+                }
             }
+           
+            PoolObject<BaseAbilities>.CreateInstance(newCachedAbility, gameObject.transform, "_Ability", _diContainer);
+            _abilityPool = PoolObject<BaseAbilities>.Instance;
+
             _attackSystem.SetCreatePrefabAbility(CreatePrefabAbility);
         }
 
@@ -43,7 +56,7 @@ namespace AbilitySystem
                 for (int i = 0; i < ability.AlternativeCountAbilities; i++)
                 {
                     prefabAbilities[i] = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-
+                    PlaySound?.Invoke(prefabAbilities[i].SoundEnum);
                     prefabAbilities[i].SetDie += ReturnObjectToPool;
 
                     activeAbilities.Add(prefabAbilities[i]); // Add to the list
@@ -52,7 +65,7 @@ namespace AbilitySystem
             else
             {
                 BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
-
+                PlaySound?.Invoke(prefabAbility.SoundEnum);
                 prefabAbility.SetDie += ReturnObjectToPool;
                 activeAbilities.Add(prefabAbility); // Add to the list
             }

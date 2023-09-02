@@ -8,15 +8,6 @@ public class HealthBar : MonoCache
 	[SerializeField] public Image Fill;
 	[SerializeField] public Image Border;
 
-    protected override void OnEnabled()
-    {
-		if (!gameObject.CompareTag("HealthBar"))
-        {
-			Fill.enabled = false;
-			Border.enabled = false;
-        }
-	}
-
     public void SetBaseMaxHealth(int health)
 	{
 		slider.maxValue = health;

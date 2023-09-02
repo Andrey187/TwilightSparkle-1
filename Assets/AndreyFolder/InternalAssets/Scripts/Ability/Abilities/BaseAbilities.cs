@@ -11,11 +11,13 @@ public abstract class BaseAbilities : MonoCache, IMultipleProjectileCount
     [SerializeField] protected LayerMask _layerMaskForDie;
     [SerializeField] protected float damageRadius = 2.0f;
     [SerializeField] protected bool _isMultiple = false;
-
+    [SerializeField] protected Sound.SoundEnum soundEnum;
+    protected BaseEnemy _baseEnemy;
     protected abstract event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
     protected internal virtual event Action<BaseAbilities> SetDie;
 
     protected virtual float LastExecutionTime { get; set; }
+    protected internal Sound.SoundEnum SoundEnum { get => soundEnum; set => soundEnum = value; }
     protected internal float FireInterval { get => _fireInterval; set => _fireInterval = value; }
     protected internal float LifeTime { get => _lifeTime; set => _lifeTime = value; }
     protected internal bool IsMultiple { get => _isMultiple; set => _isMultiple = value; }

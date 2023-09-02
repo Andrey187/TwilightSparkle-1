@@ -83,7 +83,7 @@ public class DropManager : MonoCache
             }
         }
         List<BaseDrop> allObjects = _cachePrefab.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseDrop>.CreateInstance(allObjects, 10, gameObject.transform, "_Drops", _diContainer);
+        PoolObject<BaseDrop>.CreateInstance(allObjects, gameObject.transform, "_Drops", _diContainer);
         _objectsToPool = PoolObject<BaseDrop>.Instance;
     }
 

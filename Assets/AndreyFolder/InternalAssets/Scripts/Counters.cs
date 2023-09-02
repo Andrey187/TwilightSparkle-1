@@ -31,7 +31,7 @@ public class Counters : MonoCache
     private void Awake()
     {
         EnemyEventManager.Instance.ObjectDie += EnemyDie;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 90;
         ResetTimer();
     }
 

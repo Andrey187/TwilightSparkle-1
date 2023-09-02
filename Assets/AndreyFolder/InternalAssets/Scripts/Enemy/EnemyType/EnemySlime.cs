@@ -1,4 +1,4 @@
-public class EnemyRedCube : BaseEnemy
+public class EnemySlime : BaseEnemy
 {
     protected override void OnEnabled()
     {

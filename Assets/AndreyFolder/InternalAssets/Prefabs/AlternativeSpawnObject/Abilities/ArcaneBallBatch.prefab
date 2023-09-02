@@ -14448,6 +14448,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4416
   damageRadius: 0.5
+  _isMultiple: 0
+  soundEnum: 4
 --- !u!114 &1128593751591469869
 MonoBehaviour:
   m_ObjectHideFlags: 0

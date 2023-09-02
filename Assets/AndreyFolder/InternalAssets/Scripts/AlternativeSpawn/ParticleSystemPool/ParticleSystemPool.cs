@@ -47,7 +47,7 @@ public class ParticleSystemPool : MonoBehaviour
             }
         }
         List<BaseParcticle> allObjects = _particleDictionary.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseParcticle>.CreateInstance(allObjects, 0, gameObject.transform, "Particle", _diContainer);
+        PoolObject<BaseParcticle>.CreateInstance(allObjects, gameObject.transform, "Particle", _diContainer);
         _particlePool = PoolObject<BaseParcticle>.Instance;
     }
 

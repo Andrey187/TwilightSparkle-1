@@ -19263,6 +19263,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4416
   damageRadius: 0.5
+  _isMultiple: 0
+  soundEnum: 3
   _areaRadius: 3
 --- !u!114 &-3066137475558081819
 MonoBehaviour:

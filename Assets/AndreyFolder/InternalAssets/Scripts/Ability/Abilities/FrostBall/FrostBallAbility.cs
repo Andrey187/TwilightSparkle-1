@@ -17,7 +17,6 @@ public class FrostBallAbility : BaseAbilities
     {
         base.OnEnabled();
         _collidersBuffer = new Collider[32]; // Adjust the size as needed
-        AudioManager.Instance.PlaySFX(Sound.SoundEnum.FrostBall);
     }
 
     private void Start()
@@ -30,10 +29,10 @@ public class FrostBallAbility : BaseAbilities
     private void OnTriggerEnter(Collider other)
     {
         //Check if the object that collided with the fireball is an enemy
-        BaseEnemy enemy = other.GetComponent<BaseEnemy>();
-        if (enemy != null)
+        _baseEnemy = other.GetComponent<BaseEnemy>();
+        if (_baseEnemy != null)
         {
-            ApplyAreaEffect(enemy);
+            ApplyAreaEffect(_baseEnemy);
         }
 
         // Check if the collided object has the specified mask layer
@@ -55,9 +54,9 @@ public class FrostBallAbility : BaseAbilities
                 _setDamage?.Invoke(hitEnemy, _frostBall.Damage, _frostBall.CurrentAbility, _frostBall.DoTEffect);
 
                 // Reduce the enemy's movement speed for the specified duration
-                //enemy.ReduceMovementSpeed(_slowAmount, _slowDuration);
-                _movementSpeedModifier.ApplySpeedModifier(hitEnemy.EnemyType, hitEnemy.NavMeshAgent, _slowAmount, _slowDuration);
+                _movementSpeedModifier.ApplySpeedModifier(hitEnemy.EnemyType, hitEnemy._navMeshAgent, _slowAmount, _slowDuration);
             }
         }
+        _collidersBuffer = new Collider[0];
     }
 }

@@ -8,24 +8,7 @@ public abstract class SpawnMethod : ParamsForCalculateSpawnPositions
     [SerializeField] protected float _groupSpawnCircleRadius = 20f;
     protected bool isGround = false;
     protected RaycastHit hit;
-    private float distance;
-
-    protected virtual void Start()
-    {
-        FindCameraBoundries();
-    }
-
-    protected void FindCameraBoundries()
-    {
-        _cameraHeight = CacheCamera.Instance._cameraHeight;
-        _cameraWidth = CacheCamera.Instance._cameraWidth;
-
-        float sqrX = _cameraWidth * _cameraWidth;
-        float sqrZ = _cameraHeight * _cameraHeight;
-        distance = Mathf.Sqrt(sqrX + sqrZ);
-        _circleOutsideTheCameraField = distance / 2f;
-
-    }
+    
     protected internal Vector2 NewUnitCircle()
     {
         _randomInsideUnitCircle = Random.insideUnitCircle;

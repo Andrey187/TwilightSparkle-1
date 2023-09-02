@@ -854,6 +854,7 @@ GameObject:
   - component: {fileID: 6747707909556047083}
   - component: {fileID: 4613852353171586657}
   - component: {fileID: 107295333041887787}
+  - component: {fileID: 3494363373170882418}
   m_Layer: 6
   m_Name: TurtleShellDecimate
   m_TagString: Enemy
@@ -998,7 +999,6 @@ MonoBehaviour:
   EnemyType: {fileID: 11400000, guid: 29601e8e2a946f847b8e2d4b231e8496, type: 2}
   _currentHealth: 0
   _maxHealth: 0
-  _renderer: {fileID: 6715005881342553978}
   meshAnimator: {fileID: 1116205220668908458}
 --- !u!114 &4613852353171586657
 MonoBehaviour:
@@ -1027,6 +1027,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerDuration: 8
+  _isEnabled: 1
+--- !u!114 &3494363373170882418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837317425425208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92578ac6e33558c4f9257f26b394e55b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 6715005881342553978}
+  _timedDisabler: {fileID: 107295333041887787}
 --- !u!1 &1914324128724412
 GameObject:
   m_ObjectHideFlags: 0

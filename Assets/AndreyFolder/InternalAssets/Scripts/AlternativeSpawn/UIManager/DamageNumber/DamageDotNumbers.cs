@@ -2,30 +2,32 @@ using UnityEngine;
 
 namespace DamageNumber
 {
-    public class DamageDotNumbers : MonoCache, IDamageNumber
+    public class DamageDotNumbers : TextDamage<DamageDotNumbers>
     {
-        [SerializeField] private float _lifeTime = 2f;
-        [SerializeField] private Rigidbody _thisRb;
-        
-
-        public float LifeTime { get => _lifeTime; set => _lifeTime = value; }
-
-
-        private float _lastVelocityResetTime;
-        private float _velocityResetInterval = 1f; // Reset velocity every 0.5 seconds
+        private float _lastTimeDamageDotNumbers;
+        private float _lastExecutionTime;
+        protected override void OnEnabled()
+        {
+            _lastTimeDamageDotNumbers = _lifeTime;
+        }
 
         protected override void Run()
         {
             UnityEngine.Profiling.Profiler.BeginSample("DoT");
+
+            _lastTimeDamageDotNumbers -= Time.deltaTime;
             float currentTime = Time.time;
-            if (currentTime - _lastVelocityResetTime >= _velocityResetInterval)
+            if (currentTime - _lastExecutionTime >= 0.1f)
             {
-                _lastVelocityResetTime = currentTime;
-                _thisRb.velocity = Vector3.up * 1;
+                _lastExecutionTime = currentTime;
+                if (_lastTimeDamageDotNumbers <= 0f)
+                {
+                    TextDamageEvent.Instance.ReturnToPoolDamageDotNumbersText(this);
+                }
+                transform.position += Vector3.up * _moveSpeed * Time.deltaTime;
             }
             UnityEngine.Profiling.Profiler.EndSample();
         }
-
     }
 }
 

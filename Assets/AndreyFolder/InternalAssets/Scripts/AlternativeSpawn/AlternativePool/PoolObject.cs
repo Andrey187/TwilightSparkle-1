@@ -20,7 +20,6 @@ public class PoolObject<T> where T : Component
 
     [Inject] private DiContainer _diContainer;
     private List<T> _objectPrefab;
-    private int _poolLimit;
     private Transform _parentObject;
     private string _containerName;
     private Queue<T> _objectPool;
@@ -29,28 +28,27 @@ public class PoolObject<T> where T : Component
     private static GameObject _poolContainerPrefab;
     private static GameObject _poolContainerInstance;
 
-    public PoolObject(List<T> objectPrefab, int poolLimit, Transform parentObject, string containerName,  DiContainer diContainer)
+    public PoolObject(List<T> objectPrefab, Transform parentObject, string containerName,  DiContainer diContainer)
     {
         _objectPool = new Queue<T>();
         _objectPrefab = objectPrefab;
-        _poolLimit = poolLimit;
         _parentObject = parentObject;
         _containerName = containerName;
         _diContainer = diContainer;
         InitializeNextObjectDelayed();
     }
 
-    public static void CreateInstance(T prefab, int poolLimit, Transform parentObject, string containerName, DiContainer diContainer)
+    public static void CreateInstance(T prefab, Transform parentObject, string containerName, DiContainer diContainer)
     {
-        CreateInstance(new List<T> { prefab }, poolLimit, parentObject, containerName, diContainer);
+        CreateInstance(new List<T> { prefab }, parentObject, containerName, diContainer);
     }
 
-    public static void CreateInstance(List<T> prefabs, int poolLimit, Transform parentObject, string containerName, DiContainer diContainer)
+    public static void CreateInstance(List<T> prefabs, Transform parentObject, string containerName, DiContainer diContainer)
     {
         if (_instance == null)
         {
             CreatePoolContainer(parentObject, containerName);
-            _instance = new PoolObject<T>(prefabs, poolLimit, parentObject, containerName, diContainer);
+            _instance = new PoolObject<T>(prefabs, parentObject, containerName, diContainer);
             ObjectPoolManager.Instance.RegisterPool(_instance);
         }
     }

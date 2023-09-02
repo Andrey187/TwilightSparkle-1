@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ActiveDoT
+public struct ActiveDoT
 {
     public IDoTEffect DoTEffect { get; }
     public BaseEnemy Target { get; }

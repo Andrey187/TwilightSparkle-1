@@ -31,7 +31,7 @@ public class HealthBarManagerMvvm : MonoCache
 
     private void InitPool()
     {
-        PoolObject<HealthBarView>.CreateInstance(_prefab, 15,
+        PoolObject<HealthBarView>.CreateInstance(_prefab,
             _canvasTransform, "HealthBarsContainer", _diContainer);
         _healthBarPool = PoolObject<HealthBarView>.Instance;
     }

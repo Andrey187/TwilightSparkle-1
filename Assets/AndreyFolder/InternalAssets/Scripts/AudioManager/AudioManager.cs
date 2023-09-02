@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     public Sound[] MusicSounds, SfxSounds;
     public AudioSource MusicSource, SfxSource;
 
+   
     private float _soundCooldown = 0.01f;
     private float _lastSoundTime = 0f;
 
@@ -35,6 +36,7 @@ public class AudioManager : MonoBehaviour
         {
             MusicSource.clip = s.Clip;
             MusicSource.Play();
+            
         }
     }
 

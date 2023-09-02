@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 public class StartButton : MonoBehaviour
 {
-    private Button _button;
+    [SerializeField] private Button _button;
     private float _lastExecutionTime;
 
     private void Start()
     {
         Time.timeScale = 1f;
-        _button = gameObject.GetComponent<Button>();
         _button.interactable = false;
     }
 

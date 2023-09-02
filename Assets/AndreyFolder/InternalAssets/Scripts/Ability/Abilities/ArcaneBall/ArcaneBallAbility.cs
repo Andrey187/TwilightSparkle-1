@@ -10,7 +10,6 @@ public class ArcaneBallAbility : BaseAbilities
     protected override void OnEnabled()
     {
         base.OnEnabled();
-        AudioManager.Instance.PlaySFX(Sound.SoundEnum.ArcaneBall);
     }
 
     private void Start()

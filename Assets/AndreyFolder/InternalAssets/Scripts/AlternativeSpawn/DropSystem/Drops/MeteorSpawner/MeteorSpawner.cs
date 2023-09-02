@@ -33,7 +33,7 @@ public class MeteorSpawner : MonoBehaviour
             _meteors.Add(meteor);
         }
 
-        PoolObject<Meteor>.CreateInstance(_meteors, _meteors.Count, gameObject.transform, _meteors.First().name + "_Container", _diContainer);
+        PoolObject<Meteor>.CreateInstance(_meteors, gameObject.transform, _meteors.First().name + "_Container", _diContainer);
         _objectsPool = PoolObject<Meteor>.Instance;
     }
 

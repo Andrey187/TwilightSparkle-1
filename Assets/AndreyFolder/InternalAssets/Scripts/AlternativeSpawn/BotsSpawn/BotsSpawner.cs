@@ -60,7 +60,7 @@ public class BotsSpawner : MonoCache
             }
         }
         List<BaseEnemy> allBots = SpawnedBotsForWave.SelectMany(pair => pair.Value).ToList();
-        PoolObject<BaseEnemy>.CreateInstance(allBots, 0, gameObject.transform, "Bots", _diContainer);
+        PoolObject<BaseEnemy>.CreateInstance(allBots, gameObject.transform, "Bots", _diContainer);
         _botPool = PoolObject<BaseEnemy>.Instance;
     }
 

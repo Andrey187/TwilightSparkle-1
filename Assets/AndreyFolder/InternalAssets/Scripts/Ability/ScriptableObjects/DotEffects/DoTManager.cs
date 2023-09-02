@@ -37,24 +37,14 @@ public class DoTManager : MonoBehaviour
     {
         UnityEngine.Profiling.Profiler.BeginSample("updateDot");
 
-        // список для хранения индексов дот-эффектов, которые нужно удалить
-        List<int> indexesToRemove = new List<int>();
-
         for (int i = activeDoTs.Count - 1; i >= 0; i--)
         {
             ActiveDoT activeDoT = activeDoTs[i];
             if (activeDoT.UpdateTimer(Time.deltaTime))
             {
                 ApplyDoTDamage(activeDoT);
-                indexesToRemove.Add(i);
+                activeDoTs.RemoveAt(i);
             }
-        }
-
-        // Удаление помеченных элементов в обратном порядке
-        for (int i = indexesToRemove.Count - 1; i >= 0; i--)
-        {
-            int indexToRemove = indexesToRemove[i];
-            activeDoTs.RemoveAt(indexToRemove);
         }
 
         UnityEngine.Profiling.Profiler.EndSample();
@@ -67,13 +57,13 @@ public class DoTManager : MonoBehaviour
             int periodicDamageAmount = activeDoT.DoTEffect.ApplyDoT(activeDoT.Target.CurrentHealth, activeDoT.Amount);
             activeDoT.Target.CurrentHealth -= periodicDamageAmount;
 
+            DamageDoTNumberPool.Instance.InitializeGetObjectFromPool(periodicDamageAmount, activeDoT.Target.transform, activeDoT.DoTEffect);
+
             if (activeDoT.Target.CurrentHealth <= 0)
             {
                 UnregisterDoT(activeDoT);
                 activeDoT.Target.Die();
             }
-
-            DamageDoTNumberPool.Instance.Initialize(periodicDamageAmount, activeDoT.Target.transform, activeDoT.DoTEffect);
         }
     }
 

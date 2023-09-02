@@ -10,7 +10,7 @@ public class ParamsForCalculateSpawnPositions : MonoCache
     [Inject]protected PositionWritter _positionWritter;
     protected float _cameraWidth;
     protected float _cameraHeight;
-
+    protected float distance;
     protected float _circleOutsideTheCameraField;
 
     protected Vector3 _spawnCircleRadius;
@@ -26,5 +26,21 @@ public class ParamsForCalculateSpawnPositions : MonoCache
         _ground = GameObject.FindGameObjectWithTag("Plane");
 
         _player = _positionWritter.transform;
+    }
+
+    protected virtual void Start()
+    {
+        FindCameraBoundries();
+    }
+
+    protected void FindCameraBoundries()
+    {
+        _cameraHeight = CacheCamera.Instance._cameraHeight;
+        _cameraWidth = CacheCamera.Instance._cameraWidth;
+
+        float sqrX = _cameraWidth * _cameraWidth;
+        float sqrZ = _cameraHeight * _cameraHeight;
+        distance = Mathf.Sqrt(sqrX + sqrZ);
+        _circleOutsideTheCameraField = distance / 2f;
     }
 }

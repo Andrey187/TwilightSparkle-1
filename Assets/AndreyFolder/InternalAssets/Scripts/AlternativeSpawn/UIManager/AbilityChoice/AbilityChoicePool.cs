@@ -33,7 +33,7 @@ public class AbilityChoicePool : MonoBehaviour
         {
             _objectFactory = new ObjectsFactory(button.GetComponent<Button>().transform);
             Button buttons = _objectFactory.CreateObject(button.transform.position).GetComponent<Button>();
-            PoolObject<Button>.CreateInstance(buttons, 3, buttonContainer, "Buttons_Container", _diContainer);
+            PoolObject<Button>.CreateInstance(buttons, buttonContainer, "Buttons_Container", _diContainer);
 
             _buttonPool = PoolObject<Button>.Instance;
 
