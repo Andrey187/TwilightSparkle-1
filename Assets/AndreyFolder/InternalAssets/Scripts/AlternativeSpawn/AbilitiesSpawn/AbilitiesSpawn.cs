@@ -9,6 +9,7 @@ namespace AbilitySystem
     {
         [SerializeField] private List<BaseAbilities> _abilityListPool;
         [SerializeField] private int _countObjectsInPool = 50;
+        [SerializeField] private bool _autoExpand;
         [Inject] private IAttackSystem _attackSystem;
         [Inject] private DiContainer _diContainer;
         public event Action InitializationComplete;
@@ -55,7 +56,7 @@ namespace AbilitySystem
                 BaseAbilities[] prefabAbilities = new BaseAbilities[ability.AlternativeCountAbilities];
                 for (int i = 0; i < ability.AlternativeCountAbilities; i++)
                 {
-                    prefabAbilities[i] = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
+                    prefabAbilities[i] = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability, _autoExpand);
                     PlaySound?.Invoke(prefabAbilities[i].SoundEnum);
                     prefabAbilities[i].SetDie += ReturnObjectToPool;
 
@@ -64,7 +65,7 @@ namespace AbilitySystem
             }
             else
             {
-                BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability);
+                BaseAbilities prefabAbility = _abilityPool.GetObjects(_attackSystem.StartAttackPoint.position, ability, _autoExpand);
                 PlaySound?.Invoke(prefabAbility.SoundEnum);
                 prefabAbility.SetDie += ReturnObjectToPool;
                 activeAbilities.Add(prefabAbility); // Add to the list

@@ -997,9 +997,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyType: {fileID: 11400000, guid: 29601e8e2a946f847b8e2d4b231e8496, type: 2}
-  _currentHealth: 0
-  _maxHealth: 0
+  _healthBarController: {fileID: 5069105047514162246}
+  _rigidbody: {fileID: 2522701760259546933}
   meshAnimator: {fileID: 1116205220668908458}
+  _navMeshAgent: {fileID: 1936019263418326991}
+  _meshRenderer: {fileID: 6715005881342553978}
 --- !u!114 &4613852353171586657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2136,7 +2138,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 507d4aa237c275a48b72e5772879be66, type: 2}
+  - {fileID: 2100000, guid: 399ffd7f89fc98b489dba3ab51a99181, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

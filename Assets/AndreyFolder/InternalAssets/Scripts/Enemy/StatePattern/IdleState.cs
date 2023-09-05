@@ -2,16 +2,16 @@ public class IdleState : EnemyState
 {
     private const string AnimationTrigger = "IdleNormal";
 
-    public override void Enter(BaseEnemy enemy)
+    public override void Enter(IEnemy enemy)
     {
         
     }
 
-    public override void Exit(BaseEnemy enemy)
+    public override void Exit(IEnemy enemy)
     {
     }
 
-    public override void Update(BaseEnemy enemy)
+    public override void Update(IEnemy enemy)
     {
     }
 }

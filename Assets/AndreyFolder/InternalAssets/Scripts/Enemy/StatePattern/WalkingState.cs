@@ -1,15 +1,15 @@
 public class WalkingState : EnemyState
 {
-    public override void Enter(BaseEnemy enemy)
+    public override void Enter(IEnemy enemy)
     {
-        enemy.meshAnimator.Play("WalkFWD");
+        enemy.MeshAnimator.Play("WalkFWD");
     }
 
-    public override void Exit(BaseEnemy enemy)
+    public override void Exit(IEnemy enemy)
     {
     }
 
-    public override void Update(BaseEnemy enemy)
+    public override void Update(IEnemy enemy)
     {
         // Move towards the target position
     }

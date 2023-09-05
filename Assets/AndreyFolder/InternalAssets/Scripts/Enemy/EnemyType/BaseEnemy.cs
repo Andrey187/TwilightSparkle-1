@@ -5,31 +5,50 @@ using DamageNumber;
 using FSG.MeshAnimator;
 using Zenject;
 
-public abstract class BaseEnemy : MonoCache
+public abstract class BaseEnemy : MonoCache, IEnemy
 {
-    [SerializeField] protected internal EnemyData EnemyType;
-    [SerializeField] protected int _currentHealth;
-    [SerializeField] protected int _maxHealth;
-    [SerializeField] protected internal MeshAnimator meshAnimator;
+    [SerializeField] protected EnemyData EnemyType;
+    protected int _currentHealth;
+    protected int _maxHealth;
+    protected float _currentSpeed;
     [Inject] protected ILevelUpSystem _ilevelUpSystem;
     protected IKnockback _iknockback;
     protected ITimedDisabler ItimedDisabler;
-    protected HealthBarController _healthBarController;
-   
-    protected Rigidbody _rigidbody;
-    protected internal NavMeshAgent _navMeshAgent;
+
+    [SerializeField] protected HealthBarController _healthBarController;
+    [SerializeField] protected Rigidbody _rigidbody;
+    [SerializeField] protected MeshAnimator meshAnimator;
+    [SerializeField] protected NavMeshAgent _navMeshAgent;
+    [SerializeField] protected MeshRenderer _meshRenderer;
     protected internal EnemyState CurrentState;
-    protected float _currentSpeed;
-    
+
+    protected Action<GameObject> _deathParticleDelegate;
+    protected Action<GameObject> _objectReturnToPoolDelegate;
+    protected Action<IEnemy, bool> _setObjectActiveDelegate;
+   
+    BaseEnemy IEnemy.BaseEnemy { get => this; }
+
+    EnemyData IEnemy.EnemyType { get => EnemyType; }
+
+    NavMeshAgent IEnemy.NavMeshAgent { get => _navMeshAgent; }
+
+    MeshAnimator IEnemy.MeshAnimator { get => meshAnimator; }
+
+    HealthBarController IEnemy.HealthBarController { get => _healthBarController; }
+
+    MeshRenderer IEnemy.MeshRenderer { get => _meshRenderer; }
 
     protected void Awake()
     {
-        _rigidbody = Get<Rigidbody>();
-        _healthBarController = Get<HealthBarController>();
-        _navMeshAgent = Get<NavMeshAgent>();
         _iknockback = Get<IKnockback>();
         ItimedDisabler = Get<ITimedDisabler>();
         ItimedDisabler.OnTimerElapsed += ReturnToPool;
+        AbilityEventManager.Instance.TakeAbilityDamageIEnemy += TakeDamage;
+
+        _deathParticleDelegate = ParticleEventManager.Instance.DeathParticle;
+        _objectReturnToPoolDelegate = EnemyEventManager.Instance.DestroyedObject;
+        _setObjectActiveDelegate = EnemyEventManager.Instance.SetObjectActive;
+
         SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
@@ -48,6 +67,7 @@ public abstract class BaseEnemy : MonoCache
     private void UnsubscribeEvents()
     {
         ItimedDisabler.OnTimerElapsed -= ReturnToPool;
+        AbilityEventManager.Instance.TakeAbilityDamageIEnemy -= TakeDamage;
     }
 
     public int CurrentHealth
@@ -75,14 +95,14 @@ public abstract class BaseEnemy : MonoCache
         }
     }
 
-    protected virtual void TakeDamage(BaseEnemy enemy, int damageAmount, IAbility ability, IDoTEffect doTEffect)
+    protected virtual void TakeDamage(IEnemy enemy, int damageAmount, IAbility ability, IDoTEffect doTEffect)
     {
         if (!gameObject.activeSelf)
         {
             return; // don't apply damage or show damage numbers if the game object is not active
         }
-
-        if (enemy == this)
+        
+        if (enemy.BaseEnemy == this)
         {
             CurrentHealth = ability.ApplyDamage(CurrentHealth, damageAmount); //наносим урон
 
@@ -118,8 +138,7 @@ public abstract class BaseEnemy : MonoCache
         _navMeshAgent.enabled = false;
         AudioManager.Instance.PlaySFX(Sound.SoundEnum.EnemyDie);
 
-        Action<GameObject> deathParticleInvoke = ParticleEventManager.Instance.DeathParticle;
-        deathParticleInvoke?.Invoke(gameObject);
+        _deathParticleDelegate?.Invoke(gameObject);
 
         ReturnToPool();
         DropEventManager.Instance.DropsCreated(gameObject);
@@ -129,16 +148,12 @@ public abstract class BaseEnemy : MonoCache
 
     protected void ReturnToPool()
     {
-        Action<GameObject> objectReturnToPool = EnemyEventManager.Instance.DestroyedObject;
-        objectReturnToPool?.Invoke(gameObject);
-
-        Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
-        setObjectActive?.Invoke(gameObject, false);
+        _objectReturnToPoolDelegate?.Invoke(gameObject);
+        _setObjectActiveDelegate?.Invoke(this, false);
     }
 
     protected void NavMeshParams()
     {
         _navMeshAgent.speed = EnemyType.Speed;
-        _navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AbilityEventManager : MonoBehaviour
 {
-    private Action<BaseEnemy, int, IAbility, IDoTEffect> _takeAbilityDamage;
+    private Action<IEnemy, int, IAbility, IDoTEffect> _takeAbilityDamageIEnemy;
 
     private static AbilityEventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -30,14 +30,14 @@ public class AbilityEventManager : MonoBehaviour
         }
     }
 
-    public event Action<BaseEnemy, int, IAbility, IDoTEffect> TakeAbilityDamage
+    public event Action<IEnemy, int, IAbility, IDoTEffect> TakeAbilityDamageIEnemy
     {
-        add { _takeAbilityDamage += value; }
-        remove { _takeAbilityDamage -= value; }
+        add { _takeAbilityDamageIEnemy += value; }
+        remove { _takeAbilityDamageIEnemy -= value; }
     }
 
-    public void AbillityDamage(BaseEnemy enemy, int amount, IAbility ability, IDoTEffect doTEffect)
+    public void AbillityDamageIEnemy(IEnemy enemy, int amount, IAbility ability, IDoTEffect doTEffect)
     {
-        _takeAbilityDamage?.Invoke(enemy, amount, ability, doTEffect);
+        _takeAbilityDamageIEnemy?.Invoke(enemy, amount, ability, doTEffect);
     }
 }

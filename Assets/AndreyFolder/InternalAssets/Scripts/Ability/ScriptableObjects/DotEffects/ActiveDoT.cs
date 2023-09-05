@@ -5,19 +5,17 @@ public struct ActiveDoT
     public IDoTEffect DoTEffect { get; }
     public BaseEnemy Target { get; }
     public int Amount { get; }
-    private float timer;
+
+    public float Timer { get; set; }
+
+    public float Interval { get; set; }
 
     public ActiveDoT(IDoTEffect doTEffect, BaseEnemy target, int amount)
     {
         DoTEffect = doTEffect;
         Target = target;
         Amount = amount;
-        timer = doTEffect.Duration;
-    }
-
-    public bool UpdateTimer(float deltaTime)
-    {
-        timer -= deltaTime;
-        return timer <= 0;
+        Timer = doTEffect.Duration;
+        Interval = doTEffect.TickInterval;
     }
 }

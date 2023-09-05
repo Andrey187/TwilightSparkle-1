@@ -8,17 +8,22 @@ using Zenject;
 public class BotsSpawner : MonoCache
 {
     [SerializeField] private WaveSpawner _waveSpawner;
+    [SerializeField] private bool _autoExpand;
     private PoolObject<BaseEnemy> _botPool;
     private IObjectFactory _objectFactory;
 
     public Dictionary<WaveSpawner.Wave, List<BaseEnemy>> SpawnedBotsForWave;
+    private Action<GameObject> _objectCreated;
+    private Action<IEnemy, bool> _setObjectActive;
 
     [Inject] private DiContainer _diContainer;
-    // Start is called before the first frame update
+
     private void Start()
     {
         SpawnedBotsForWave = new Dictionary<WaveSpawner.Wave, List<BaseEnemy>>();
         Invoke("InitCreatePool", 1.5f);
+        _objectCreated = EnemyEventManager.Instance.CreatedObject;
+        _setObjectActive = EnemyEventManager.Instance.SetObjectActive;
         SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
@@ -53,10 +58,11 @@ public class BotsSpawner : MonoCache
             }
 
             // Add the bots to the List
-            for (int j = 0; j < wave.SpawnLimit; j++)
+            for (int j = 0; j < wave.SpawnLimit * 2; j++)
             {
-                BaseEnemy bot = _objectFactory.CreateObject(wave.Bot.position).GetComponent<BaseEnemy>();
-                SpawnedBotsForWave[wave].Add(bot);
+                IEnemy bot = _objectFactory.CreateObject(wave.Bot.position).GetComponent<BaseEnemy>();
+                bot.MeshRenderer.sharedMaterial = wave._objMaterial;
+                SpawnedBotsForWave[wave].Add(bot.BaseEnemy);
             }
         }
         List<BaseEnemy> allBots = SpawnedBotsForWave.SelectMany(pair => pair.Value).ToList();
@@ -77,35 +83,36 @@ public class BotsSpawner : MonoCache
             wave.SpawnMethod.SpawnPrefabs();
             wave.SpawnMethod.GroundCheck();
 
-            BaseEnemy inactiveBot = GetInactiveBot(wave);
+            IEnemy inactiveBot = GetInactiveBot(wave);
             
-            Action<GameObject> objectCreated = EnemyEventManager.Instance.CreatedObject;
-            objectCreated?.Invoke(inactiveBot.gameObject);
+            if(inactiveBot != null)
+            {
+                _objectCreated?.Invoke(inactiveBot.BaseEnemy.gameObject);
 
-            if (wave.SpawnMethod.ColliderCheck(inactiveBot))
-            {
-                Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
-                setObjectActive?.Invoke(inactiveBot.gameObject, true);
-                yield return new WaitForSeconds(0.05f);
-            }
-            else
-            {
-                _botPool.ReturnObject(inactiveBot);
+                if (wave.SpawnMethod.ColliderCheck(inactiveBot.BaseEnemy))
+                {
+
+                    _setObjectActive?.Invoke(inactiveBot.BaseEnemy, true);
+                    yield return new WaitForSeconds(0.05f);
+                }
+                else
+                {
+                    _botPool.ReturnObject(inactiveBot.BaseEnemy);
+                }
             }
         }
     }
 
-    private BaseEnemy GetInactiveBot(WaveSpawner.Wave wave)
+    private IEnemy GetInactiveBot(WaveSpawner.Wave wave)
     {
         List<BaseEnemy> botsForWave = SpawnedBotsForWave[wave];
         for (int i = 0; i < botsForWave.Count; i++)
         {
-            BaseEnemy bot = botsForWave[i];
+            IEnemy bot = botsForWave[i];
 
-            if (bot.gameObject.activeSelf)
+            if (bot.BaseEnemy.gameObject.activeSelf)
             {
-                BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, bot);
-                inactiveBot.GetComponentInChildren<MeshRenderer>().sharedMaterial = wave._objMaterial;
+                IEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, bot, _autoExpand);
                 return inactiveBot;
             }
         }

@@ -9,6 +9,7 @@ public class AbilityChoicePool : MonoBehaviour
     public event Action<Button> ButtonObtainedFromPool;
     [SerializeField] private AbilityAddWindow _abilityAddWindow;
     [SerializeField] private Transform buttonContainer;
+    [SerializeField] private bool _autoExpand;
 
     private List<Button> _shiffleButtons = new List<Button>();
     private List<Button> _instantiatedButtons = new List<Button>();
@@ -37,7 +38,7 @@ public class AbilityChoicePool : MonoBehaviour
 
             _buttonPool = PoolObject<Button>.Instance;
 
-            Button buttonInstance = _buttonPool.GetObjects(buttons.transform.position, buttons);
+            Button buttonInstance = _buttonPool.GetObjects(buttons.transform.position, buttons, _autoExpand);
             buttonInstance.transform.SetParent(buttonContainer);
             _shiffleButtons.Add(buttonInstance);
             if (buttonInstance.GetComponent<UpgradeAbilitiesOnButtonClick>())

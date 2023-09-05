@@ -17,7 +17,7 @@ namespace DamageNumber
             float currentTime = Time.time;
             _lastTimeDamageAbilityNumbers -= Time.deltaTime;
 
-            if (currentTime - _lastExecutionTime >= 0.1f)
+            if (currentTime - _lastExecutionTime >= 0.05f)
             {
                 _lastExecutionTime = currentTime;
                 if (_lastTimeDamageAbilityNumbers <= 0f)

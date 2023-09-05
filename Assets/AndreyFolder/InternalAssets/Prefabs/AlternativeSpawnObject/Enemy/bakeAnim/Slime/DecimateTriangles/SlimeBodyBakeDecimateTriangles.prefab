@@ -523,9 +523,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyType: {fileID: 11400000, guid: d84e5077a9bb08b488f78e1e562e421a, type: 2}
-  _currentHealth: 35
-  _maxHealth: 35
+  _healthBarController: {fileID: 7203748752107691943}
+  _rigidbody: {fileID: 3210901970065253496}
   meshAnimator: {fileID: 366925036783796333}
+  _navMeshAgent: {fileID: 7999691449308391659}
+  _meshRenderer: {fileID: 507371043603540007}
 --- !u!1001 &8788231208849337423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,6 +587,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9150358959834104936, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 399ffd7f89fc98b489dba3ab51a99181, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934cc6d435fe69747b7547ecbcde8213, type: 3}
 --- !u!114 &366925036783796333 stripped

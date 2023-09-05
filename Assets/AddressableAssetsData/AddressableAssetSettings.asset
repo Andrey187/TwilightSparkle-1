@@ -34,9 +34,9 @@ MonoBehaviour:
   m_MonoScriptBundleNaming: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: ca015a8c9789ae34f963dd45ffa32ebc
   m_RemoteCatalogLoadPath:
-    m_Id: 
+    m_Id: 6fcaec7b73d2b0043a3f9a70ea8a8320
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: 
@@ -61,9 +61,23 @@ MonoBehaviour:
       - m_Id: a156d2d68160385448330c136c7476f3
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: ca015a8c9789ae34f963dd45ffa32ebc
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 6fcaec7b73d2b0043a3f9a70ea8a8320
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+    - m_InheritedParent: 
+      m_Id: 4e3474b6334aa1142863efe34de08b64
+      m_ProfileName: WebGl
+      m_Values:
+      - m_Id: 083751e2a9262ea4291a51cc5746f321
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: e1cc5d13a82110d44897b2a8efa460ab
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: a156d2d68160385448330c136c7476f3
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: ca015a8c9789ae34f963dd45ffa32ebc
         m_Value: ServerData/[BuildTarget]
       - m_Id: 6fcaec7b73d2b0043a3f9a70ea8a8320
-        m_Value: http://[PrivateIpAddress]:[HostingServicePort]
+        m_Value: https://cloud.mail.ru/public/Mosp/LE4EnC3eB
     m_ProfileEntryNames:
     - m_Id: 083751e2a9262ea4291a51cc5746f321
       m_Name: BuildTarget

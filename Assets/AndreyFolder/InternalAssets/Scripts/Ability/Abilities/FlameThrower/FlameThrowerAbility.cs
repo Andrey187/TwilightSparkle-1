@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class FlameThrowerAbility : BaseAbilities
 {
-    [SerializeField] private LayerMask _enemyLayer;
-  
     private FlameThrower _flameThrower;
     private FireDoTEffect _fireDotEffect;
     private float _fireTimer;
-    private List<BaseEnemy> enemiesInRange = new List<BaseEnemy>();
-    private List<BaseEnemy> enemiesToRemove = new List<BaseEnemy>();
-    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
+    private List<IEnemy> enemiesInRange = new List<IEnemy>();
+    private List<IEnemy> enemiesToRemove = new List<IEnemy>();
+    protected override event Action<IEnemy, int, IAbility, IDoTEffect> _setDamageIEnemy;
 
     protected override void OnEnabled()
     {
@@ -24,7 +22,7 @@ public class FlameThrowerAbility : BaseAbilities
         _flameThrower = FlameThrower.Instance;
         _fireDotEffect = new FireDoTEffect();
         EnemyEventManager.Instance.ObjectDie += HandleEnemyDied;
-        _setDamage = AbilityEventManager.Instance.AbillityDamage;
+        _setDamageIEnemy = AbilityEventManager.Instance.AbillityDamageIEnemy;
         _flameThrower.CurrentAbility = _flameThrower;
         _flameThrower.DoTEffect = _fireDotEffect;
     }
@@ -40,12 +38,12 @@ public class FlameThrowerAbility : BaseAbilities
 
         if (_fireTimer >= _fireInterval)
         {
-            foreach (BaseEnemy enemy in enemiesInRange)
+            foreach (IEnemy enemy in enemiesInRange)
             {
                 // Проверьте, что враг все еще активен и находится на сцене
-                if (enemy != null && enemy.isActiveAndEnabled)
+                if (enemy != null)
                 {
-                    _setDamage?.Invoke(enemy, _flameThrower.Damage, _flameThrower.CurrentAbility, _flameThrower.DoTEffect);
+                    _setDamageIEnemy?.Invoke(enemy, _flameThrower.Damage, _flameThrower.CurrentAbility, _flameThrower.DoTEffect);
                 }
             }
 
@@ -53,7 +51,7 @@ public class FlameThrowerAbility : BaseAbilities
         }
 
         // Удаление умерших врагов из списка
-        foreach (BaseEnemy enemyToRemove in enemiesToRemove)
+        foreach (IEnemy enemyToRemove in enemiesToRemove)
         {
             enemiesInRange.Remove(enemyToRemove);
         }
@@ -62,28 +60,25 @@ public class FlameThrowerAbility : BaseAbilities
 
     private void OnTriggerEnter(Collider other)
     {
-        BaseEnemy enemy = other.GetComponent<BaseEnemy>();
-        if (enemy != null && !enemiesInRange.Contains(enemy))
+        if (other.gameObject.TryGetComponent(out IEnemy hitEnemy) && !enemiesInRange.Contains(hitEnemy))
         {
-            enemiesInRange.Add(enemy);
+            enemiesInRange.Add(hitEnemy);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        BaseEnemy enemy = other.GetComponent<BaseEnemy>();
-        if (enemy != null && enemiesInRange.Contains(enemy))
+        if (other.gameObject.TryGetComponent(out IEnemy hitEnemy) && enemiesInRange.Contains(hitEnemy))
         {
-            enemiesInRange.Remove(enemy);
+            enemiesInRange.Remove(hitEnemy);
         }
     }
 
     private void HandleEnemyDied(GameObject enemy)
     {
-        BaseEnemy _enemy = enemy.GetComponent<BaseEnemy>();
-        if (enemiesInRange.Contains(_enemy))
+        if (enemy.gameObject.TryGetComponent(out IEnemy hitEnemy) && enemiesInRange.Contains(hitEnemy))
         {
-            enemiesToRemove.Add(_enemy);
+            enemiesToRemove.Add(hitEnemy);
         }
     }
 }

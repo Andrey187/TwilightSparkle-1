@@ -7,32 +7,39 @@ public class ExplosionAbility : BaseAbilities
 
     private Explosion _explosion;
     private FireDoTEffect _fireDotEffect;
-    protected override event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
-   
+    protected override event Action<IEnemy, int, IAbility, IDoTEffect> _setDamageIEnemy;
+    private Collider[] _collidersBuffer;
+
     private void Start()
     {
         _explosion = new Explosion();
         _fireDotEffect = new FireDoTEffect();
-        _setDamage = AbilityEventManager.Instance.AbillityDamage;
+        _collidersBuffer = new Collider[32];
+        _setDamageIEnemy = AbilityEventManager.Instance.AbillityDamageIEnemy;
         _explosion.CurrentAbility = _explosion;
         _explosion.DoTEffect = _fireDotEffect;
+    }
+
+    protected override void OnDisabled()
+    {
+        base.OnDisabled();
+        if (_collidersBuffer != null)
+        {
+            Array.Clear(_collidersBuffer, 0, _collidersBuffer.Length);
+        }
     }
 
     public void Explode(bool hitGround)
     {
         if (hitGround)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _damageRadius);
-            foreach (Collider collider in colliders)
+            int colliderCount = Physics.OverlapSphereNonAlloc(transform.position, _damageRadius, _collidersBuffer);
+            for (int i = 0; i < colliderCount; i++)
             {
-                if(_layerMaskForDie == (_layerMaskForDie | (1 << collider.gameObject.layer)))
+                if (_collidersBuffer[i].TryGetComponent(out IEnemy hitEnemy))
                 {
-                    BaseEnemy enemy = collider.GetComponent<BaseEnemy>();
-                    if (enemy != null)
-                    {
-                        // If so, damage the enemy and destroy the fireball
-                        _setDamage?.Invoke(enemy, _explosion.Damage, _explosion.CurrentAbility, _explosion.DoTEffect);
-                    }
+                    // Damage the enemy
+                    _setDamageIEnemy?.Invoke(hitEnemy, _explosion.Damage, _explosion.CurrentAbility, _explosion.DoTEffect);
                 }
             }
         }

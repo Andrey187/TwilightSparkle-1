@@ -7,6 +7,7 @@ using Zenject;
 public class ParticleSystemPool : MonoBehaviour
 {
     [SerializeField] private List<BaseParcticle> _baseParcticle;
+    [SerializeField] private bool _autoExpand;
     private PoolObject<BaseParcticle> _particlePool;
     private IObjectFactory _objectFactory;
     private Dictionary<ParticleData.ParticleType, List<BaseParcticle>> _particleDictionary = new Dictionary<ParticleData.ParticleType, List<BaseParcticle>>();
@@ -60,7 +61,7 @@ public class ParticleSystemPool : MonoBehaviour
 
             if (deathParticle != null)
             {
-                BaseParcticle particleInstance = _particlePool.GetObjects(position, deathParticle);
+                BaseParcticle particleInstance = _particlePool.GetObjects(position, deathParticle, _autoExpand);
                 StartCoroutine(ReturnToPoolAfterDelay(particleInstance, 1.5f));
             }
         }
@@ -75,7 +76,7 @@ public class ParticleSystemPool : MonoBehaviour
 
             if (healParticle != null)
             {
-                BaseParcticle particleInstance = _particlePool.GetObjects(position, healParticle);
+                BaseParcticle particleInstance = _particlePool.GetObjects(position, healParticle, _autoExpand);
                 StartCoroutine(ReturnToPoolAfterDelay(particleInstance, 1.5f));
             }
         }

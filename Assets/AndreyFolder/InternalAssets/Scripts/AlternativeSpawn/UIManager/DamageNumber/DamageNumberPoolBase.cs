@@ -11,6 +11,8 @@ namespace DamageNumber
         [SerializeField] protected Transform _canvasTransform;
         [SerializeField] protected TextDamage<T> _textMeshPrefab;
         [SerializeField] protected string _containerName;
+        [SerializeField] private bool _autoExpand;
+        [SerializeField] private int _count = 500;
 
         protected int _poolObjectCount = 1;
         protected PoolObject<T> _textPool;
@@ -33,7 +35,7 @@ namespace DamageNumber
             objectFactory = new ObjectsFactory(_textPrefab.transform);
                 
             // Add the bots to the List
-            for (int j = 0; j < 500; j++)
+            for (int j = 0; j < _count; j++)
             {
                 T text = objectFactory.CreateObject(Vector3.zero).GetComponent<T>();
                 _damageNumberList.Add(text);
@@ -51,15 +53,18 @@ namespace DamageNumber
         protected T GetObjectFromPool(int damageAmount, Transform target, object ability)
         {
             TextMeshProUGUI text = GetTextForAbility(target);
-            text.SetText(damageAmount.ToString());
-
-            T damageNumberType = text.GetComponent<T>();
-
-            if (damageNumberType != null)
+            T damageNumberType = null;
+            if (text != null)
             {
-                if (damageAmount != 0)
+                text.SetText(damageAmount.ToString());
+
+                damageNumberType = text.GetComponent<T>();
+                if (damageNumberType != null)
                 {
-                    text.color = Color(ability);
+                    if (damageAmount != 0)
+                    {
+                        text.color = Color(ability);
+                    }
                 }
             }
             return damageNumberType;
@@ -68,11 +73,16 @@ namespace DamageNumber
 
         protected TextMeshProUGUI GetTextForAbility(Transform target)
         {
-            return GetCachedComponent<TextMeshProUGUI>(_textPool.GetObjects(target.position, _damageNumberList.ToArray()));
+            return GetCachedComponent<TextMeshProUGUI>(_textPool.GetObjects(target.position, _damageNumberList.ToArray(), _autoExpand));
         }
 
         protected TComponent GetCachedComponent<TComponent>(Component component) where TComponent : Component
         {
+            if (component == null)
+            {
+                return null; // Возвращаем null, если component равен null
+            }
+
             TComponent cachedComponent = component as TComponent;
             if (cachedComponent == null)
             {

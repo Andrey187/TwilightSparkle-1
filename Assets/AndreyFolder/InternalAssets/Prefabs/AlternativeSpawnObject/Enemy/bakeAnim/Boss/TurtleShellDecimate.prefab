@@ -997,9 +997,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyType: {fileID: 11400000, guid: 415c343bfaf303f429402d1894b2be8b, type: 2}
-  _currentHealth: 0
-  _maxHealth: 0
+  _healthBarController: {fileID: 5069105047514162246}
+  _rigidbody: {fileID: 2522701760259546933}
   meshAnimator: {fileID: 1116205220668908458}
+  _navMeshAgent: {fileID: 1936019263418326991}
+  _meshRenderer: {fileID: 6715005881342553978}
 --- !u!114 &-4782508779196470470
 MonoBehaviour:
   m_ObjectHideFlags: 0

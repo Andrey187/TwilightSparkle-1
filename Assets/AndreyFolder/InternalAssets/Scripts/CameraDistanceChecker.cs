@@ -7,7 +7,6 @@ public class CameraDistanceChecker : ParamsForCalculateSpawnPositions
     [SerializeField] private TimedDisabler _timedDisabler;
     private GameObject _enemyGameObject;
     private float _lastExecutionTime;
-    private bool _isActive = false;
     private bool _previousVisibility = false;
 
     protected override void Start()
@@ -16,17 +15,6 @@ public class CameraDistanceChecker : ParamsForCalculateSpawnPositions
         _enemyGameObject = gameObject;
         _timedDisabler = Get<TimedDisabler>();
     }
-
-    protected override void OnEnabled()
-    {
-        _isActive = true;
-    }
-
-    protected override void OnDisabled()
-    {
-        _isActive = false;
-    }
-
 
     protected override void Run()
     {

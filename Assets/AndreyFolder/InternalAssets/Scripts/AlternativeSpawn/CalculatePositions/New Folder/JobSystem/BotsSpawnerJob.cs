@@ -11,6 +11,7 @@ using Zenject;
 public class BotsSpawnerJob : MonoCache
 {
     [SerializeField] private WaveSpawnerJob _waveSpawner;
+    [SerializeField] private bool _autoExpand;
     public float _spawnRadius = 1.5f;
     public float _groupSpawnCircleRadius = 20f;
     public const float distanceToCheckGround = 3f;
@@ -132,15 +133,15 @@ public class BotsSpawnerJob : MonoCache
             Action<GameObject> objectCreated = EnemyEventManager.Instance.CreatedObject;
             objectCreated?.Invoke(inactiveBot.gameObject);
 
-            if (wave.SpawnMethod.ColliderCheck(inactiveBot, _botsSpawnInRandomPointOnCircle[j]))
-            {
-                Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
-                setObjectActive?.Invoke(inactiveBot.gameObject, true);
-            }
-            else
-            {
-                _botPool.ReturnObject(inactiveBot);
-            }
+            //if (wave.SpawnMethod.ColliderCheck(inactiveBot, _botsSpawnInRandomPointOnCircle[j]))
+            //{
+            //    Action<GameObject, bool> setObjectActive = EnemyEventManager.Instance.SetObjectActive;
+            //    setObjectActive?.Invoke(inactiveBot.gameObject, true);
+            //}
+            //else
+            //{
+            //    _botPool.ReturnObject(inactiveBot);
+            //}
         }
         jobHandle.Complete(); // Wait for the job to finish before proceeding
 
@@ -162,7 +163,7 @@ public class BotsSpawnerJob : MonoCache
 
             if (bot.gameObject.activeSelf)
             {
-                BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, bot);
+                BaseEnemy inactiveBot = _botPool.GetObjects(Vector3.zero, bot, _autoExpand);
                 inactiveBot.GetComponentInChildren<MeshRenderer>().sharedMaterial = wave._objMaterial;
                 return inactiveBot;
             }

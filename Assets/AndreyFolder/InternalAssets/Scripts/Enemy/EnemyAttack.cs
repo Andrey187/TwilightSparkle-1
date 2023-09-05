@@ -7,7 +7,7 @@ public class EnemyAttack : MonoCache
     
     private float _timeColliding; // Timer to track collision time
     private float timeThreshold = 3f; // Time before damage is taken, 3 second default
-    private BaseEnemy _baseEnemy;
+    private IEnemy _baseEnemy;
     private GameObject _player;
     [Inject] private IPlayerStats _playerStats;
     [Inject] private MagicShield _magicShield;
@@ -15,7 +15,7 @@ public class EnemyAttack : MonoCache
 
     private void Start()
     {
-        _baseEnemy = ParentGet<BaseEnemy>();
+        _baseEnemy = ParentGet<IEnemy>();
         _damageAmount = _baseEnemy.EnemyType.Damage;
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerCollider = _player.GetComponentInChildren<Collider>();

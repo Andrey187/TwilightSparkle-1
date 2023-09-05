@@ -9,6 +9,7 @@ public class DropManager : MonoCache
     [SerializeField] public List<BaseDrop> _dropPrefab;
     [SerializeField] public int _countForFirstAid;
     [SerializeField] public int _countForBomb;
+    [SerializeField] private bool _autoExpand;
 
     [SerializeField] private int enemiesKilledCount = 0;
 
@@ -110,7 +111,7 @@ public class DropManager : MonoCache
         if (firstAidDrop != null)
         {
             // Instantiate and activate the first aid kit prefab
-            BaseDrop firstAidKit = _objectsToPool.GetObjects(pos, firstAidDrop);
+            BaseDrop firstAidKit = _objectsToPool.GetObjects(pos, firstAidDrop, _autoExpand);
         }
     }
 
@@ -120,7 +121,7 @@ public class DropManager : MonoCache
         if (bombDrop != null)
         {
             // Instantiate and activate the first aid kit prefab
-            BaseDrop bombDropKit = _objectsToPool.GetObjects(pos, bombDrop);
+            BaseDrop bombDropKit = _objectsToPool.GetObjects(pos, bombDrop, _autoExpand);
         }
     }
 }

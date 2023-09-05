@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyEventManager : MonoBehaviour
 {
-    private Action<GameObject> _onObjectSetActive;//For check object active or enable
+    private Action<IEnemy> _onObjectSetActive;//For check object active or enable
     private Action<GameObject> _objectCreated;
     private Action<GameObject> _objectDestroyedOutCameraArea;
     private Action<GameObject> _objectDie;
@@ -33,7 +33,7 @@ public class EnemyEventManager : MonoBehaviour
         }
     }
 
-    public event Action<GameObject> OnObjectSetActive
+    public event Action<IEnemy> OnObjectSetActive
     {
         add { _onObjectSetActive += value; }
         remove { _onObjectSetActive -= value; }
@@ -57,9 +57,9 @@ public class EnemyEventManager : MonoBehaviour
         remove { _objectDie -= value; }
     }
 
-    public void SetObjectActive(GameObject obj, bool isActive)
+    public void SetObjectActive(IEnemy obj, bool isActive)
     {
-        obj.SetActive(isActive);
+        obj.BaseEnemy.gameObject.SetActive(isActive);
         _onObjectSetActive?.Invoke(obj);
     }
     public void CreatedObject(GameObject obj)

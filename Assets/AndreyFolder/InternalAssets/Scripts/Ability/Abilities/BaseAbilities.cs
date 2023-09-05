@@ -13,7 +13,7 @@ public abstract class BaseAbilities : MonoCache, IMultipleProjectileCount
     [SerializeField] protected bool _isMultiple = false;
     [SerializeField] protected Sound.SoundEnum soundEnum;
     protected BaseEnemy _baseEnemy;
-    protected abstract event Action<BaseEnemy, int, IAbility, IDoTEffect> _setDamage;
+    protected abstract event Action<IEnemy, int, IAbility, IDoTEffect> _setDamageIEnemy;
     protected internal virtual event Action<BaseAbilities> SetDie;
 
     protected virtual float LastExecutionTime { get; set; }

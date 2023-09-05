@@ -9,6 +9,7 @@ public class MeteorSpawner : MonoBehaviour
     [SerializeField] private SpawnMethod spawnMethod;
     [SerializeField] private Meteor _meteorPrefab;
     [SerializeField] private int _meteorCount;
+    [SerializeField] private bool _autoExpand;
     private PoolObject<Meteor> _objectsPool;
     private IObjectFactory _objectFactory;
     private List<Meteor> _meteors = new List<Meteor>();
@@ -43,7 +44,7 @@ public class MeteorSpawner : MonoBehaviour
 
         for (int i = 0; i < _meteorCount; i++)
         {
-            Meteor activeMeteor = _objectsPool.GetObjects(_meteors[i].transform.position, _meteors[i]);
+            Meteor activeMeteor = _objectsPool.GetObjects(_meteors[i].transform.position, _meteors[i], _autoExpand);
             spawnMethod.NewUnitCircle();
             spawnMethod.SpawnPrefabs();
             spawnMethod.GroundCheck();

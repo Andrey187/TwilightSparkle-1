@@ -78,7 +78,7 @@ public class PoolObject<T> where T : Component
         }
     }
 
-    public T GetObjects(Vector3 position, object obj)
+    public T GetObjects(Vector3 position, object obj, bool autoExpandPool)
     {
         T result = null;
 
@@ -110,7 +110,7 @@ public class PoolObject<T> where T : Component
                 }
 
                 // if no inactive object is found, create a new one
-                if (result == null)
+                if (result == null && autoExpandPool)
                 {
                     result = _diContainer.InstantiatePrefab(prefab, _poolContainerInstance.transform).GetComponent<T>();
                     result.transform.SetParent(_poolContainerInstance.transform, false);
@@ -132,7 +132,7 @@ public class PoolObject<T> where T : Component
                 }
 
                 // if no inactive object is found, create a new one
-                if (result == null)
+                if (result == null && autoExpandPool)
                 {
                     result = _diContainer.InstantiatePrefab(prefab, _poolContainerInstance.transform).GetComponent<T>();
                     result.transform.SetParent(_poolContainerInstance.transform, false);
