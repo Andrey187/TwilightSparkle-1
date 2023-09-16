@@ -99,11 +99,11 @@ MonoBehaviour:
   m_RendererInfo:
   - renderer: {fileID: 6670922145349383428}
     lightmapIndex: 0
-    lightmapOffsetScale: {x: 0.17905952, y: 0.17905952, z: -0.00089529756, w: 0.7862118}
+    lightmapOffsetScale: {x: 0.35811904, y: 0.35811904, z: -0.0017905951, w: 0.5470331}
   m_Lightmaps:
-  - {fileID: 2800000, guid: 4f0c4ef2743877442b8c540b26fbfd07, type: 3}
+  - {fileID: 2800000, guid: 43a9520572fa290418cca35819a5741e, type: 3}
   m_LightmapsDir:
-  - {fileID: 2800000, guid: 19a483782a3f65b49a24773a1644f91b, type: 3}
+  - {fileID: 2800000, guid: e4fb663ffcae7164db7349bdb387be4b, type: 3}
   m_ShadowMasks:
   - {fileID: 0}
   m_LightInfo: []

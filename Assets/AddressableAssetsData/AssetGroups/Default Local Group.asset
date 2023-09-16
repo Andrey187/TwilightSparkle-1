@@ -122,6 +122,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Feat
+  - m_GUID: aae431627f58b644988dc745a9147bea
+    m_Address: GrassCombinedMesh
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 7eaa27464d258494699b56dac3246d13
+    m_Address: MushroomCombinedMesh
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: 40cf51df29cce0b4388fac206811d229
+    m_Address: TreeCombinedMesh
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
+  - m_GUID: fd42208cc5fab5743804cb6037feb7ff
+    m_Address: BackgroundPlane
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Objects
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ce9626b6aa96c1648a23b992ec1f3739, type: 2}
   m_SchemaSet:

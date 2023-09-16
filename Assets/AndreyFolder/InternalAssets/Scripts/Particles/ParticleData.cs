@@ -11,6 +11,7 @@ public class ParticleData : ScriptableObject
     {
         Death,
         Hit,
-        Heal
+        Heal,
+        Portal
     }
 }

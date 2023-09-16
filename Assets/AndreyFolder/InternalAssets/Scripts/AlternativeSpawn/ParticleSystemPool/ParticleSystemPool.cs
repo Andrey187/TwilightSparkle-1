@@ -15,16 +15,20 @@ public class ParticleSystemPool : MonoBehaviour
     [Inject] private DiContainer _diContainer;
     private void Start()
     {
-        ParticleEventManager.Instance.OnDeathParticleSetActive += DeathParticleInvoke;
-        ParticleEventManager.Instance.OnHealParticleSetActive += HealParticleInvoke;
+        ParticleEventManager.Instance.OnDeathParticleSetActive += ParticleInvoke;
+        ParticleEventManager.Instance.OnHealParticleSetActive += ParticleInvoke;
+        ParticleEventManager.Instance.OnParticlePortalSetActive += ParticleInvoke;
 
-
+        SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
         Invoke("InitPool", 3f);
     }
 
-    private void OnDisable()
+    private void UnsubscribeEvents()
     {
         _particleDictionary.Clear();
+        ParticleEventManager.Instance.OnDeathParticleSetActive -= ParticleInvoke;
+        ParticleEventManager.Instance.OnHealParticleSetActive -= ParticleInvoke;
+        ParticleEventManager.Instance.OnParticlePortalSetActive -= ParticleInvoke;
     }
 
     private void InitPool()
@@ -51,37 +55,20 @@ public class ParticleSystemPool : MonoBehaviour
         PoolObject<BaseParcticle>.CreateInstance(allObjects, gameObject.transform, "Particle", _diContainer);
         _particlePool = PoolObject<BaseParcticle>.Instance;
     }
-
-    public void DeathParticleInvoke(GameObject obj)
+    private void ParticleInvoke(GameObject obj, ParticleData.ParticleType particleType)
     {
         Vector3 position = new Vector3(obj.transform.position.x, 0f, obj.transform.position.z);
-        if (_particleDictionary.TryGetValue(ParticleData.ParticleType.Death, out List<BaseParcticle> particleList))
+        if (_particleDictionary.TryGetValue(particleType, out List<BaseParcticle> particleList))
         {
-            ParticleDeath deathParticle = particleList.FirstOrDefault(p => p is ParticleDeath) as ParticleDeath;
+            BaseParcticle particle = particleList.FirstOrDefault(p => p.GetType() == p.GetParticleType(particleType));
 
-            if (deathParticle != null)
+            if (particle != null)
             {
-                BaseParcticle particleInstance = _particlePool.GetObjects(position, deathParticle, _autoExpand);
+                BaseParcticle particleInstance = _particlePool.GetObjects(position, particle, _autoExpand);
                 StartCoroutine(ReturnToPoolAfterDelay(particleInstance, 1.5f));
             }
         }
     }
-
-    public void HealParticleInvoke(GameObject obj)
-    {
-        Vector3 position = new Vector3(obj.transform.position.x, 0f, obj.transform.position.z);
-        if (_particleDictionary.TryGetValue(ParticleData.ParticleType.Heal, out List<BaseParcticle> particleList))
-        {
-            ParticleHeal healParticle = particleList.FirstOrDefault(p => p is ParticleHeal) as ParticleHeal;
-
-            if (healParticle != null)
-            {
-                BaseParcticle particleInstance = _particlePool.GetObjects(position, healParticle, _autoExpand);
-                StartCoroutine(ReturnToPoolAfterDelay(particleInstance, 1.5f));
-            }
-        }
-    }
-
 
     private IEnumerator ReturnToPoolAfterDelay(BaseParcticle obj, float delay)
     {

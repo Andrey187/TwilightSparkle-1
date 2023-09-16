@@ -10,7 +10,6 @@ public class CircleSpawnMethod : SpawnMethod
         _botsSpawnInRandomPointOnCircle = new Vector3(_spawnCircleRadius.x,
             0,
             _player.transform.position.z + _spawnCircleRadius.y);
-        
     }
 
     protected internal override bool ColliderCheck<T>(T bots)

@@ -18,19 +18,16 @@ public abstract class BaseEnemy : MonoCache, IEnemy
     [SerializeField] protected HealthBarController _healthBarController;
     [SerializeField] protected Rigidbody _rigidbody;
     [SerializeField] protected MeshAnimator meshAnimator;
-    [SerializeField] protected NavMeshAgent _navMeshAgent;
     [SerializeField] protected MeshRenderer _meshRenderer;
     protected internal EnemyState CurrentState;
 
-    protected Action<GameObject> _deathParticleDelegate;
-    protected Action<GameObject> _objectReturnToPoolDelegate;
-    protected Action<IEnemy, bool> _setObjectActiveDelegate;
+    protected event Action<GameObject> _deathParticleDelegate;
+    protected event Action<GameObject> _objectReturnToPoolDelegate;
+    protected event Action<IEnemy, bool> _setObjectActiveDelegate;
    
     BaseEnemy IEnemy.BaseEnemy { get => this; }
 
     EnemyData IEnemy.EnemyType { get => EnemyType; }
-
-    NavMeshAgent IEnemy.NavMeshAgent { get => _navMeshAgent; }
 
     MeshAnimator IEnemy.MeshAnimator { get => meshAnimator; }
 
@@ -38,7 +35,7 @@ public abstract class BaseEnemy : MonoCache, IEnemy
 
     MeshRenderer IEnemy.MeshRenderer { get => _meshRenderer; }
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         _iknockback = Get<IKnockback>();
         ItimedDisabler = Get<ITimedDisabler>();
@@ -56,8 +53,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
     {
         if (EnemyType != null)
         {
-            _navMeshAgent.enabled = true;
-            NavMeshParams();
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
@@ -135,7 +130,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
 
     protected internal void Die()
     {
-        _navMeshAgent.enabled = false;
         AudioManager.Instance.PlaySFX(Sound.SoundEnum.EnemyDie);
 
         _deathParticleDelegate?.Invoke(gameObject);
@@ -146,14 +140,9 @@ public abstract class BaseEnemy : MonoCache, IEnemy
         _ilevelUpSystem.AddExperience(EnemyType._type, EnemyType);
     }
 
-    protected void ReturnToPool()
+    protected internal void ReturnToPool()
     {
         _objectReturnToPoolDelegate?.Invoke(gameObject);
         _setObjectActiveDelegate?.Invoke(this, false);
-    }
-
-    protected void NavMeshParams()
-    {
-        _navMeshAgent.speed = EnemyType.Speed;
     }
 }

@@ -1,17 +1,30 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BaseBotsMoveable : MonoCache
+
+public class BaseBotsMoveable : MonoCache, IEnemyMove
 {
     [SerializeField] protected internal Position _targetPosition;
     [SerializeField] protected internal NavMeshAgent _navMeshAgent;
-    [SerializeField] protected internal BaseEnemy _baseEnemy;
-    private float _lastExecutionTime;
+    protected internal IEnemy _baseEnemy;
+    protected float _lastExecutionTime;
+
+    NavMeshAgent IEnemyMove.NavMeshAgent { get => _navMeshAgent; }
 
     protected virtual void Awake()
     {
         _navMeshAgent = Get<NavMeshAgent>();
         _baseEnemy = Get<BaseEnemy>();
+    }
+
+    protected override void OnEnabled()
+    {
+        _navMeshAgent.enabled = true;
+    }
+
+    protected override void OnDisabled()
+    {
+        NavMeshParams();
     }
 
     protected override void Run()
@@ -27,11 +40,17 @@ public class BaseBotsMoveable : MonoCache
                 _lastExecutionTime = currentTime;
                 _navMeshAgent.destination = _targetPosition.Value;
                 _baseEnemy.ChangeState(new WalkingState());
+                
             }
         }
 
         // End the measurement
         UnityEngine.Profiling.Profiler.EndSample();
+    }
+
+    protected void NavMeshParams()
+    {
+        _navMeshAgent.speed = _baseEnemy.EnemyType.Speed;
     }
 }
 

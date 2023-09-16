@@ -952,6 +952,7 @@ GameObject:
   - component: {fileID: -5367478615105883664}
   - component: {fileID: -3482421099877191172}
   - component: {fileID: 5338955128451944528}
+  - component: {fileID: -1836505366325031124}
   m_Layer: 6
   m_Name: BeholderPolyartBake
   m_TagString: Enemy
@@ -1068,7 +1069,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetPosition: {fileID: 0}
   _navMeshAgent: {fileID: -4833114591201911283}
-  _baseEnemy: {fileID: 7883951609435614008}
 --- !u!114 &8276711137440594829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,7 +1097,6 @@ MonoBehaviour:
   _healthBarController: {fileID: 8432682605842002111}
   _rigidbody: {fileID: -4294226946725676419}
   meshAnimator: {fileID: 413995866814006717}
-  _navMeshAgent: {fileID: -4833114591201911283}
   _meshRenderer: {fileID: 463478310487472598}
 --- !u!114 &-5367478615105883664
 MonoBehaviour:
@@ -1141,6 +1140,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectRenderer: {fileID: 463478310487472598}
   _timedDisabler: {fileID: 0}
+--- !u!114 &-1836505366325031124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011648103021171507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f7ea6a357ae2d545b8e5babc74d553a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9011648103021171509
 GameObject:
   m_ObjectHideFlags: 0

@@ -136,7 +136,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.06
+    m_Value: 0.05
   scatter:
     m_OverrideState: 0
     m_Value: 0.052
@@ -144,13 +144,13 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 65472
   tint:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 0.91540945, g: 1, b: 0, a: 1}
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 0
   skipIterations:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   dirtTexture:
     m_OverrideState: 0

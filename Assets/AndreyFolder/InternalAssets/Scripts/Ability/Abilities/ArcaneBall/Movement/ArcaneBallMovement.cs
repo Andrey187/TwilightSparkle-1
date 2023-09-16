@@ -4,7 +4,7 @@ public class ArcaneBallMovement: BaseAbilityMovement
 {
     [SerializeField] private int _rotationSpeed;
     [SerializeField] private int _areaRadiusFindEnemy = 10;
-    private Transform _target;
+    private Vector3 _target;
     protected override void OnEnabled()
     {
         EnsureDependenciesInjected();
@@ -12,14 +12,10 @@ public class ArcaneBallMovement: BaseAbilityMovement
 
         if (targetTransform != null)
         {
-            _target = targetTransform;
+            _target = targetTransform.position;
         }
-        else
-        {
-            _target.position = Vector3.zero;
-        }
-
-        MoveWithPhysics(_target, _startPosition);
+        else { _target = Vector3.zero; }
+        MoveWithPhysics(_target, _startPosition.position);
     }
 
     public Transform FindNearestEnemyInArea(float areaRadius) //метод моиска ближайшего противника
@@ -34,9 +30,9 @@ public class ArcaneBallMovement: BaseAbilityMovement
         return null;
     }
 
-    public override void MoveWithPhysics(Transform endPoint, Transform startPoint)
+    public override void MoveWithPhysics(Vector3 endPoint, Vector3 startPoint)
     {
-        Vector3 direction = (endPoint.position - startPoint.position).normalized;
+        Vector3 direction = (endPoint - startPoint).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
 

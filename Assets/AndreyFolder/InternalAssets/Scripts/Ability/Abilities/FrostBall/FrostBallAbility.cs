@@ -56,9 +56,12 @@ public class FrostBallAbility : BaseAbilities
             {
                 // Damage the enemy
                 _setDamageIEnemy?.Invoke(hitEnemy, _frostBall.Damage, _frostBall.CurrentAbility, _frostBall.DoTEffect);
+            }
 
+            if (_collidersBuffer[i].TryGetComponent(out IEnemyMove hitEnemyMove) && hitEnemy != enemy)
+            {
                 // Reduce the enemy's movement speed for the specified duration
-                _movementSpeedModifier.ApplySpeedModifier(hitEnemy.EnemyType, hitEnemy.NavMeshAgent, _slowAmount, _slowDuration);
+                _movementSpeedModifier.ApplySpeedModifier(hitEnemy.EnemyType, hitEnemyMove.NavMeshAgent, _slowAmount, _slowDuration);
             }
         }
     }

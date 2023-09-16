@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Concurrent;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,38 +10,17 @@ public abstract class SpawnMethod : ParamsForCalculateSpawnPositions
     [SerializeField] protected float _groupSpawnCircleRadius = 20f;
     protected bool isGround = false;
     protected RaycastHit hit;
-    
+
     protected internal Vector2 NewUnitCircle()
     {
         _randomInsideUnitCircle = Random.insideUnitCircle;
         _randomInsideUnitCircle.Normalize();
         _randomInsideUnitCircle *= _circleOutsideTheCameraField;
+
         return _randomInsideUnitCircle;
     }
 
     protected virtual internal void GroundCheck()
-    {
-        // Check the center of the spawn area
-        Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);
-        bool hasHit = Physics.Raycast(centerRay, out hit, distanceToCheckGround);
-
-        // Check the corners of the spawn area
-        float angleStep = 360f / 16f;
-        for (int i = 0; i < 16; i++)
-        {
-            Vector3 corner = _botsSpawnInRandomPointOnCircle + Quaternion.AngleAxis(i * angleStep, Vector3.up) * Vector3.forward * _groupSpawnCircleRadius;
-            Ray cornerRay = new Ray(corner, Vector3.down);
-
-            if (!Physics.Raycast(cornerRay, out hit, distanceToCheckGround))
-            {
-                hasHit = false;
-                break; // no need to check other corners if one fails
-            }
-        }
-        isGround = hasHit;
-    }
-
-    protected virtual internal void GroundCheck(Vector3 _botsSpawnInRandomPointOnCircle)
     {
         // Check the center of the spawn area
         Ray centerRay = new Ray(_botsSpawnInRandomPointOnCircle, Vector3.down);

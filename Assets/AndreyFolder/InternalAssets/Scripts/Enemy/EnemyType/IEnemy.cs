@@ -1,6 +1,5 @@
 using FSG.MeshAnimator;
 using UnityEngine;
-using UnityEngine.AI;
 
 public interface IEnemy
 {
@@ -11,9 +10,7 @@ public interface IEnemy
 
     public MeshAnimator MeshAnimator { get; }
 
-    public NavMeshAgent NavMeshAgent { get; }
-
     public HealthBarController HealthBarController { get; }
 
-    void ChangeState(EnemyState newState) { }
+    public void ChangeState(EnemyState newState) { }
 }

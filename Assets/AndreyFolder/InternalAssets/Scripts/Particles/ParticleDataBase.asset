@@ -15,3 +15,4 @@ MonoBehaviour:
   ParticleDataList:
   - {fileID: 11400000, guid: 2991161e3da572a4c930011702ac3d19, type: 2}
   - {fileID: 11400000, guid: ad8a795d978e2704fbdbb13fc8937692, type: 2}
+  - {fileID: 11400000, guid: b2815954542ecb440b1f26312847ed47, type: 2}

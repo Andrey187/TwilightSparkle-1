@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class ParticleEventManager : MonoBehaviour
 {
-    private Action<GameObject> _deathParticle;
-    private Action<GameObject> _healParticle;
+    private Action<GameObject, ParticleData.ParticleType> _deathParticle;
+    private Action<GameObject, ParticleData.ParticleType> _healParticle;
+    private Action<GameObject, ParticleData.ParticleType> _portalParticle;
 
     private static ParticleEventManager _instance;
     [RuntimeInitializeOnLoadMethod]
@@ -31,25 +32,36 @@ public class ParticleEventManager : MonoBehaviour
         }
     }
 
-    public event Action<GameObject> OnDeathParticleSetActive
+    public event Action<GameObject, ParticleData.ParticleType> OnDeathParticleSetActive
     {
         add { _deathParticle += value; }
         remove { _deathParticle -= value; }
     }
 
-    public event Action<GameObject> OnHealParticleSetActive
+    public event Action<GameObject, ParticleData.ParticleType> OnHealParticleSetActive
     {
         add { _healParticle += value; }
         remove { _healParticle -= value; }
     }
 
+    public event Action<GameObject, ParticleData.ParticleType> OnParticlePortalSetActive
+    {
+        add { _portalParticle += value; }
+        remove { _portalParticle -= value; }
+    }
+
     public void DeathParticle(GameObject obj)
     {
-        _deathParticle?.Invoke(obj);
+        _deathParticle?.Invoke(obj, ParticleData.ParticleType.Death);
     }
 
     public void HealParticle(GameObject obj)
     {
-        _healParticle?.Invoke(obj);
+        _healParticle?.Invoke(obj, ParticleData.ParticleType.Heal);
+    }
+
+    public void PortalParticle(GameObject obj)
+    {
+        _portalParticle?.Invoke(obj, ParticleData.ParticleType.Portal);
     }
 }

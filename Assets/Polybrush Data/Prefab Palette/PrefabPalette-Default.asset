@@ -301,3 +301,35 @@ MonoBehaviour:
       m_YScaleBool: 1
       m_ZScaleBool: 1
     name: Skeleton_right_leg_B
+  - gameObject: {fileID: 2198532698984072747, guid: 0c2f1fb509b67014bbd7626f123123d4, type: 3}
+    settings:
+      m_Strength: 52.30657
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 6.315789, z: 6.315789}
+      m_ScaleRangeMin: {x: 0.25, y: 0.25, z: 0.25}
+      m_ScaleRangeMax: {x: 0.4, y: 0.4, z: 0.4}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 0
+      m_XRotationBool: 0
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 1
+      m_YScaleBool: 1
+      m_ZScaleBool: 1
+    name: tree-scary-dead
+  - gameObject: {fileID: 611679142868818857, guid: 3c8772670f7f8e9478fa577f8630b365, type: 3}
+    settings:
+      m_Strength: 50
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 5.0526314, z: 3.7894735}
+      m_ScaleRangeMin: {x: 0.25, y: 0.25, z: 0.25}
+      m_ScaleRangeMax: {x: 0.4, y: 0.4, z: 0.4}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 0
+      m_XRotationBool: 0
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 1
+      m_YScaleBool: 1
+      m_ZScaleBool: 1
+    name: tree-poplar-dead-a

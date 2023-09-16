@@ -19109,9 +19109,6 @@ MonoBehaviour:
   damageRadius: 0.65
   _isMultiple: 0
   soundEnum: 2
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 4416
 --- !u!114 &7735093436227219751
 MonoBehaviour:
   m_ObjectHideFlags: 0

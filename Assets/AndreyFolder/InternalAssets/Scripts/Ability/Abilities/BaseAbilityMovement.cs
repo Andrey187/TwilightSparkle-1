@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public abstract class BaseAbilityMovement : MonoCache, IMovable
+public abstract class BaseAbilityMovement : MonoCache, IAbilityMove
 {
     [Inject] protected IAttackSystem _attackSystem;
     [SerializeField] protected float _speed = 20f;
@@ -23,7 +23,7 @@ public abstract class BaseAbilityMovement : MonoCache, IMovable
     protected override void OnEnabled()
     {
         EnsureDependenciesInjected();
-        MoveWithPhysics(_endPosition, _startPosition);
+        MoveWithPhysics(_endPosition.position, _startPosition.position);
     }
 
     protected void EnsureDependenciesInjected()
@@ -35,9 +35,9 @@ public abstract class BaseAbilityMovement : MonoCache, IMovable
         }
     }
 
-    public virtual void MoveWithPhysics(Transform endPoint, Transform startPoint)
+    public virtual void MoveWithPhysics(Vector3 endPoint, Vector3 startPoint)
     {
-        Vector3 direction = endPoint.position - startPoint.position;
+        Vector3 direction = endPoint - startPoint;
         direction.Normalize();
 
         _thisRb.velocity = direction * _speed;
