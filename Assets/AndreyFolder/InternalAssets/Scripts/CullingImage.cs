@@ -21,8 +21,11 @@ public class CullingImage : ParamsForCalculateSpawnPositions
         {
             _lastExecutionTime = currentTime;
             // Включаем или выключаем компоненты Image в зависимости от видимости
-            _healthBar.Fill.enabled = IsVisible();
-            _healthBar.Border.enabled = IsVisible();
+            if(_healthBar != null)
+            {
+                _healthBar.Fill.enabled = IsVisible();
+                _healthBar.Border.enabled = IsVisible();
+            }
         }
         UnityEngine.Profiling.Profiler.EndSample();
     }

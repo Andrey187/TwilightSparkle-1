@@ -19109,9 +19109,6 @@ MonoBehaviour:
   damageRadius: 0.5
   _isMultiple: 1
   soundEnum: 2
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 4416
   _countProjectile: 6
 --- !u!114 &-739182958146977337
 MonoBehaviour:
@@ -19125,6 +19122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc8d3bc1dda0354b9b70b8b72733b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 4
   _startPosition: {fileID: 0}
   _endPosition: {fileID: 0}

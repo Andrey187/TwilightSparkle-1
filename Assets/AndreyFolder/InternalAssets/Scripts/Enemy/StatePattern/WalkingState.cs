@@ -1,12 +1,16 @@
+using UnityEngine;
+
 public class WalkingState : EnemyState
 {
     public override void Enter(IEnemy enemy)
     {
-        enemy.MeshAnimator.Play("WalkFWD");
+        enemy.MeshAnimator.Play("Run");
+        Debug.Log("Run");
     }
 
     public override void Exit(IEnemy enemy)
     {
+        
     }
 
     public override void Update(IEnemy enemy)

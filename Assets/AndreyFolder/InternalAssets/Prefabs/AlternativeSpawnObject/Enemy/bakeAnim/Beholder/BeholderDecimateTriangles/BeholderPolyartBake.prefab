@@ -654,7 +654,7 @@ MeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -1096,7 +1096,7 @@ MonoBehaviour:
   EnemyType: {fileID: 11400000, guid: 7c41f4b76001e3f46ad2a82ef164f38c, type: 2}
   _healthBarController: {fileID: 8432682605842002111}
   _rigidbody: {fileID: -4294226946725676419}
-  meshAnimator: {fileID: 413995866814006717}
+  _meshAnimator: {fileID: 413995866814006717}
   _meshRenderer: {fileID: 463478310487472598}
 --- !u!114 &-5367478615105883664
 MonoBehaviour:

@@ -7,7 +7,7 @@ public class DieState : EnemyState
 
     public override void Exit(IEnemy enemy)
     {
-        // Return to previous state or transition to a different state
+        enemy.MeshAnimator.Pause();
     }
 
     public override void Update(IEnemy enemy)

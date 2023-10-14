@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class TimedDisabler : MonoCache, ITimedDisabler
 {
     [SerializeField] private float _timerDuration = 8f;
     [SerializeField] private bool _isEnabled = true;
+    [Inject] private IGamePause _gamePause;
     private float _timer = 0f;
     private bool _shouldRunTimer = false;
 
@@ -35,6 +37,9 @@ public class TimedDisabler : MonoCache, ITimedDisabler
 
     protected override void Run()
     {
+        if (_gamePause.IsPaused)
+            return;
+
         if (_shouldRunTimer && _isEnabled)
         {
             _timer += Time.deltaTime;

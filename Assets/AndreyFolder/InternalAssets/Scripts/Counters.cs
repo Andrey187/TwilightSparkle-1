@@ -1,8 +1,9 @@
 using System.ComponentModel;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
-public class Counters : MonoCache
+public class Counters : MonoCache, ICounters
 {
     [SerializeField] private float _fps;
     [SerializeField] private TextMeshProUGUI _fpsText;
@@ -11,8 +12,11 @@ public class Counters : MonoCache
 
     public int _totalKilledEnemy = 0;
     private int _killedEnemy = 0;
+    private int _minutes;
+    private int _seconds;
     private float elapsedTime;
     private bool isTimerRunning;
+    [Inject] private IGamePause _gamePause;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -27,6 +31,9 @@ public class Counters : MonoCache
         }
     }
 
+    public float Timer => _minutes;
+
+    public float SecTimer => _seconds;
 
     private void Awake()
     {
@@ -57,6 +64,9 @@ public class Counters : MonoCache
 
         if (isTimerRunning)
         {
+            if (_gamePause.IsPaused)
+                return;
+
             elapsedTime += Time.deltaTime;
             UpdateTimerDisplay();
         }
@@ -80,9 +90,9 @@ public class Counters : MonoCache
 
     private void UpdateTimerDisplay()
     {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        _minutes = Mathf.FloorToInt(elapsedTime / 60f);
+        _seconds = Mathf.FloorToInt(elapsedTime % 60f);
+        timerText.text = string.Format("{0:00}:{1:00}", _minutes, _seconds);
     }
 
     private void EnemyDie(GameObject obj)

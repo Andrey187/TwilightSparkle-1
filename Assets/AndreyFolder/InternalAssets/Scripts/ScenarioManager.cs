@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class ScenarioManager : MonoCache
 {
@@ -9,12 +10,11 @@ public class ScenarioManager : MonoCache
     [SerializeField] private int _increaseMaxHpEnemy;
     [SerializeField] private List<TalentSO> _talents;
     private PlayerEventManager _playerEvent;
-    private WaveSpawner _waveSpawner;
+    [Inject] private IWaveSpawner _waveSpawner;
 
     private void Start()
     {
         _playerEvent = PlayerEventManager.Instance;
-        _waveSpawner = FindObjectOfType<WaveSpawner>();
 
         if (_playerEvent != null)
         {
@@ -81,7 +81,7 @@ public class ScenarioManager : MonoCache
 
         if (newLevel % 4 == 0)
         {
-            _waveSpawner.BossSpawn(_waveSpawner.Waves[0]);
+           _waveSpawner.BossSpawn(_waveSpawner.Waves[0]);
         }
     }
 }

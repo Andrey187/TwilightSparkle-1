@@ -5,7 +5,7 @@ public class CharacterInput : MonoCache
     private CharacterMovement characterMovement;
     [SerializeField] private FixedJoystick _fixedJoystickMovement;
     [SerializeField] private FixedJoystick _fixedJoystickAim;
-
+    
     private void Awake()
     {
         characterMovement = GetComponent<CharacterMovement>();

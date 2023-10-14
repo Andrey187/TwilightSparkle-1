@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.AI;
-using DamageNumber;
 using FSG.MeshAnimator;
 using Zenject;
 
@@ -17,9 +15,8 @@ public abstract class BaseEnemy : MonoCache, IEnemy
 
     [SerializeField] protected HealthBarController _healthBarController;
     [SerializeField] protected Rigidbody _rigidbody;
-    [SerializeField] protected MeshAnimator meshAnimator;
+    [SerializeField] protected MeshAnimator _meshAnimator;
     [SerializeField] protected MeshRenderer _meshRenderer;
-    protected internal EnemyState CurrentState;
 
     protected event Action<GameObject> _deathParticleDelegate;
     protected event Action<GameObject> _objectReturnToPoolDelegate;
@@ -29,7 +26,7 @@ public abstract class BaseEnemy : MonoCache, IEnemy
 
     EnemyData IEnemy.EnemyType { get => EnemyType; }
 
-    MeshAnimator IEnemy.MeshAnimator { get => meshAnimator; }
+    MeshAnimator IEnemy.MeshAnimator { get => _meshAnimator; }
 
     HealthBarController IEnemy.HealthBarController { get => _healthBarController; }
 
@@ -56,7 +53,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
             EnemyType.SetCurrentHealthToMax();
             _currentHealth = EnemyType.CurrentHealth;
             _maxHealth = EnemyType.MaxHealth;
-            transform.rotation = Quaternion.identity;
         }
     }
     private void UnsubscribeEvents()
@@ -72,21 +68,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
         {
             _currentHealth = Mathf.Max(value, 0);
             _healthBarController.SetCurrentHealth(_currentHealth);
-        }
-    }
-
-    protected internal void ChangeState(EnemyState newState)
-    {
-        if (CurrentState != null)
-        {
-            CurrentState.Exit(this);
-        }
-
-        CurrentState = newState;
-
-        if (CurrentState != null)
-        {
-            CurrentState.Enter(this);
         }
     }
 
@@ -107,28 +88,28 @@ public abstract class BaseEnemy : MonoCache, IEnemy
             {
                 if (CurrentHealth != 0)
                 {
-                    ChangeState(new TakingDamageState()); //смена анимации при получении урона
+                    enemy.MeshAnimator.Play("GetHit");
                 }
 
                 _iknockback.KnockBack(gameObject, transform); //отталкивание при получении урона
 
-                DamageNumberPool.Instance.InitializeGetObjectFromPool(damageAmount, gameObject.transform, ability); //вызов текста урона
+                //DamageNumberPool.Instance.InitializeGetObjectFromPool(damageAmount, gameObject.transform, ability); //вызов текста урона
 
-                if (ability.HasDoT)
-                {
-                    DoTManager.Instance.RegisterDoT(doTEffect, this, damageAmount); //если абилка имеет HasDoT, то вызывается текст дот урона
-                }
+                //if (ability.HasDoT)
+                //{
+                //    DoTManager.Instance.RegisterDoT(doTEffect, this, damageAmount); //если абилка имеет HasDoT, то вызывается текст дот урона
+                //}
 
             }
             if (_currentHealth <= 0)
             {
-                DoTManager.Instance.UnregisterDoTsForTarget(this);
+                //DoTManager.Instance.UnregisterDoTsForTarget(this);
                 Die();
             }
         }
     }
 
-    protected internal void Die()
+    protected virtual internal void Die()
     {
         AudioManager.Instance.PlaySFX(Sound.SoundEnum.EnemyDie);
 

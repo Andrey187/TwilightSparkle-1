@@ -7,6 +7,7 @@ public class AttackingState : EnemyState
 
     public override void Exit(IEnemy enemy)
     {
+        
     }
 
     public override void Update(IEnemy enemy)

@@ -1,5 +1,5 @@
+using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +7,6 @@ using Zenject;
 
 public class BotsSpawner : MonoCache
 {
-    [SerializeField] private WaveSpawner _waveSpawner;
     [SerializeField] private bool _autoExpand;
     private PoolObject<BaseEnemy> _botPool;
     private IObjectFactory _objectFactory;
@@ -16,6 +15,7 @@ public class BotsSpawner : MonoCache
     private Action<GameObject> _objectCreated;
     private Action<IEnemy, bool> _setObjectActive;
 
+    [Inject] private IWaveSpawner _waveSpawner;
     [Inject] private DiContainer _diContainer;
 
     private void Start()
@@ -70,40 +70,74 @@ public class BotsSpawner : MonoCache
         PoolObject<BaseEnemy>.CreateInstance(allBots, gameObject.transform, "Bots", _diContainer);
         _botPool = PoolObject<BaseEnemy>.Instance;
     }
-
-
-    public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
+    public async UniTask SpawnObjects(WaveSpawner.Wave wave)
     {
-        yield return new WaitForSeconds(0.05f);
-        List<BaseEnemy> botsForWave = SpawnedBotsForWave[wave];
-
-        for (int j = 0; j < wave.SpawnLimit; j++)
+        await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
+        if (SpawnedBotsForWave.ContainsKey(wave))
         {
-            // Check if there are any inactive bot objects in the pool that match the current wave and prefab
-           
-            wave.SpawnMethod.NewUnitCircle();
-            wave.SpawnMethod.SpawnPrefabs();
-            wave.SpawnMethod.GroundCheck();
+            List<BaseEnemy> botsForWave = SpawnedBotsForWave[wave];
 
-            IEnemy inactiveBot = GetInactiveBot(wave);
-            
-            if(inactiveBot != null)
+            for (int j = 0; j < wave.SpawnLimit; j++)
             {
-                _objectCreated?.Invoke(inactiveBot.BaseEnemy.gameObject);
+                // Check if there are any inactive bot objects in the pool that match the current wave and prefab
 
-                if (wave.SpawnMethod.ColliderCheck(inactiveBot.BaseEnemy))
-                {
+                wave.SpawnMethod.NewUnitCircle();
+                wave.SpawnMethod.SpawnPrefabs();
+                wave.SpawnMethod.GroundCheck();
 
-                    _setObjectActive?.Invoke(inactiveBot.BaseEnemy, true);
-                    yield return new WaitForSeconds(0.05f);
-                }
-                else
+                IEnemy inactiveBot = GetInactiveBot(wave);
+
+                if (inactiveBot != null)
                 {
-                    _botPool.ReturnObject(inactiveBot.BaseEnemy);
+                    _objectCreated?.Invoke(inactiveBot.BaseEnemy.gameObject);
+
+                    if (wave.SpawnMethod.ColliderCheck(inactiveBot.BaseEnemy))
+                    {
+
+                        _setObjectActive?.Invoke(inactiveBot.BaseEnemy, true);
+                        await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
+                    }
+                    else
+                    {
+                        _botPool.ReturnObject(inactiveBot.BaseEnemy);
+                    }
                 }
             }
         }
     }
+
+    //public IEnumerator SpawnObjects(WaveSpawner.Wave wave)
+    //{
+    //    yield return new WaitForSeconds(0.05f);
+    //    List<BaseEnemy> botsForWave = SpawnedBotsForWave[wave];
+
+    //    for (int j = 0; j < wave.SpawnLimit; j++)
+    //    {
+    //        // Check if there are any inactive bot objects in the pool that match the current wave and prefab
+
+    //        wave.SpawnMethod.NewUnitCircle();
+    //        wave.SpawnMethod.SpawnPrefabs();
+    //        wave.SpawnMethod.GroundCheck();
+
+    //        IEnemy inactiveBot = GetInactiveBot(wave);
+
+    //        if(inactiveBot != null)
+    //        {
+    //            _objectCreated?.Invoke(inactiveBot.BaseEnemy.gameObject);
+
+    //            if (wave.SpawnMethod.ColliderCheck(inactiveBot.BaseEnemy))
+    //            {
+
+    //                _setObjectActive?.Invoke(inactiveBot.BaseEnemy, true);
+    //                yield return new WaitForSeconds(0.05f);
+    //            }
+    //            else
+    //            {
+    //                _botPool.ReturnObject(inactiveBot.BaseEnemy);
+    //            }
+    //        }
+    //    }
+    //}
 
     private IEnemy GetInactiveBot(WaveSpawner.Wave wave)
     {

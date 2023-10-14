@@ -11,8 +11,19 @@ public class MultipleFireBallMovement : BaseAbilityMovement, IMultipleProjectile
     {
         int alternativeCount = _multipleFireBallAbility.AlternativeCountAbilities;
         CalculateAlternativeMovePosition();
-        MoveWithPhysics();
         CalculateAndIncrementAngle(alternativeCount);
+    }
+
+    protected override void FixedRun()
+    {
+        if (_gamePause.IsPaused)
+        {
+            _thisRb.velocity = Vector3.zero;
+            return;
+        }
+
+        Vector3 newPosition = _thisRb.position + _projectileMoveDirection * _speed * Time.fixedDeltaTime;
+        _thisRb.MovePosition(newPosition);
     }
 
     public void CalculateAndIncrementAngle(float countOfProjectiles)
@@ -26,10 +37,5 @@ public class MultipleFireBallMovement : BaseAbilityMovement, IMultipleProjectile
         float dirX = Mathf.Sin(_currentAngle * Mathf.Deg2Rad);
         float dirZ = Mathf.Cos(_currentAngle * Mathf.Deg2Rad);
         _projectileMoveDirection = new Vector3(dirX, 0, dirZ);
-    }
-
-    public override void MoveWithPhysics()
-    {
-        _thisRb.velocity = _projectileMoveDirection * _speed;
     }
 }

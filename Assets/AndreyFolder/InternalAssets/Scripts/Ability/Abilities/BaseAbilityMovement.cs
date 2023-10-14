@@ -7,8 +7,10 @@ public abstract class BaseAbilityMovement : MonoCache, IAbilityMove
     [SerializeField] protected float _speed = 20f;
     [SerializeField] protected Transform _startPosition;
     [SerializeField] protected Transform _endPosition;
+    [Inject] protected IGamePause _gamePause;
     protected bool _injected = false;
     protected Rigidbody _thisRb;
+    protected Vector3 _direction;
 
     protected void Awake()
     {
@@ -26,6 +28,18 @@ public abstract class BaseAbilityMovement : MonoCache, IAbilityMove
         MoveWithPhysics(_endPosition.position, _startPosition.position);
     }
 
+    protected override void FixedRun()
+    {
+        if (_gamePause.IsPaused)
+        {
+            _thisRb.velocity = Vector3.zero;
+            return;
+        }
+
+        Vector3 newPosition = _thisRb.position + _direction * _speed * Time.fixedDeltaTime;
+        _thisRb.MovePosition(newPosition);
+    }
+
     protected void EnsureDependenciesInjected()
     {
         if (!_injected)
@@ -37,11 +51,8 @@ public abstract class BaseAbilityMovement : MonoCache, IAbilityMove
 
     public virtual void MoveWithPhysics(Vector3 endPoint, Vector3 startPoint)
     {
-        Vector3 direction = endPoint - startPoint;
-        direction.Normalize();
-
-        _thisRb.velocity = direction * _speed;
+        _direction = endPoint - startPoint;
+        _direction.Normalize();
     }
 
-    public virtual void MoveWithPhysics() { }
 }

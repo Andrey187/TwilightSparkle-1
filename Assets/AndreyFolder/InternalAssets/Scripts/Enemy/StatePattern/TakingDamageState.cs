@@ -7,7 +7,7 @@ public class TakingDamageState : EnemyState
 
     public override void Exit(IEnemy enemy)
     {
-        // Return to previous state or transition to a different state
+        
     }
 
     public override void Update(IEnemy enemy)

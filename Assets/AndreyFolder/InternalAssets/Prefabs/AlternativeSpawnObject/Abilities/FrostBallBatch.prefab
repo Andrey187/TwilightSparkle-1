@@ -19278,6 +19278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6a8c7b68b066045aee2021518de4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 3
   _startPosition: {fileID: 0}
   _endPosition: {fileID: 0}

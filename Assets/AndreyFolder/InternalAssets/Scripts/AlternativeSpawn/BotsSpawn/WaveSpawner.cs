@@ -1,8 +1,10 @@
-using System.Collections;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+using Zenject;
 
-public class WaveSpawner : MonoCache
+public class WaveSpawner : MonoCache, IWaveSpawner
 {
     [Serializable]
     public class Wave
@@ -18,60 +20,57 @@ public class WaveSpawner : MonoCache
 
     [SerializeField] private BotsSpawner _botSpawner;
     [SerializeField] private int _startWaveIndex;
-    public Wave[] Waves;
+    [SerializeField] private Wave[] _waves;
+    private CancellationTokenSource _cancellationTokenSource;
+    [Inject] private IGamePause _gamePause;
 
-    private void Start()
-    {
-        Invoke("StartSpawn",2f);
-    }
+    public Wave[] Waves => _waves;
 
-    private void StartSpawn()
+    public CancellationTokenSource CancellationTokenSource => _cancellationTokenSource;
+
+    private async void Start()
     {
-        foreach (Wave wave in Waves)
+        await UniTask.Delay(TimeSpan.FromSeconds(2f));
+
+        foreach (Wave wave in _waves)
         {
             wave.WaveDuration = wave.BaseDuration;
             wave._objMaterial = Instantiate(wave.Bot.GetComponentInChildren<MeshRenderer>().sharedMaterial);
         }
 
-        StartCoroutine(SpawnFirstWave()); // Start the first wave immediately
+        // Создаем новый токен отмены для этой волны
+        _cancellationTokenSource = new CancellationTokenSource();
 
-        for (int i = _startWaveIndex; i < Waves.Length; i++) // Start from index 1 for subsequent waves
+        for (int i = _startWaveIndex; i < _waves.Length; i++) // Start from index 1 for subsequent waves
         {
-            StopCoroutine(SpawnFirstWave());
-            StartCoroutine(SpawnWave(Waves[i], false));
+            // Запускаем SpawnWave с токеном отмены
+            _ = SpawnWave(_waves[i], _cancellationTokenSource.Token);
+
         }
     }
 
-    protected override void OnDisabled()
+    private async UniTask SpawnWave(Wave wave, CancellationToken cancellationToken)
     {
-        for (int i = 0; i < Waves.Length; i++)
-        {
-            StopCoroutine(SpawnWave(Waves[i], false));
-        }
-    }
-
-    private IEnumerator SpawnWave(Wave wave, bool isFirstWave)
-    {
-        if (!isFirstWave)
-        {
-            yield return new WaitForSeconds(wave.WaveDuration); // Wait for the specified WaveDuration before spawning the wave
-        }
-
         while (true)
         {
-            yield return StartCoroutine(_botSpawner.SpawnObjects(wave));
-            
-            yield return new WaitForSeconds(wave.WaveDuration); // Wait for the specified WaveDuration before spawning the next wave
+            await UniTask.Delay(TimeSpan.FromSeconds(wave.WaveDuration), false, PlayerLoopTiming.Update, cancellationToken);
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                // Остановка выполнения метода, если токен отмены активирован
+                break;
+            }
+
+            if (!_gamePause.IsPaused) // Проверяем, не установлена ли пауза
+            {
+                _ = _botSpawner.SpawnObjects(wave);
+            }
         }
     }
-    private IEnumerator SpawnFirstWave()
-    {
-        yield return new WaitForSeconds(1f); // Wait for 1 second before spawning the first wave
-        StartCoroutine(SpawnWave(Waves[1], true)); // Start the first wave
-    }
 
-    public void BossSpawn(Wave wave)
+    public async void BossSpawn(Wave wave)
     {
-        StartCoroutine(_botSpawner.SpawnObjects(wave));
+        await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
+        _ = _botSpawner.SpawnObjects(wave);
     }
 }

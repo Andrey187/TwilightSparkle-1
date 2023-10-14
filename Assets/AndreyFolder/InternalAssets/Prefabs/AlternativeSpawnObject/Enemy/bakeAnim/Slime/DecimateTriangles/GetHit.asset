@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GetHit
   m_EditorClassIdentifier: 
   animationName: GetHit
-  preGenerateFrames: 0
+  preGenerateFrames: 1
   playbackSpeed: 1
   smoothNormalsAngle: -1
   instantNormalCalculation: 0

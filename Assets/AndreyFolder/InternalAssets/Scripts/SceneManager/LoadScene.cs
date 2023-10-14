@@ -44,9 +44,9 @@ public static class LoadScene
             _loadingProgressBar = UnityEngine.Object.FindObjectOfType<LoadingProgressBar>();
             LoadBar = _loadingProgressBar.ImageBar;
 
-            Time.timeScale = 0f;
             _nextLoadedScene = Addressables.LoadSceneAsync(sceneAddress, LoadSceneMode.Additive);
 
+            Time.timeScale = 0f;
             await LoadAnimation(delay);
             await Task.Delay(500); // Delay for a short period after the loading is complete
 

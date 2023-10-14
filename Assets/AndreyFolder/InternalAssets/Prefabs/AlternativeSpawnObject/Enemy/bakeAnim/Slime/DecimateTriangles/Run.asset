@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66819ee7584710249995a024282f6188, type: 3}
-  m_Name: RunFWD
+  m_Name: Run
   m_EditorClassIdentifier: 
-  animationName: RunFWD
+  animationName: Run
   preGenerateFrames: 0
   playbackSpeed: 1
   smoothNormalsAngle: -1

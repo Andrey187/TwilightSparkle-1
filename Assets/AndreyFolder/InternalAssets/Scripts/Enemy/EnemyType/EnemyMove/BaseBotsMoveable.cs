@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.AI;
-
+using Zenject;
 
 public class BaseBotsMoveable : MonoCache, IEnemyMove
 {
     [SerializeField] protected internal Position _targetPosition;
     [SerializeField] protected internal NavMeshAgent _navMeshAgent;
+    [Inject] protected IGamePause _gamePause;
     protected internal IEnemy _baseEnemy;
     protected float _lastExecutionTime;
+    protected bool _navMeshParamsSet = true;
 
     NavMeshAgent IEnemyMove.NavMeshAgent { get => _navMeshAgent; }
 
@@ -32,6 +34,21 @@ public class BaseBotsMoveable : MonoCache, IEnemyMove
         // Start measuring the CPU usage for the Update method
         UnityEngine.Profiling.Profiler.BeginSample("UpdateEnemyMove");
 
+        if (_gamePause.IsPaused)
+        {
+            _navMeshAgent.speed = 0;
+            _navMeshParamsSet = false;
+            return;
+        }
+        else
+        {
+            if (!_navMeshParamsSet)
+            {
+                NavMeshParams();
+                _navMeshParamsSet = true;
+            }
+        }
+
         if (gameObject.activeSelf && _navMeshAgent.isOnNavMesh)
         {
             float currentTime = Time.time;
@@ -39,8 +56,7 @@ public class BaseBotsMoveable : MonoCache, IEnemyMove
             {
                 _lastExecutionTime = currentTime;
                 _navMeshAgent.destination = _targetPosition.Value;
-                _baseEnemy.ChangeState(new WalkingState());
-                
+                _baseEnemy.MeshAnimator.Play("Run");
             }
         }
 

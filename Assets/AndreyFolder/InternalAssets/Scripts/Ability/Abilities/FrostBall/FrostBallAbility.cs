@@ -33,15 +33,15 @@ public class FrostBallAbility : BaseAbilities
 
     private void OnTriggerEnter(Collider other)
     {
-        //Check if the object that collided with the fireball is an enemy
-        
-        if (other.TryGetComponent(out IEnemy enemy))
-        {
-            ApplyAreaEffect(enemy);
-        }
         // Check if the collided object has the specified mask layer
         if ((_layerMaskForDie.value & (1 << other.transform.gameObject.layer)) > 0)
         {
+            //Check if the object that collided with the fireball is an enemy
+
+            if (other.TryGetComponent(out IEnemy enemy))
+            {
+                ApplyAreaEffect(enemy);
+            }
             // If the collided object has the specified layer, invoke SetDie
             SetDie?.Invoke(this);
         }
