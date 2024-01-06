@@ -15,7 +15,6 @@ public class AbilityChoicePool : MonoBehaviour
     private List<Button> _instantiatedButtons = new List<Button>();
 
     private PoolObject<Button> _buttonPool;
-    private IObjectFactory _objectFactory;
     private Dictionary<Button, UpgradeAbilitiesOnButtonClick> _buttonInPool;
 
     [Inject] private DiContainer _diContainer;
@@ -32,13 +31,11 @@ public class AbilityChoicePool : MonoBehaviour
     {
         foreach (var button in _abilityAddWindow.AbilityButtons)
         {
-            _objectFactory = new ObjectsFactory(button.GetComponent<Button>().transform);
-            Button buttons = _objectFactory.CreateObject(button.transform.position).GetComponent<Button>();
-            PoolObject<Button>.CreateInstance(buttons, buttonContainer, "Buttons_Container", _diContainer);
+            PoolObject<Button>.CreateInstance(button, buttonContainer, "Buttons_Container", _diContainer);
 
             _buttonPool = PoolObject<Button>.Instance;
 
-            Button buttonInstance = _buttonPool.GetObjects(buttons.transform.position, buttons, _autoExpand);
+            Button buttonInstance = _buttonPool.GetObjects(button.transform.position, button, _autoExpand);
             buttonInstance.transform.SetParent(buttonContainer);
             _shiffleButtons.Add(buttonInstance);
             if (buttonInstance.GetComponent<UpgradeAbilitiesOnButtonClick>())

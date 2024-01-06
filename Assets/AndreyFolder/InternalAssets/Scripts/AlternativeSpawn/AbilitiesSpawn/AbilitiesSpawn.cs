@@ -16,7 +16,6 @@ namespace AbilitySystem
         public event Action<Sound.SoundEnum> PlaySound;
 
         private PoolObject<BaseAbilities> _abilityPool;
-        private IObjectFactory _objectFactory;
         private List<BaseAbilities> activeAbilities = new List<BaseAbilities>();
         private List<BaseAbilities> expiredAbilities = new List<BaseAbilities>();
         private float _lastExecutionTime;
@@ -33,13 +32,10 @@ namespace AbilitySystem
             List<BaseAbilities> newCachedAbility = new List<BaseAbilities>();
             for (int i = 0; i < _abilityListPool.Count; i++)
             {
-                _objectFactory = new ObjectsFactory(_abilityListPool[i].GetComponent<BaseAbilities>().transform);
-               
                 // Add the bots to the List
                 for (int j = 0; j < _countObjectsInPool; j++)
                 {
-                    BaseAbilities baseAbilities = _objectFactory.CreateObject(_attackSystem.StartAttackPoint.position).GetComponent<BaseAbilities>();
-                    newCachedAbility.Add(baseAbilities);
+                    newCachedAbility.Add(_abilityListPool[i]);
                 }
             }
            

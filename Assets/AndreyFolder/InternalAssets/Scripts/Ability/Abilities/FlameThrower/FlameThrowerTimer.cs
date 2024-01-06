@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class FlameThrowerTimer : MonoBehaviour
 {
     [SerializeField] private Image _timerFillImage;
     [SerializeField] private float _timerDuration = 30f;
     [SerializeField] private FlameThrowerController _flameThrowerController;
+    [Inject] protected IGamePause _gamePause;
     public Button _abilityButton;
     public float FillAmount;
 
@@ -31,7 +33,7 @@ public class FlameThrowerTimer : MonoBehaviour
 
     private void UpdateTimer()
     {
-        if (_currentTime < _timerDuration)
+        if (_currentTime < _timerDuration && !_gamePause.IsPaused)
         {
             _currentTime += Time.deltaTime;
             UpdateTimerFill();

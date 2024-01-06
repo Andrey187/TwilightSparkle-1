@@ -29,6 +29,7 @@ public class FlameThrowerAbility : BaseAbilities
 
     protected override void OnDisabled()
     {
+        base.OnDisabled();
         EnemyEventManager.Instance.ObjectDie -= HandleEnemyDied;
     }
 
@@ -36,7 +37,7 @@ public class FlameThrowerAbility : BaseAbilities
     {
         _fireTimer += Time.deltaTime;
 
-        if (_fireTimer >= _fireInterval)
+        if (_fireTimer >= _fireInterval && !_gamePause.IsPaused)
         {
             foreach (IEnemy enemy in enemiesInRange)
             {
@@ -56,6 +57,11 @@ public class FlameThrowerAbility : BaseAbilities
             enemiesInRange.Remove(enemyToRemove);
         }
         enemiesToRemove.Clear(); // Очистщение временного списка после удаления
+
+        if(LifeTime <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

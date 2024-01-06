@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class UIPanelController : MonoBehaviour
+public class UIPanelController : MonoCache
 {
     [SerializeField] private GameObject _restartGamePanel;
     [SerializeField] private GameObject _abilitySelectionPanel;
@@ -27,7 +27,7 @@ public class UIPanelController : MonoBehaviour
         SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
     }
 
-    private void Update()
+    protected override void Run()
     {
 
         if (_gamePause.IsPaused && _gamePause.IsActiveLines)

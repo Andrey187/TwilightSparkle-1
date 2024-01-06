@@ -53,6 +53,7 @@ public class PoolObject<T> where T : Component
         }
     }
 
+    //Call in ObjectPoolManager
     public void ResetInstance()
     {
         if (_instance != null)

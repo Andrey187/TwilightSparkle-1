@@ -50,7 +50,6 @@ public class BotsSpawner : MonoCache
         for (int i = 0; i < _waveSpawner.Waves.Length; i++)
         {
             WaveSpawner.Wave wave = _waveSpawner.Waves[i];
-            //_objectFactory = new ObjectsFactory(wave.Bot.GetComponent<BaseEnemy>().transform);
             if (wave.Bot == null)
             {
                 Debug.LogWarning("No bots found for wave " + wave.Name);
@@ -60,7 +59,6 @@ public class BotsSpawner : MonoCache
             // Add the bots to the List
             for (int j = 0; j < wave.SpawnLimit * 2; j++)
             {
-                //IEnemy bot = _objectFactory.CreateObject(wave.Bot.position).GetComponent<BaseEnemy>();
                 IEnemy bot = wave.Bot.GetComponent<IEnemy>();
                 bot.MeshRenderer.sharedMaterial = wave._objMaterial;
                 SpawnedBotsForWave[wave].Add(bot.BaseEnemy);

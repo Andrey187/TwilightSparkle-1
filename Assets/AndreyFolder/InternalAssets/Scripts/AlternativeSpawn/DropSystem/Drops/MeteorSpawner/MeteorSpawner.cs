@@ -11,7 +11,6 @@ public class MeteorSpawner : MonoBehaviour
     [SerializeField] private int _meteorCount;
     [SerializeField] private bool _autoExpand;
     private PoolObject<Meteor> _objectsPool;
-    private IObjectFactory _objectFactory;
     private List<Meteor> _meteors = new List<Meteor>();
 
     [Inject] private DiContainer _diContainer;
@@ -29,9 +28,7 @@ public class MeteorSpawner : MonoBehaviour
     {
         for (int i = 0; i < _meteorCount; i++)
         {
-            _objectFactory = new ObjectsFactory(_meteorPrefab.transform);
-            Meteor meteor = _objectFactory.CreateObject(_meteorPrefab.transform.position).GetComponent<Meteor>();
-            _meteors.Add(meteor);
+            _meteors.Add(_meteorPrefab);
         }
 
         PoolObject<Meteor>.CreateInstance(_meteors, gameObject.transform, _meteors.First().name + "_Container", _diContainer);

@@ -35,7 +35,7 @@ public class ParticleSystemPool : MonoBehaviour
     {
         for (int i = 0; i < _baseParcticle.Count; i++)
         {
-            _objectFactory = new ObjectsFactory(_baseParcticle[i].gameObject.transform);
+            //_objectFactory = new ObjectsFactory(_baseParcticle[i].gameObject.transform);
 
             ParticleData.ParticleType type = _baseParcticle[i].ParticleType;
 
@@ -47,8 +47,8 @@ public class ParticleSystemPool : MonoBehaviour
 
             for (int j = 0; j < 50; j++)
             {
-                BaseParcticle particle = _objectFactory.CreateObject(Vector3.zero).GetComponent<BaseParcticle>();
-                _particleDictionary[type].Add(particle);
+                //BaseParcticle particle = _objectFactory.CreateObject(Vector3.zero).GetComponent<BaseParcticle>();
+                _particleDictionary[type].Add(_baseParcticle[i]);
             }
         }
         List<BaseParcticle> allObjects = _particleDictionary.SelectMany(pair => pair.Value).ToList();

@@ -16,7 +16,6 @@ public class DropManager : MonoCache
     private int _originalCountForFirstAid;
     private int _originalCountForBomb;
     private PoolObject<BaseDrop> _objectsToPool;
-    private IObjectFactory _objectFactory;
     private DropEventManager _eventManager;
     private Dictionary<Type, List<BaseDrop>> _cachePrefab = new Dictionary<Type, List<BaseDrop>>();
     [Inject] private DiContainer _diContainer;
@@ -65,10 +64,6 @@ public class DropManager : MonoCache
     {
         for (int i = 0; i < _dropPrefab.Count; i++)
         {
-            _objectFactory = new ObjectsFactory(_dropPrefab[i].GetComponent<BaseDrop>().transform);
-
-            BaseDrop baseDrop = _objectFactory.CreateObject(_dropPrefab[i].transform.position).GetComponent<BaseDrop>();
-
             Type dropType = _dropPrefab[i].GetType();
 
             // Check if the key already exists in the dictionary
@@ -80,7 +75,7 @@ public class DropManager : MonoCache
             // Add the baseDrop object to the list associated with the dropType key
             for (int j = 0; j < 10; j++)
             {
-                _cachePrefab[dropType].Add(baseDrop);
+                _cachePrefab[dropType].Add(_dropPrefab[i]);
             }
         }
         List<BaseDrop> allObjects = _cachePrefab.SelectMany(pair => pair.Value).ToList();
