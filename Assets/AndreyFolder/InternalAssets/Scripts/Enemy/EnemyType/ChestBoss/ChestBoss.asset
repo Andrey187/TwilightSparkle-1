@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: ChestBoss
   m_EditorClassIdentifier: 
   _enemyName: ChestBoss
-  _currentHealth: 100000
-  _maxHealth: 100000
+  _currentHealth: 35000
+  _maxHealth: 35000
   _damage: 10
   _speed: 1
   _gainExp: 0
   _type: 3
-  _defaultMaxHealth: 100000
+  _defaultMaxHealth: 35000
   _defaultDamage: 10
   _defaultSpeed: 1
   _defaultGainExp: 0

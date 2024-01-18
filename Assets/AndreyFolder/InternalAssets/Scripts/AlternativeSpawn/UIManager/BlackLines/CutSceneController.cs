@@ -5,7 +5,8 @@ using Zenject;
 public class CutSceneController : MonoBehaviour
 {
     [SerializeField] private Animator _camAnim;
-    [SerializeField] private float _time = 10f;
+    [SerializeField] private float _timeToActivateCutscene = 5f;
+    [SerializeField] private float _timeUntilShutdown = 7f;
     [SerializeField] private Canvas _canvasBlackLines;
     [SerializeField] private GameObject _portal;
     [SerializeField] private GameObject _boss;
@@ -21,7 +22,7 @@ public class CutSceneController : MonoBehaviour
 
     private void Update()
     {
-        if (_countTimer.Timer >= 5)
+        if (_countTimer.Timer >= _timeToActivateCutscene)
         {
             if (isCutsceneOn)
             {
@@ -37,7 +38,7 @@ public class CutSceneController : MonoBehaviour
         yield return new WaitForSecondsRealtime(3f);
         BossActivated();
 
-        yield return new WaitForSecondsRealtime(_time);
+        yield return new WaitForSecondsRealtime(_timeUntilShutdown);
        
         ActiveCutscene(false);
         StopCoroutine(DelayedBossActivation());

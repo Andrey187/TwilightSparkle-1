@@ -12,6 +12,7 @@ public class UIPanelController : MonoCache
     [SerializeField] private AbilityChoicePool _abilityChoicePool;
     private UIEventManager _uIEventManager;
     private PlayerEventManager _playerEventManager;
+    private EnemyEventManager _enemyEventManager;
     [Inject] private IGamePause _gamePause;
     private bool _isActive = true;
 
@@ -19,7 +20,9 @@ public class UIPanelController : MonoCache
     {
         _uIEventManager = UIEventManager.Instance;
         _playerEventManager = PlayerEventManager.Instance;
+        _enemyEventManager = EnemyEventManager.Instance;
         _playerEventManager.PlayerDeath += HandlePlayerDeath;
+        _enemyEventManager.BossDie += HandleBossDeath;
         _uIEventManager.AbilityChoice += HandleLevelIncreased;
 
         // Subscribe to the ButtonObtainedFromPool event
@@ -54,6 +57,7 @@ public class UIPanelController : MonoCache
     private void UnsubscribeEvents()
     {
         _playerEventManager.PlayerDeath -= HandlePlayerDeath;
+        _enemyEventManager.BossDie -= HandleBossDeath;
         _uIEventManager.AbilityChoice -= HandleLevelIncreased;
         _abilityChoicePool.ButtonObtainedFromPool -= HandleButtonObtainedFromPool;
     }
@@ -62,7 +66,21 @@ public class UIPanelController : MonoCache
     {
         // Activate the restart game panel
         Time.timeScale = 0f; // Pause the game
+        _restartGamePanel.gameObject.GetComponent<GameOverPanel>().Victory = false;
         _restartGamePanel.SetActive(true);
+    }
+
+    private void HandleBossDeath()
+    {
+        // Activate the restart game panel
+        Time.timeScale = 0f; // Pause the game
+        _restartGamePanel.gameObject.GetComponent<GameOverPanel>().Victory = true;
+        _restartGamePanel.SetActive(true);
+
+        _gamePause.SetPause(true);
+        _abilitySelectionPanel.SetActive(false);
+        _talentTreePanel.SetActive(false);
+        _joystickPanel.SetActive(false);
     }
 
     private void HandleLevelIncreased()

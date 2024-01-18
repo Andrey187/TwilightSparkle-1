@@ -1,9 +1,12 @@
 using UnityEngine;
+using Zenject;
 
 public class Meteor : BaseDrop
 {
     [SerializeField] private ParticleSystem _particleFlame;
     [SerializeField] private ParticleSystem _explosion;
+
+    [Inject] protected IGamePause _gamePause;
 
     private ExplosionAbility _explosionAbility;
     private MeshRenderer render;
@@ -27,7 +30,19 @@ public class Meteor : BaseDrop
         render.enabled = true;
         _collider.enabled = true;
     }
-    
+
+    protected override void Run()
+    {
+        if (!_gamePause.IsPaused)
+        {
+            _rb.isKinematic = false;
+        }
+        else
+        {
+            _rb.isKinematic = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (_targetLayerMask == (_targetLayerMask | (1 << other.gameObject.layer)))

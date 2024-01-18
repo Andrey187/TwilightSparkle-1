@@ -19,7 +19,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
     [SerializeField] protected MeshRenderer _meshRenderer;
 
     protected event Action<GameObject> _deathParticleDelegate;
-    protected event Action<GameObject> _objectReturnToPoolDelegate;
     protected event Action<IEnemy, bool> _setObjectActiveDelegate;
    
     BaseEnemy IEnemy.BaseEnemy { get => this; }
@@ -40,7 +39,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
         AbilityEventManager.Instance.TakeAbilityDamageIEnemy += TakeDamage;
 
         _deathParticleDelegate = ParticleEventManager.Instance.DeathParticle;
-        _objectReturnToPoolDelegate = EnemyEventManager.Instance.DestroyedObject;
         _setObjectActiveDelegate = EnemyEventManager.Instance.SetObjectActive;
 
         SceneReloadEvent.Instance.UnsubscribeEvents.AddListener(UnsubscribeEvents);
@@ -123,7 +121,6 @@ public abstract class BaseEnemy : MonoCache, IEnemy
 
     protected internal void ReturnToPool()
     {
-        _objectReturnToPoolDelegate?.Invoke(gameObject);
         _setObjectActiveDelegate?.Invoke(this, false);
     }
 }

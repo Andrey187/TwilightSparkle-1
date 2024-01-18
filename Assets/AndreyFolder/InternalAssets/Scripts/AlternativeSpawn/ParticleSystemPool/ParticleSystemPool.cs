@@ -9,7 +9,6 @@ public class ParticleSystemPool : MonoBehaviour
     [SerializeField] private List<BaseParcticle> _baseParcticle;
     [SerializeField] private bool _autoExpand;
     private PoolObject<BaseParcticle> _particlePool;
-    private IObjectFactory _objectFactory;
     private Dictionary<ParticleData.ParticleType, List<BaseParcticle>> _particleDictionary = new Dictionary<ParticleData.ParticleType, List<BaseParcticle>>();
 
     [Inject] private DiContainer _diContainer;
@@ -35,8 +34,6 @@ public class ParticleSystemPool : MonoBehaviour
     {
         for (int i = 0; i < _baseParcticle.Count; i++)
         {
-            //_objectFactory = new ObjectsFactory(_baseParcticle[i].gameObject.transform);
-
             ParticleData.ParticleType type = _baseParcticle[i].ParticleType;
 
             // Check if the key already exists in the dictionary
@@ -47,7 +44,6 @@ public class ParticleSystemPool : MonoBehaviour
 
             for (int j = 0; j < 50; j++)
             {
-                //BaseParcticle particle = _objectFactory.CreateObject(Vector3.zero).GetComponent<BaseParcticle>();
                 _particleDictionary[type].Add(_baseParcticle[i]);
             }
         }
